@@ -10,10 +10,12 @@ export class HomeComponent implements OnInit {
 
   headerBlock = {blockTitle: "Dashboard", blockSubtitle: "", blockContent: ""};
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
-
+    this.sharedService.test().subscribe((res) => {
+      console.log(res);
+    })
   }
 
 }

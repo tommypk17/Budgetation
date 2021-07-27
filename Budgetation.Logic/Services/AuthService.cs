@@ -7,8 +7,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Budgetation.Data.Interfaces;
-using Budgetation.Data.Interfaces.IModels.Auth;
-using Budgetation.Data.Models.Auth;
+using Budgetation.Data.Models;
 using Budgetation.Logic.Models.Auth;
 
 namespace Budgetation.Logic.Services

@@ -17,4 +17,8 @@ export class SharedService {
     return this.navigationToggled.next();
   }
 
+  test(): Observable<any> {
+    return this.http.get(environment.URL + '/api/expense/');
+  }
+
 }

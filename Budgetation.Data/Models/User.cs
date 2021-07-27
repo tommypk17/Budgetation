@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Budgetation.Data.Interfaces.IModels.Auth;
+using Budgetation.Data.Interfaces.IModels;
 
-namespace Budgetation.Data.Models.Auth
+namespace Budgetation.Data.Models
 {
     public class User : IUser
     {

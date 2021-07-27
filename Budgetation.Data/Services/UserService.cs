@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using Budgetation.Data.DAL;
 using Budgetation.Data.Interfaces;
-using Budgetation.Data.Interfaces.IModels.Auth;
-using Budgetation.Data.Models.Auth;
+using Budgetation.Data.Interfaces.IModels;
+using Budgetation.Data.Models;
 using MongoDB.Driver;
 
 namespace Budgetation.Data.Services

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Budgetation.Data.Interfaces.IModels.Auth;
+using Budgetation.Data.Interfaces.IModels;
 
-namespace Budgetation.Data.Models.Auth
+namespace Budgetation.Data.Models
 {
     public class Role : IRole
     {

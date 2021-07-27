@@ -1,9 +1,9 @@
 ﻿using System;
-using Budgetation.Data.Models.Auth;
+using Budgetation.Data.Models;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Serializers;
 
-namespace Budgetation.Data.Interfaces.IModels.Auth
+namespace Budgetation.Data.Interfaces.IModels
 {
     [BsonSerializer(typeof(ImpliedImplementationInterfaceSerializer<IRole, Role>))]
     public interface IRole

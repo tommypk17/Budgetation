@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Budgetation.API.Utlities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,34 +16,37 @@ namespace Budgetation.API.Controllers
     {
         // GET: api/Expense
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
+            return StatusCode(StatusCodes.Status200OK, "");
         }
 
         // GET: api/Expense/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            return StatusCode(StatusCodes.Status200OK, "");
         }
 
         // POST: api/Expense
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] string value)
         {
+            return StatusCode(StatusCodes.Status200OK, "");
         }
 
         // PUT: api/Expense/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(int id, [FromBody] string value)
         {
+            return StatusCode(StatusCodes.Status200OK, "");
         }
 
         // DELETE: api/Expense/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            return StatusCode(StatusCodes.Status200OK, "");
         }
     }
 }
