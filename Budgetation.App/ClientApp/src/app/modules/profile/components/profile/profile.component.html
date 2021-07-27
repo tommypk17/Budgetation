@@ -1,0 +1,29 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    class="block"
+  ></app-header-block>
+  <div class="block">
+    <mat-card>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <p>Name: {{profile.firstName}} {{profile.lastName}}</p>
+          </mat-list-item>
+          <mat-list-item>
+            <p>Email: {{profile.email}}</p>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+<!--  <div class="block">-->
+<!--    <mat-card>-->
+<!--      <mat-card-content>-->
+<!--        <button mat-raised-button color="warn" (click)="deleteAccount()">Delete Account</button>-->
+<!--      </mat-card-content>-->
+<!--    </mat-card>-->
+<!--  </div>-->
+</div>

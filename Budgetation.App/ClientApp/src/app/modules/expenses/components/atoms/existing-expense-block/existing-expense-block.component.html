@@ -1,0 +1,27 @@
+<mat-card *ngIf="bill != undefined">
+  <mat-card-content>
+    <div class="d-flex flex-column">
+      <div class="d-flex w-100 justify-content-between">
+          <h2>{{bill.expense.name}}</h2>
+          <h5>{{bill.expense.type}}</h5>
+      </div>
+      <hr class="w-100" />
+      <div class="d-flex">
+        <label class="mr-3" for="expense-amount-{{bill.expense.name}}"><strong>Amount:</strong></label>
+        <p class="ml-3" id="expense-amount-{{bill.expense.name}}">${{bill.expense.amount}}</p>
+      </div>
+      <div class="d-flex">
+        <label class="mr-3" for="reoccurence-{{bill.expense.name}}"><strong>Reoccurs:</strong></label>
+        <p class="ml-3" id="reoccurence-{{bill.expense.name}}">{{bill.reoccurrence == 'single'? 'no' : bill.reoccurrence}}</p>
+      </div>
+      <div class="d-flex" *ngIf="bill.begin != null && bill.begin != undefined">
+        <label class="mr-3" for="begin-{{bill.expense.name}}"><strong>Starts On</strong>&nbsp;<small>(yyyy-mm-dd)</small><strong>:</strong></label>
+        <p class="ml-3" id="begin-{{bill.expense.name}}">{{displayDate(bill.begin)}}</p>
+      </div>
+      <div class="d-flex">
+        <label class="mr-3" for="due-{{bill.expense.name}}"><strong>Due On</strong>&nbsp;<small>(yyyy-mm-dd)</small><strong>:</strong></label>
+        <p class="ml-3" id="due-{{bill.expense.name}}">{{displayDate(bill.due)}}</p>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

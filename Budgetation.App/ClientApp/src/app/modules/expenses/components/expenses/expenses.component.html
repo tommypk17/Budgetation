@@ -1,0 +1,20 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    class="block"
+  >
+  </app-header-block>
+  <div class="block">
+    <app-expense-actions-block (filter)="filterBills()" (sort)="sortBills($event)" (newBill)="createNewBill()" [disableNewBill]="newBill != undefined"></app-expense-actions-block>
+  </div>
+  <div class="block">
+    <app-new-expense-block [bill]="newBill" (save)="saveNewBill($event)"></app-new-expense-block>
+  </div>
+  <ng-container *ngFor="let currentBill of currentBills">
+    <div class="block">
+      <app-existing-expense-block [bill]="currentBill"></app-existing-expense-block>
+    </div>
+  </ng-container>
+</div>

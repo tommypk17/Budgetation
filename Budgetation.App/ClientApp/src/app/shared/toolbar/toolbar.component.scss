@@ -1,0 +1,21 @@
+:host {display: flex; position: fixed; bottom: 0; width:100%; z-index:2;}
+.search-form {flex: 4;}
+.search-box {width: 100%;}
+.search-form, .search-box{text-align: center;}
+
+span.spacer {flex: 1;}
+
+.shorten-text {
+  max-width: 164px;
+  display: inline-block;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.small{
+  font-weight: lighter;
+  font-size: 12px;
+  a.attribution-link {
+    color: inherit;
+  }
+}

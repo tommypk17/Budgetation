@@ -1,0 +1,19 @@
+.card-head {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  span.card-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.75rem;
+  }
+}
+.headerButtons {display: flex; flex-direction: row; justify-content: space-between}
+
+
+@media only screen and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+  .card-backButton, .card-addButton {
+    padding: 0;
+    margin-bottom: 1rem;
+  }
+}

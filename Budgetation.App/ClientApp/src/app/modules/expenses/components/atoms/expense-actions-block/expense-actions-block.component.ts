@@ -1,0 +1,31 @@
+import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
+
+@Component({
+  selector: 'app-expense-actions-block',
+  templateUrl: './expense-actions-block.component.html',
+  styleUrls: ['./expense-actions-block.component.scss']
+})
+export class ExpenseActionsBlockComponent implements OnInit {
+
+  @Output('newBill') newBill: EventEmitter<void> = new EventEmitter<void>();
+  @Output('filter') filter: EventEmitter<void> = new EventEmitter<void>();
+  @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
+  @Input('disableNewBill') disableNewBill: boolean = true;
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+  createNewBill(): void {
+    this.newBill.next();
+  }
+
+  filterBills(): void {
+    this.filter.next();
+  }
+
+  sortBills(event: string): void {
+    this.sort.next(event);
+  }
+
+}

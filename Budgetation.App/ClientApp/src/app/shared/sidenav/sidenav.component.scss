@@ -1,0 +1,25 @@
+nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  box-shadow: inset 2px 0px 10px -5px #000;
+  visibility: hidden;
+  z-index: 2
+}
+nav > mat-action-list{
+    display: flex;
+    flex-direction: column-reverse;
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 4rem;
+    width: 100%;
+}
+nav > mat-action-list > hr {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 100%;
+}

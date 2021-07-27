@@ -1,0 +1,37 @@
+<mat-card>
+  <mat-card-content>
+    <div class="d-flex justify-content-between">
+      <div>
+        <button [disabled]="disableNewBill" mat-raised-button color="accent" id="newBillButton" (click)="createNewBill()"  matTooltip="add a new bill">Add New Bill</button>
+      </div>
+      <div>
+        <button mat-icon-button matTooltip="filter current list of bills" aria-label="filter current bills" (click)="filterBills()">
+          <mat-icon>filter_list</mat-icon>
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="sortMenu" matTooltip="sort current list of bills" aria-label="sort current bills">
+          <mat-icon>sort</mat-icon>
+        </button>
+        <mat-menu #sortMenu="matMenu">
+          <button mat-menu-item (click)="sortBills('byType')">
+            <mat-icon>merge_type</mat-icon>
+            <span>By Type</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="sortByCostMenu">
+            <mat-icon>attach_money</mat-icon>
+            <span>By Cost</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByCostMenu="matMenu">
+          <button mat-menu-item (click)="sortBills('byCostLowToHigh')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Low to High</span>
+          </button>
+          <button mat-menu-item (click)="sortBills('byCostHighToLow')">
+            <mat-icon>attach_money</mat-icon>
+            <span>High to Low</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
