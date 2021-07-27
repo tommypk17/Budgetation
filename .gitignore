@@ -7,5 +7,4 @@ riderModule.iml
 .idea/config
 node_modules/
 .vs/
-*/appsettings.*
 environments/environment.ts
