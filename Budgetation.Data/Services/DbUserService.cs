@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Budgetation.Data.DAL;
-using Budgetation.Data.Interfaces;
+using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Interfaces.IModels;
 using Budgetation.Data.Models;
 using MongoDB.Driver;
 
 namespace Budgetation.Data.Services
 {
-    public class UserService : IUserService
+    public class DbUserService : IDbUserService
     {
         private readonly IMongoCollection<IUser> _users;
-        public UserService(IDatabaseSettings settings)
+        public DbUserService(IDatabaseSettings settings)
         {
             var client = new MongoClient(settings.ConnectionString);
             var database = client.GetDatabase(settings.DatabaseName);

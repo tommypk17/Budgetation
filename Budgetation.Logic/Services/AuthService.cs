@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
-using Budgetation.Data.Interfaces;
+using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
 using Budgetation.Logic.Models.Auth;
 
@@ -14,10 +14,10 @@ namespace Budgetation.Logic.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly IUserService _userService;
-        public AuthService(IUserService userService)
+        private readonly IDbUserService _dbUserService;
+        public AuthService(IDbUserService dbUserService)
         {
-            _userService = userService;
+            _dbUserService = dbUserService;
         }
         /**
          * <summary>Takes the IPrincipal that initiated the call, returns the token claims as a AuthUser. If user is new, add to DB for tracking as a User</summary>
@@ -52,12 +52,12 @@ namespace Budgetation.Logic.Services
                 throw new NullReferenceException("Value not found for specific Claim");
             }
 
-            User user = (User)_userService.Find(result.Id);
+            User user = (User)_dbUserService.Find(result.Id);
             if (user == null)
             {
                 user = new User();
                 user.Id = result.Id;
-                _userService.Create(user);
+                _dbUserService.Create(user);
             }
 
             return result;

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Budgetation.Data.Interfaces.IModels;
 
-namespace Budgetation.Data.Interfaces
+namespace Budgetation.Data.Interfaces.IDBServices
 {
-    public interface IUserService
+    public interface IDbUserService
     {
         public IUser Create(IUser user);
         public IList<IUser> Read();

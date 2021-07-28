@@ -17,6 +17,7 @@ export interface iExpense {
 }
 
 export interface iBill {
+  id?: string;
   expense: iExpense;
   begin: Date;
   due: Date;
@@ -67,6 +68,7 @@ export class cExpense implements iExpense {
 }
 
 export class cBill implements iBill {
+  id?: string;
   begin: Date | null = null;
   due: Date | null = null;
   expense: iExpense | null = new cExpense();

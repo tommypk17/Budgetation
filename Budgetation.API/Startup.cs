@@ -1,5 +1,6 @@
 using Budgetation.Data.DAL;
 using Budgetation.Data.Interfaces;
+using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Services;
 using Budgetation.Logic.Services;
 using Budgetation.Logic.Services.Interfaces;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using IBillService = Budgetation.Logic.Services.Interfaces.IBillService;
 
 namespace Budgetation.API
 {
@@ -56,9 +58,13 @@ namespace Budgetation.API
                             .WithOrigins(Configuration.GetSection("CORS:allowed").Get<string[]>())
                 );
             });
+            //MongoDB services
+            services.AddSingleton<IDbUserService, DbUserService>();
 
+            //Logic services
             services.AddScoped<IAuthService, AuthService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<IBillService, BillService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
