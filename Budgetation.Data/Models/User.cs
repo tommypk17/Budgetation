@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Budgetation.Data.Interfaces.IModels;
 
 namespace Budgetation.Data.Models
 {
-    public class User : IUser
+    public class User
     {
         public Guid Id { get; set; }
-        public List<IRole> Roles { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

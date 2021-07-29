@@ -1,6 +1,7 @@
-﻿namespace Budgetation.Data.Interfaces.IModels
+﻿
+namespace Budgetation.Data.Models
 {
-    public interface IExpense
+    public class Expense
     {
         public string Name { get; set; }
         public double Amount { get; set; }

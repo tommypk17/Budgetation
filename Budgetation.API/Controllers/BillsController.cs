@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Budgetation.API.Utlities;
+using Budgetation.Data.Models;
+using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,18 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class BillsController : ControllerBase
     {
-        // GET: api/Expense
+        private readonly IBillService _billService;
+        public BillsController(IBillService billService)
+        {
+            _billService = billService;
+        }
+        // GET: api/Bills
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            
-            return StatusCode(StatusCodes.Status200OK, "");
+            Guid userId = UserUtility.GetCurrentUserID(User);
+            List<Bill> bills = _billService.GetAllUserBills(userId);
+            return StatusCode(StatusCodes.Status200OK, bills);
         }
 
         // GET: api/Bills/5
@@ -31,9 +39,11 @@ namespace Budgetation.API.Controllers
 
         // POST: api/Bills
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string value)
+        public async Task<IActionResult> Post([FromBody] Bill bill)
         {
-            return StatusCode(StatusCodes.Status200OK, "");
+            Guid userId = UserUtility.GetCurrentUserID(User);
+            Bill res = _billService.AddUserBill(bill, userId);
+            return StatusCode(StatusCodes.Status200OK, res);
         }
 
         // PUT: api/Bills/5

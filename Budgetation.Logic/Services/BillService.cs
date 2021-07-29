@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using Budgetation.Data.Interfaces.IDBServices;
-using Budgetation.Data.Interfaces.IModels;
+using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
 
 namespace Budgetation.Logic.Services
@@ -17,10 +17,19 @@ namespace Budgetation.Logic.Services
             _dbBillService = dbBillService;
         }
 
-        public List<IBill> GetAllUserBills(Guid userId)
+        public List<Bill> GetAllUserBills(Guid userId)
         {
             return _dbBillService.FindByUserId(userId).ToList();
         }
-        
+
+        public Bill AddUserBill(Bill bill, Guid? userId)
+        {
+            if (userId != null)
+            {
+                bill.UserId = (Guid)userId;
+            }
+            return _dbBillService.Create(bill);
+        }
+
     }
 }

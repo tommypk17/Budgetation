@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Budgetation.Data.Interfaces.IModels;
+using Budgetation.Data.Models;
 
 namespace Budgetation.Data.Interfaces.IDBServices
 {
     public interface IDbBillService
     {
-        public IBill Create(IBill user);
-        public IList<IBill> Read();
-        public IList<IBill> FindByUserId(Guid id);
-        public IBill Find(Guid id);
-        public IBill Update(IBill user);
-        public IBill Delete(Guid id);
+        public Bill Create(Bill user);
+        public IList<Bill> Read();
+        public IList<Bill> FindByUserId(Guid id);
+        public Bill Find(Guid id);
+        public Bill Update(Bill user);
+        public Bill Delete(Guid id);
     }
 }
