@@ -32,9 +32,10 @@ namespace Budgetation.API.Controllers
 
         // GET: api/Bills/5
         [HttpGet("{id}", Name = "Get")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get(Guid id)
         {
-            return StatusCode(StatusCodes.Status200OK, "");
+            Bill res = _billService.GetBillById(id);
+            return StatusCode(StatusCodes.Status200OK, res);
         }
 
         // POST: api/Bills
@@ -48,16 +49,18 @@ namespace Budgetation.API.Controllers
 
         // PUT: api/Bills/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put(Guid id, [FromBody] Bill bill)
         {
-            return StatusCode(StatusCodes.Status200OK, "");
+            Bill res = _billService.UpdateBill(bill, id);
+            return StatusCode(StatusCodes.Status200OK, res);
         }
 
         // DELETE: api/Bills/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(Guid id)
         {
-            return StatusCode(StatusCodes.Status200OK, "");
+            Bill res = _billService.DeleteBill(id);
+            return StatusCode(StatusCodes.Status200OK, res);
         }
     }
 }
