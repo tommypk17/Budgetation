@@ -29,6 +29,21 @@ namespace Budgetation.API.Controllers
             List<Bill> bills = _billService.GetAllUserBills(userId);
             return StatusCode(StatusCodes.Status200OK, bills);
         }
+        
+        // GET: api/Bills
+        [HttpGet("list")]
+        public async Task<IActionResult> GetList()
+        {
+            Guid userId = UserUtility.GetCurrentUserID(User);
+            List<Bill> bills = _billService.GetAllUserBills(userId);
+            List<KeyValuePair<Guid, string>> list = new List<KeyValuePair<Guid, string>>();
+            foreach (Bill bill in bills)
+            {
+                KeyValuePair<Guid, string> temp = KeyValuePair.Create<Guid, string>(bill.Id, bill.Expense.Name);
+                list.Add(temp);
+            }
+            return StatusCode(StatusCodes.Status200OK, list);
+        }
 
         // GET: api/Bills/5
         [HttpGet("{id}", Name = "Get")]
