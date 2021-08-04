@@ -15,7 +15,11 @@ export class ExistingExpenseBlockComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  displayDate(date: Date): string {
-    return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+  displayDate(inDate: Date): string {
+    let date: Date;
+    if(inDate != null) {
+      let date: Date = new Date(inDate);
+      return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+    }
   }
 }

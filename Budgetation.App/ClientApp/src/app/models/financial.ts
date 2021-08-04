@@ -38,19 +38,19 @@ export interface iReoccurrence {
 }
 
 export enum eReoccurrence {
-  Single,
-  Weekly,
-  Biweekly,
-  Monthly,
-  Quaterly,
-  Biquarterly,
-  Yearly
+  Single = 'Single',
+  Weekly = 'Weeky',
+  Biweekly = 'Biweekly',
+  Monthly = 'Monthly',
+  Quaterly = 'Quaterly',
+  Biquarterly = 'Biquaterly',
+  Yearly = 'Yearly'
 }
 
 export enum eIncomeType {
-  Hourly,
-  Salary,
-  Interest
+  Hourly = 'Hourly',
+  Salary = 'Salary',
+  Interest = 'Interest'
 }
 
 export enum eExpenseType {

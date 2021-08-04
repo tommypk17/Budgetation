@@ -32,6 +32,8 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { ProgressBarComponent } from './progress-bar/progress-bar.component';
 
 
 export {Task} from './blocks/task-block/task-block.component';
@@ -48,6 +50,7 @@ export {TaskList} from './blocks/list-block/list-block.component';
     CallbackPipe,
     MoveTaskDialogComponent,
     SidenavComponent,
+    ProgressBarComponent,
   ],
   imports: [
     CommonModule,
@@ -70,7 +73,8 @@ export {TaskList} from './blocks/list-block/list-block.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatChipsModule,
-    MatTreeModule
+    MatTreeModule,
+    MatProgressBarModule
   ],
   exports: [
     ToolbarComponent,
@@ -93,7 +97,9 @@ export {TaskList} from './blocks/list-block/list-block.component';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
-    CallbackPipe
+    CallbackPipe,
+    MatProgressBarModule,
+    ProgressBarComponent
   ],
   providers: [
     MatDatepickerModule

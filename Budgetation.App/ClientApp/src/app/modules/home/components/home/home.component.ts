@@ -13,9 +13,6 @@ export class HomeComponent implements OnInit {
   constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    this.sharedService.test().subscribe((res) => {
-      console.log(res);
-    })
   }
 
 }

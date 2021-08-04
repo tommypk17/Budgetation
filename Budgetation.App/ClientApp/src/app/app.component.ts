@@ -5,6 +5,7 @@ import {filter, takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {AuthService} from "./services/auth.service";
 import {iResponse} from "./models/response";
+import {SharedService} from "./services/shared.service";
 
 @Component({
   selector: 'app-root',
@@ -35,4 +36,5 @@ export class AppComponent implements OnInit, OnDestroy{
         });
       })
   }
+
 }
