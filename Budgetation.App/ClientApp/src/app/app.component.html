@@ -1,8 +1,6 @@
 <app-progress-bar></app-progress-bar>
-<div class="wrapper">
-  <div class="main">
-    <app-sidenav></app-sidenav>
-    <router-outlet></router-outlet>
-  </div>
-  <app-toolbar></app-toolbar>
+<app-sidenav></app-sidenav>
+<div id="main" class="vh-90 overflow-y-auto">
+  <router-outlet></router-outlet>
 </div>
+<app-toolbar></app-toolbar>
