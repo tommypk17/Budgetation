@@ -1,4 +1,4 @@
-<div #navwrap class="d-flex w-100 h-100 pos-abs t-0 z-0" (click)="toggleNavigation()">
+<div #navwrap *ngIf="isOpen" class="d-flex w-100 h-100 pos-abs t-0 z-0" (click)="toggleNavigation()">
 </div>
 <nav [@openClose]="isOpen? 'open' : 'closed'" class="bg-dark">
   <mat-action-list>
