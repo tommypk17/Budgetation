@@ -10,7 +10,7 @@
     <app-expense-actions-block (filter)="filterBills()" (sort)="sortBills($event)" (newBill)="createNewBill()" [disableNewBill]="newBill != undefined"></app-expense-actions-block>
   </div>
   <div class="block">
-    <app-new-expense-block [bill]="newBill" (save)="saveNewBill($event)"></app-new-expense-block>
+    <app-new-expense-block [bill]="newBill" (cancel)="cancelNewBill()" (save)="saveNewBill($event)"></app-new-expense-block>
   </div>
   <ng-container *ngFor="let currentBill of currentBills">
     <div class="block">

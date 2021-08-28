@@ -39,6 +39,10 @@ export class ExpensesComponent implements OnInit {
     this.newBill = new cBill();
   }
 
+  cancelNewBill(): void {
+    this.newBill = undefined;
+  }
+
   filterBills(): void {
     console.log('filter')
   }

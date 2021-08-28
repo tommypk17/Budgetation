@@ -17,6 +17,7 @@ import {
 export class NewExpenseBlockComponent implements OnInit {
 
   @Output('save') save: EventEmitter<iBill> = new EventEmitter<iBill>();
+  @Output('cancel') cancel: EventEmitter<void> = new EventEmitter<void>();
   @Input('bill') bill: iBill | undefined;
 
   invalid: boolean = true;
@@ -34,6 +35,10 @@ export class NewExpenseBlockComponent implements OnInit {
       this.bill.begin = null;
     }
     this.save.next(this.bill);
+  }
+
+  public cancelNewBill(): void {
+    this.cancel.next();
   }
 
   clearReoccur(reoccurrence: eReoccurrence){
