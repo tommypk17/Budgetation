@@ -9,8 +9,7 @@ import { SharedService } from '../../services/shared.service';
   animations: [
     trigger('openClose', [
       state('open', style({
-        visibility: 'visible',
-        width: '40%',
+        visibility: 'visible'
       })),
       state('closed', style({
         visibility: 'hidden',
