@@ -59,6 +59,11 @@ namespace Budgetation.Logic.Services
                 user.Id = result.Id;
                 _dbUserService.Create(user);
             }
+            else
+            {
+                user.LastLogin = DateTime.Now;
+                _dbUserService.Update(user);
+            }
 
             return result;
         }

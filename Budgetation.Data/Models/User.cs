@@ -7,5 +7,6 @@ namespace Budgetation.Data.Models
     {
         public Guid Id { get; set; }
         public List<Role> Roles { get; set; }
+        public DateTime LastLogin { get; set; }
     }
 }
