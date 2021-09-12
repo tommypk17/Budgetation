@@ -6,6 +6,7 @@ import {Subject} from "rxjs";
 import {AuthService} from "./services/auth.service";
 import {iResponse} from "./models/response";
 import {SharedService} from "./services/shared.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent implements OnInit, OnDestroy{
   title = 'Budgetation';
   private readonly _destroying$ = new Subject<void>();
 
-  constructor(private msalBroadcastService: MsalBroadcastService, private authService: AuthService) {
+  constructor(private msalBroadcastService: MsalBroadcastService, private authService: AuthService, private router: Router) {
   }
 
   ngOnDestroy(): void {
@@ -32,6 +33,8 @@ export class AppComponent implements OnInit, OnDestroy{
         this.authService.login().subscribe((res: iResponse<any>) => {
           if(res.success){
 
+          }else{
+            this.router.navigate(['unauthenticated']);
           }
         });
       })
