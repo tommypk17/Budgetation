@@ -19,7 +19,7 @@ export class ExistingExpenseBlockComponent implements OnInit {
     let date: Date;
     if(inDate != null) {
       let date: Date = new Date(inDate);
-      return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+      return date.toLocaleDateString();
     }
   }
 }

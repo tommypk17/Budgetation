@@ -11,9 +11,9 @@ namespace Budgetation.Data.Models
         public Guid UserId { get; set; }
         public Expense Expense { get; set; }
         [BsonIgnoreIfNull]
-        public DateTime Begin { get; set; } = DateTime.UtcNow;
+        public DateTime? Begin { get; set; } = null;
         [BsonIgnoreIfNull]
-        public DateTime Due { get; set; } = DateTime.UtcNow;
+        public DateTime? Due { get; set; } = null;
         [BsonIgnoreIfNull]
         public bool Paid { get; set; }
         public string Reoccurrence { get; set; }
