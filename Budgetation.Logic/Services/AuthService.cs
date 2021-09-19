@@ -57,6 +57,8 @@ namespace Budgetation.Logic.Services
             {
                 user = new User();
                 user.Id = result.Id;
+                user.Email = result.Email;
+                user.Roles = new List<Role>() {new Role() {Active = true, Name = "basic"}};
                 _dbUserService.Create(user);
             }
             else
