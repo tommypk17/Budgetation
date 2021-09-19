@@ -47,7 +47,7 @@ import { environment } from '../environments/environment';
     }, {
       interactionType: InteractionType.Redirect, // MSAL Interceptor Configuration
       protectedResourceMap: new Map([
-        [environment.URL+'/*', ['https://budgetation.onmicrosoft.com/127d977f-947e-4b6d-862a-c0b750fef284/Budgetation.API']]
+        [environment.URL+'/*', ['https://tkov.dev/b8ef30cc-a4bc-4b36-8117-93b154cc5053/User.Basic']]
       ])
     })
   ],
