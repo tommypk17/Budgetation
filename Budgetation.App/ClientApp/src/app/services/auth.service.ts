@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {iResponse} from "../models/response";
 import {MsalService} from "@azure/msal-angular";
 import {iProfile} from "../models/user";
+import {AccountInfo} from "@azure/msal-browser";
 
 
 @Injectable({
@@ -22,7 +23,30 @@ export class AuthService {
   }
 
   getProfile(): Observable<iResponse<iProfile>>{
-    return this.http.get<iResponse<iProfile>>(environment.URL + '/api/auth/profile');
-  }
+    return new Observable((subscriber) => {
+        let user: AccountInfo | undefined = this.msalService.instance.getAllAccounts()[0];
+        let profile: iProfile;
+        if(user){
+          profile = {
+            email: user.username,
+            firstName: user.idTokenClaims['given_name'],
+            lastName: user.idTokenClaims['family_name']
+          };
+          let res: iResponse<iProfile> = {
+            success: 'success',
+            message: 'user data found',
+            data: profile
+          };
+          subscriber.next(res);
+        }else{
+          let res: iResponse<iProfile> = {
+            success: 'error',
+            message: 'user data not found',
+            data: undefined
+          };
+          subscriber.next(res);
+        }
+      });
+    }
 
 }

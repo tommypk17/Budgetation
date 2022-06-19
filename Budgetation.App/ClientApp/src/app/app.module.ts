@@ -27,14 +27,14 @@ import { environment } from '../environments/environment';
     HttpClientModule,
     MsalModule.forRoot( new PublicClientApplication({ // MSAL Configuration
       auth: {
-        clientId: environment.AzureB2C.ClientId,
-        authority: environment.AzureB2C.Authority,
-        redirectUri: environment.AzureB2C.RedirectURI,
-        knownAuthorities: [environment.AzureB2C.KnownAuthorities]
+        clientId: environment.AzureAd.clientId,
+        authority: environment.AzureAd.authority,
+        redirectUri: environment.AzureAd.redirectUri,
+        knownAuthorities: [environment.AzureAd.knownAuthorities]
       },
       cache: {
         cacheLocation : BrowserCacheLocation.LocalStorage,
-        storeAuthStateInCookie: false, // set to true for IE 11
+        storeAuthStateInCookie: true, // set to true for IE 11
       },
       system: {
         loggerOptions: {
@@ -45,11 +45,10 @@ import { environment } from '../environments/environment';
     }), {
       interactionType: InteractionType.Redirect, // MSAL Guard Configuration
     }, {
-      interactionType: InteractionType.Redirect, // MSAL Interceptor Configuration
+      interactionType: InteractionType.Redirect,
       protectedResourceMap: new Map([
-        [environment.URL+'/*', ['https://tkov.dev/b8ef30cc-a4bc-4b36-8117-93b154cc5053/User.Basic']]
-      ])
-    })
+        ['https://localhost:5001/api/*', ['https://tkovdev.onmicrosoft.com/c8fc6146-82a2-4427-aa8a-2424a4f768e3/API.Read']],
+      ])})
   ],
   providers: [AuthService, {
     provide: HTTP_INTERCEPTORS,

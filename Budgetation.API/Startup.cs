@@ -35,14 +35,9 @@ namespace Budgetation.API
             //DB Settings & Connection
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(x => x.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddMicrosoftIdentityWebApi(options =>
-                    {
-                        Configuration.Bind("AzureAdB2C", options);
-                    },
-                    options => { Configuration.Bind("AzureAdB2C", options); });
-            
+
+            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+
             services.AddControllers();
             
             services.AddSwaggerGen();

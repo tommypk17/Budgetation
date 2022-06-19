@@ -1,10 +1,10 @@
 ﻿export const environment = {
   production: false,
   URL: '',
-  AzureB2C:{
-    ClientId: "",
-    Authority: "",
-    KnownAuthorities: "",
-    RedirectURI: ""
+  AzureAd: {
+    clientId: '',
+    authority: "",
+    redirectUri: '',
+    knownAuthorities: ""
   }
 };

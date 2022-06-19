@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Budgetation.API.Models;
 using Budgetation.API.Utlities;
 using Budgetation.Data.Models;
+using Budgetation.Logic.Services;
 using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -27,7 +29,13 @@ namespace Budgetation.API.Controllers
         {
             Guid userId = UserUtility.GetCurrentUserID(User);
             List<Bill> bills = _billService.GetAllUserBills(userId);
-            return StatusCode(StatusCodes.Status200OK, bills);
+            if (bills.Any())
+            {
+                List<Bill> res = bills.ToList();
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel(){data = res, message = "Bill found", success = true});
+            }
+
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel(){data = null, message = "No bills found", success = true});
         }
         
         // GET: api/Bills
