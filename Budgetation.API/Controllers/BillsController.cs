@@ -28,7 +28,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get()
         {
             Guid userId = UserUtility.GetCurrentUserID(User);
-            List<Bill> bills = _billService.GetAllUserBills(userId);
+            List<Bill> bills = await _billService.GetAllUserBills(userId);
             if (bills.Any())
             {
                 List<Bill> res = bills.ToList();
@@ -43,7 +43,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetList()
         {
             Guid userId = UserUtility.GetCurrentUserID(User);
-            List<Bill> bills = _billService.GetAllUserBills(userId);
+            List<Bill> bills = await _billService.GetAllUserBills(userId);
             List<KeyValuePair<Guid, string>> list = new List<KeyValuePair<Guid, string>>();
             foreach (Bill bill in bills)
             {
@@ -57,7 +57,7 @@ namespace Budgetation.API.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<IActionResult> Get(Guid id)
         {
-            Bill res = _billService.GetBillById(id);
+            Bill res = await _billService.GetBillById(id);
             return StatusCode(StatusCodes.Status200OK, res);
         }
 
@@ -66,7 +66,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Post([FromBody] Bill bill)
         {
             Guid userId = UserUtility.GetCurrentUserID(User);
-            Bill res = _billService.AddUserBill(bill, userId);
+            Bill res = await _billService.AddUserBill(bill, userId);
             return StatusCode(StatusCodes.Status200OK, res);
         }
 
@@ -74,7 +74,7 @@ namespace Budgetation.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Bill bill)
         {
-            Bill res = _billService.UpdateBill(bill, id);
+            Bill res = await _billService.UpdateBill(bill, id);
             return StatusCode(StatusCodes.Status200OK, res);
         }
 
@@ -82,7 +82,7 @@ namespace Budgetation.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            Bill res = _billService.DeleteBill(id);
+            Bill res = await _billService.DeleteBill(id);
             return StatusCode(StatusCodes.Status200OK, res);
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
@@ -18,39 +19,40 @@ namespace Budgetation.Logic.Services
             _dbBillService = dbBillService;
         }
 
-        public Bill GetBillById(Guid id)
+        public async Task<Bill> GetBillById(Guid id)
         {
-            return _dbBillService.Find(id);
+            return await _dbBillService.Find(id);
         }
-        public List<Bill> GetAllUserBills(Guid userId)
+        public async Task<List<Bill>> GetAllUserBills(Guid userId)
         {
-            return _dbBillService.FindByUserId(userId).ToList();
+            return await _dbBillService.FindByUserId(userId).ContinueWith(q =>
+            {
+                return q.Result.ToList();
+            });
         }
 
-        public Bill AddUserBill(Bill bill, Guid? userId)
+        public async Task<Bill> AddUserBill(Bill bill, Guid? userId)
         {
             if (userId != null)
             {
                 bill.UserId = (Guid)userId;
             }
-            return _dbBillService.Create(bill);
+            return await _dbBillService.Create(bill);
         }
 
-        public Bill UpdateBill(Bill bill, Guid? id)
+        public async Task<Bill> UpdateBill(Bill bill, Guid? id)
         {
             if (id != null)
             {
                 bill.Id = (Guid)id;
             }
 
-            Bill updated = _dbBillService.Update(bill);
-            return updated;
+            return await _dbBillService.Update(bill);
         }
 
-        public Bill DeleteBill(Guid id)
+        public async Task<Bill> DeleteBill(Guid id)
         {
-            Bill deleted = _dbBillService.Delete(id);
-            return deleted;
+            return await _dbBillService.Delete(id);
         }
 
     }

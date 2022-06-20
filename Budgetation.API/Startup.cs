@@ -36,7 +36,14 @@ namespace Budgetation.API
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(x => x.GetRequiredService<IOptions<DatabaseSettings>>().Value);
 
-            services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApi(options =>
+                    {
+                        Configuration.Bind("AzureAd", options);
+
+                        options.TokenValidationParameters.NameClaimType = "name";
+                    },
+                    options => { Configuration.Bind("AzureAd", options); });
 
             services.AddControllers();
             
@@ -58,7 +65,6 @@ namespace Budgetation.API
             services.AddSingleton<IDbBillService, DbBillService>();
 
             //Logic services
-            services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IBillService, BillService>();
 
         }

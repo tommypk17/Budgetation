@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {iBill} from "../models/financial";
 import {catchError, finalize, retry} from "rxjs/operators";
 import {SharedService} from "./shared.service";
+import {iResponse} from "../models/response";
 
 
 @Injectable({
@@ -13,13 +14,13 @@ import {SharedService} from "./shared.service";
 export class BillService {
   constructor(private http: HttpClient, private sharedService: SharedService) { }
 
-  public getAllBills(): Observable<iBill[]> {
+  public getAllBills(): Observable<iResponse<iBill[]>> {
     this.sharedService.queueLoading('getAllBills');
-    return this.http.get<iBill[]>(environment.URL + '/api/bills').pipe(
+    return this.http.get<iResponse<iBill[]>>(environment.URL + '/api/bills').pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iBill[]>((subscriber) => {
+        return new Observable<iResponse<iBill[]>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),
@@ -29,12 +30,12 @@ export class BillService {
     );
   }
 
-  public saveBill(bill: iBill): Observable<iBill> {
-    return this.http.post<iBill>(environment.URL + '/api/bills', bill).pipe(
+  public saveBill(bill: iBill): Observable<iResponse<iBill>> {
+    return this.http.post<iResponse<iBill>>(environment.URL + '/api/bills', bill).pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iBill>((subscriber) => {
+        return new Observable<iResponse<iBill>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),

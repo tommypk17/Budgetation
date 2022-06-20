@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Budgetation.Data.DAL;
 using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace Budgetation.Data.Services
@@ -17,32 +19,36 @@ namespace Budgetation.Data.Services
             var database = client.GetDatabase(settings.DatabaseName);
             _bills = database.GetCollection<Bill>("bills");
         }
-        public Bill Create(Bill bill)
+        public async Task<Bill> Create(Bill bill)
         {
-            _bills.InsertOne(bill);
+            await _bills.InsertOneAsync(bill);
             return bill;
         }
 
-        public IList<Bill> Read() =>
-            _bills.Find(user => true).ToList();
+        public async Task<IList<Bill>> Read() => 
+            await _bills.FindAsync(user => true).Result.ToListAsync();
 
-        public IList<Bill> FindByUserId(Guid id) =>
-            _bills.Find(bill => bill.UserId == id).ToList();
+        public async Task<IList<Bill>> FindByUserId(Guid id) =>
+           await  _bills.FindAsync(bill => bill.UserId == id).Result.ToListAsync();
 
-        public Bill Find(Guid id) =>
-            _bills.Find(bill => bill.Id == id).SingleOrDefault();
+        public async Task<Bill> Find(Guid id) =>
+            await _bills.FindAsync(bill => bill.Id == id).Result.FirstOrDefaultAsync();
 
-        public Bill Update(Bill bill)
+        public async Task<Bill> Update(Bill bill)
         {
-            _bills.ReplaceOne(x => x.Id == bill.Id, bill);
-            return _bills.Find(x => x.Id == bill.Id).FirstOrDefault();
+            return await _bills.ReplaceOneAsync(x => x.Id == bill.Id, bill).ContinueWith(q =>
+            {
+                return _bills.Find(x => x.Id == bill.Id).FirstOrDefault();
+            });
         }
 
-        public Bill Delete(Guid id)
+        public async Task<Bill> Delete(Guid id)
         {
-            Bill user = _bills.Find(x => x.Id == id).FirstOrDefault();
-            _bills.DeleteOne(x => x.Id == id);
-            return user;
+            return await _bills.FindAsync(x => x.Id == id).Result.FirstOrDefaultAsync().ContinueWith(q =>
+            {
+                _bills.DeleteOne(x => x.Id == id);
+                return q.Result;
+            });
         }
     }
 }

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {cBill, eExpenseType, eReoccurrence, iBill} from "../../../../models/financial";
 import {BillService} from "../../../../services/bill.service";
+import {iResponse} from "../../../../models/response";
 
 @Component({
   selector: 'app-expenses',
@@ -18,9 +19,9 @@ export class ExpensesComponent implements OnInit {
   constructor(private billService: BillService) { }
 
   ngOnInit(): void {
-    this.billService.getAllBills().subscribe((res:iBill[]) => {
-      if(res){
-        this.currentBills = res;
+    this.billService.getAllBills().subscribe((res:iResponse<iBill[]>) => {
+      if(res && res.data){
+        this.currentBills = res.data;
       }
     });
   }
@@ -28,8 +29,8 @@ export class ExpensesComponent implements OnInit {
   saveNewBill(bill: iBill): void {
     if(!bill.paid) bill.paid = !!bill.paid;
     this.currentBills.push(bill);
-    this.billService.saveBill(bill).subscribe((res: iBill) => {
-      if(res){
+    this.billService.saveBill(bill).subscribe((res: iResponse<iBill>) => {
+      if(res && res.data){
         this.newBill = undefined;
       }
     });
