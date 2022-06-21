@@ -19,11 +19,11 @@ namespace Budgetation.Logic.Services
             _dbBillService = dbBillService;
         }
 
-        public async Task<Bill> GetBillById(Guid id)
+        public async Task<Bill?> GetBillById(Guid id)
         {
             return await _dbBillService.Find(id);
         }
-        public async Task<List<Bill>> GetAllUserBills(Guid userId)
+        public async Task<List<Bill>?> GetAllUserBills(Guid userId)
         {
             return await _dbBillService.FindByUserId(userId).ContinueWith(q =>
             {
@@ -31,7 +31,7 @@ namespace Budgetation.Logic.Services
             });
         }
 
-        public async Task<Bill> AddUserBill(Bill bill, Guid? userId)
+        public async Task<Bill?> AddUserBill(Bill bill, Guid? userId)
         {
             if (userId != null)
             {
@@ -40,7 +40,7 @@ namespace Budgetation.Logic.Services
             return await _dbBillService.Create(bill);
         }
 
-        public async Task<Bill> UpdateBill(Bill bill, Guid? id)
+        public async Task<Bill?> UpdateBill(Bill bill, Guid? id)
         {
             if (id != null)
             {
@@ -50,7 +50,7 @@ namespace Budgetation.Logic.Services
             return await _dbBillService.Update(bill);
         }
 
-        public async Task<Bill> DeleteBill(Guid id)
+        public async Task<Bill?> DeleteBill(Guid id)
         {
             return await _dbBillService.Delete(id);
         }

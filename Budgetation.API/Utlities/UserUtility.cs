@@ -10,27 +10,19 @@ namespace Budgetation.API.Utlities
 {
     public static class UserUtility
     {
-        public static Guid GetCurrentUserID(IPrincipal principal)
+        public static Guid GetCurrentUserId(IPrincipal principal)
         {
-            Guid res;
-            List<Claim> claims = new List<Claim>();
             try
             {
                 ClaimsPrincipal claimsPrincipal = (ClaimsPrincipal) principal;
-                claims = claimsPrincipal.Claims.ToList();
-                res = Guid.Parse(claims.FirstOrDefault(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+                var claims = claimsPrincipal.Claims.ToList();
+                var res = Guid.Parse(claims.First(x => x.Type == "http://schemas.microsoft.com/identity/claims/objectidentifier").Value);
+                return res;
             }
-            catch (InvalidCastException ex)
+            catch (InvalidCastException)
             {
                 throw new InvalidCastException("Could not cast IPrincipal to ClaimsPrincipal");
             }
-
-            if (res != null)
-            {
-                return res;
-            }
-
-            throw new NullReferenceException("Could not gather User ID");
         }
     }
 }

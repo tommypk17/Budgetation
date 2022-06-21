@@ -7,8 +7,8 @@ namespace Budgetation.API.Models
 {
     public class ResponseModel
     {
-        public bool success { get; set; }
-        public string message { get; set; }
-        public object data { get; set; }
+        public bool Success { get; set; } = false;
+        public string Message { get; set; } = "";
+        public object? Data { get; set; }
     }
 }
