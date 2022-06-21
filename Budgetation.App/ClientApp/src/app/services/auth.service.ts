@@ -25,12 +25,12 @@ export class AuthService {
   getProfile(): Observable<iResponse<iProfile>>{
     return new Observable((subscriber) => {
         let user: AccountInfo | undefined = this.msalService.instance.getAllAccounts()[0];
-        let profile: iProfile;
+        let profile: iProfile = {email: '', firstName: '', lastName: ''};
         if(user){
           profile = {
             email: user.username,
-            firstName: user.idTokenClaims['given_name'],
-            lastName: user.idTokenClaims['family_name']
+            firstName: user.idTokenClaims['given_name'] as string,
+            lastName: user.idTokenClaims['family_name'] as string
           };
           let res: iResponse<iProfile> = {
             success: 'success',
