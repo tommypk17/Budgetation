@@ -1,11 +1,11 @@
 <mat-toolbar class="nav" color="primary">
-  <button mat-icon-button class="" [matMenuTriggerFor]="menuOptions" matTooltip="more options" aria-label="show more options">
+  <button mat-icon-button class="" [matMenuTriggerFor]="menuOptions" aria-label="show more options">
     <mat-icon>more_vert</mat-icon>
   </button>
   <span class="spacer"></span>
   <form *ngIf="false" class="search-form">
     <mat-form-field class="search-box">
-      <input matInput type="search" matTooltip="search for tasks" placeholder="search..." value="" aria-label="search box">
+      <input matInput type="search" placeholder="search..." value="" aria-label="search box">
     </mat-form-field>
   </form>
   <div>
@@ -13,29 +13,39 @@
     <small class="small">created by <a rel="noopener" class="attribution-link" href="https://thomaspkovalchuk.com/" target="_blank" title="find other projects">tomakova</a></small>
   </div>
   <span class="spacer"></span>
-  <button mat-icon-button matTooltip="menu" (click)="toggleNavigation()" class="" aria-label="show main menu">
+  <button mat-icon-button (click)="toggleNavigation()" class="" aria-label="show main menu">
     <mat-icon>menu</mat-icon>
   </button>
 </mat-toolbar>
 
 <mat-menu #menuOptions="matMenu">
-  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" (click)="logout()">
-    <span class="material-icons icon-ico">
-      desktop_access_disabled
-    </span>
-    <span class="text-ico">logout</span>
-  </a>
-  <mat-divider></mat-divider>
-  <a mat-menu-item matTooltip="view my profile" class="ico-w-text" routerLink="/profile">
-    <span class="material-icons icon-ico">
-      person
-    </span>
-    <span class="text-ico">profile</span>
-  </a>
-  <a mat-menu-item matTooltip="view settings" class="ico-w-text" routerLink="/profile/settings">
-    <span class="material-icons icon-ico">
-      settings
-    </span>
-    <span class="text-ico">settings</span>
-  </a>
+  <ng-container *ngIf="isUserLoggedIn">
+    <a mat-menu-item class="ico-w-text" (click)="logout()">
+      <span class="material-icons icon-ico">
+        desktop_access_disabled
+      </span>
+      <span class="text-ico">logout</span>
+    </a>
+    <mat-divider></mat-divider>
+    <a mat-menu-item class="ico-w-text" routerLink="/profile">
+      <span class="material-icons icon-ico">
+        person
+      </span>
+      <span class="text-ico">profile</span>
+    </a>
+    <a mat-menu-item class="ico-w-text" routerLink="/profile/settings">
+      <span class="material-icons icon-ico">
+        settings
+      </span>
+      <span class="text-ico">settings</span>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="!isUserLoggedIn">
+    <a mat-menu-item class="ico-w-text" (click)="login()">
+      <span class="material-icons icon-ico">
+        login
+      </span>
+      <span class="text-ico">login</span>
+    </a>
+  </ng-container>
 </mat-menu>

@@ -1,21 +1,39 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import { SharedService } from '../../services/shared.service';
+import {MsalBroadcastService, MsalService} from "@azure/msal-angular";
+import {filter, takeUntil} from "rxjs/operators";
+import {InteractionStatus} from "@azure/msal-browser";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.scss']
 })
-export class ToolbarComponent implements OnInit {
-
+export class ToolbarComponent implements OnInit, OnDestroy {
+  private readonly _destroying$ = new Subject<void>();
   isUserLoggedIn: boolean = false;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private router: Router, private sharedService: SharedService) {
+  constructor(private msalBroadcastService: MsalBroadcastService, private route: ActivatedRoute, private authService: AuthService, private router: Router, private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
+    this.msalBroadcastService.inProgress$
+      .pipe(
+        filter((status: InteractionStatus) => status === InteractionStatus.None),
+        takeUntil(this._destroying$)
+      )
+      .subscribe(() => {
+        this.authService.isLoggedIn().subscribe((res) => {
+          this.isUserLoggedIn = res;
+        });
+      })
+  }
+
+  ngOnDestroy(): void {
+    this._destroying$.next();
   }
 
   toggleNavigation(): void {
@@ -23,7 +41,11 @@ export class ToolbarComponent implements OnInit {
   }
 
   logout(): void {
-    this.authService.logout();
+    this.router.navigate(['']).then(() => {this.authService.logout()});
+  }
+
+  login(): void {
+    this.authService.login();
   }
 
 }

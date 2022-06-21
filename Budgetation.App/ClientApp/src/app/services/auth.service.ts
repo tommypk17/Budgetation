@@ -6,6 +6,7 @@ import {iResponse} from "../models/response";
 import {MsalService} from "@azure/msal-angular";
 import {iProfile} from "../models/user";
 import {AccountInfo} from "@azure/msal-browser";
+import {map} from "rxjs/operators";
 
 
 @Injectable({
@@ -14,12 +15,20 @@ import {AccountInfo} from "@azure/msal-browser";
 export class AuthService {
   constructor(private http: HttpClient, private msalService: MsalService) { }
 
-  login(): Observable<iResponse<any>> {
-    return this.http.get<iResponse<any>>(environment.URL + '/api/auth/login');
+  login(): Observable<void> {
+    return this.msalService.loginRedirect();
   }
 
-  logout(): void{
-    this.msalService.logout();
+  logout(): Observable<void> {
+    return this.msalService.logout();
+  }
+
+  isLoggedIn(): Observable<boolean> {
+    return new Observable<boolean>((subscriber) => {
+      let account = this.msalService.instance.getAllAccounts()[0];
+      if(account) subscriber.next(true);
+      else subscriber.next(false);
+    });
   }
 
   getProfile(): Observable<iResponse<iProfile>>{
