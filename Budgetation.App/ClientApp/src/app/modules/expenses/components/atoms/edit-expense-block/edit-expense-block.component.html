@@ -32,7 +32,7 @@
         </mat-select>
         <mat-hint align="end">select how often this expense is expected to reoccur</mat-hint>
       </mat-form-field>
-      <mat-form-field *ngIf="reoccurrence.value > 0" appearance="fill" class="mb-2">
+      <mat-form-field *ngIf="reoccurrence.value != 'Single'" appearance="fill" class="mb-2">
         <mat-label>begin date</mat-label>
         <input matInput [(ngModel)]="bill.begin" (dateChange)="checkValid()" [matDatepicker]="beginPicker" [required]="reoccurrence.value > 0">
         <mat-datepicker-toggle matSuffix [for]="beginPicker"></mat-datepicker-toggle>
@@ -55,7 +55,7 @@
           <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewBill()" type="button">cancel</button>
         </div>
         <div>
-          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveBill()" type="submit">save new expense</button>
+          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveBill()" type="submit">update expense</button>
         </div>
       </div>
     </div>
