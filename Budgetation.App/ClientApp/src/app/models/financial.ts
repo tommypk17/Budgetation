@@ -39,7 +39,7 @@ export interface iReoccurrence {
 
 export enum eReoccurrence {
   Single = 'Single',
-  Weekly = 'Weeky',
+  Weekly = 'Weekly',
   Biweekly = 'Biweekly',
   Monthly = 'Monthly',
   Quaterly = 'Quaterly',

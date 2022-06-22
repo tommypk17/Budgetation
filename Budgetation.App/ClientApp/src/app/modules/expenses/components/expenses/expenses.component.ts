@@ -36,6 +36,18 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  saveExistingBill(bill: iBill): void {
+    if(!bill.paid) bill.paid = !!bill.paid;
+    this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
+      if(res && res.data){
+        let existingBillIdx = this.currentBills.findIndex(x => x.id == bill.id);
+        if(existingBillIdx > -1){
+          this.currentBills[existingBillIdx] = res.data;
+        }
+      }
+    });
+  }
+
   createNewBill(): void {
     this.newBill = new cBill();
   }

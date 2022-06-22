@@ -10,9 +10,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips';
 import { ExistingExpenseBlockComponent } from './components/atoms/existing-expense-block/existing-expense-block.component';
 import { ExpenseActionsBlockComponent } from './components/atoms/expense-actions-block/expense-actions-block.component';
+import { EditExpenseBlockComponent } from './components/atoms/edit-expense-block/edit-expense-block.component';
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent],
+  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

@@ -1,5 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {iBill} from "../../../../../models/financial";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-existing-expense-block',
@@ -9,6 +10,9 @@ import {iBill} from "../../../../../models/financial";
 export class ExistingExpenseBlockComponent implements OnInit {
 
   @Input('bill') bill: iBill | undefined;
+  @Output('save') save: Subject<iBill> = new Subject<iBill>();
+
+  edit: boolean = false;
 
   constructor() { }
 
@@ -21,5 +25,9 @@ export class ExistingExpenseBlockComponent implements OnInit {
       let date: Date = new Date(inDate);
       return date.toLocaleDateString();
     }
+  }
+
+  saveBill(bill: iBill): void {
+    this.save.next(bill);
   }
 }

@@ -45,6 +45,21 @@ export class BillService {
     );
   }
 
+  public updateBill(bill: iBill): Observable<iResponse<iBill>> {
+    return this.http.put<iResponse<iBill>>(environment.URL + `/api/bills/${bill.id}`, bill).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<iBill>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+
+      })
+    );
+  }
+
   private handleError(err: any): void {
     console.log('Error: ' + err)
     this.sharedService.clearLoading();

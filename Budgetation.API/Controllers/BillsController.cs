@@ -84,7 +84,7 @@ namespace Budgetation.API.Controllers
         }
 
         // PUT: api/Bills/5
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Bill bill)
         {
             Bill? res = await _billService.UpdateBill(bill, id);
