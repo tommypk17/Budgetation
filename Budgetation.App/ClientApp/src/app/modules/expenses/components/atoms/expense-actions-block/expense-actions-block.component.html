@@ -5,20 +5,59 @@
         <button [disabled]="disableNewBill" mat-raised-button color="accent" id="newBillButton" (click)="createNewBill()"  matTooltip="add a new bill">Add New Bill</button>
       </div>
       <div>
-        <button mat-icon-button matTooltip="filter current list of bills" aria-label="filter current bills" (click)="filterBills()">
-          <mat-icon>filter_list</mat-icon>
+
+        <button mat-icon-button matTooltip="filter current list of bills" aria-label="filter current bills" [matMenuTriggerFor]="filterMenu">
+          <mat-icon *ngIf="filtered">filter_list_off</mat-icon>
+          <mat-icon *ngIf="!filtered">filter_list</mat-icon>
         </button>
+        <mat-menu #filterMenu="matMenu">
+          <button *ngIf="filtered" mat-menu-item (click)="filterBills('clear')">
+            <mat-icon>close</mat-icon>
+            <span>Clear Filter</span>
+          </button>
+          <hr *ngIf="filtered">
+          <button mat-menu-item [matMenuTriggerFor]="filterByTypeMenu">
+            <mat-icon>merge_type</mat-icon>
+            <span>By Type</span>
+          </button>
+        </mat-menu>
+        <mat-menu #filterByTypeMenu="matMenu">
+          <button mat-menu-item (click)="filterBills('need')">
+            <span>Need</span>
+          </button>
+          <button mat-menu-item (click)="filterBills('want')">
+            <span>Want</span>
+          </button>
+          <button mat-menu-item (click)="filterBills('extra')">
+            <span>Extra</span>
+          </button>
+        </mat-menu>
+
         <button mat-icon-button [matMenuTriggerFor]="sortMenu" matTooltip="sort current list of bills" aria-label="sort current bills">
           <mat-icon>sort</mat-icon>
         </button>
         <mat-menu #sortMenu="matMenu">
-          <button mat-menu-item (click)="sortBills('byType')">
+          <button mat-menu-item [matMenuTriggerFor]="sortByTypeMenu">
             <mat-icon>merge_type</mat-icon>
             <span>By Type</span>
           </button>
           <button mat-menu-item [matMenuTriggerFor]="sortByCostMenu">
             <mat-icon>attach_money</mat-icon>
             <span>By Cost</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="sortByDateMenu">
+            <mat-icon>schedule</mat-icon>
+            <span>By Date</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByTypeMenu="matMenu">
+          <button mat-menu-item (click)="sortBills('byTypeNeedToExtra')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Need to Extra</span>
+          </button>
+          <button mat-menu-item (click)="sortBills('byTypeExtraToNeed')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Extra to Need</span>
           </button>
         </mat-menu>
         <mat-menu #sortByCostMenu="matMenu">
@@ -29,6 +68,24 @@
           <button mat-menu-item (click)="sortBills('byCostHighToLow')">
             <mat-icon>attach_money</mat-icon>
             <span>High to Low</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByDateMenu="matMenu">
+          <button mat-menu-item (click)="sortBills('byDateStartSoonToFar')">
+            <mat-icon>update</mat-icon>
+            <span>Begin Sooner</span>
+          </button>
+          <button mat-menu-item (click)="sortBills('byDateStartFarToSoon')">
+            <mat-icon>history</mat-icon>
+            <span>Begin Later</span>
+          </button>
+          <button mat-menu-item (click)="sortBills('byDateDueSoonToFar')">
+            <mat-icon>update</mat-icon>
+            <span>Due Sooner</span>
+          </button>
+          <button mat-menu-item (click)="sortBills('byDateDueFarToSoon')">
+            <mat-icon>history</mat-icon>
+            <span>Due Later</span>
           </button>
         </mat-menu>
       </div>

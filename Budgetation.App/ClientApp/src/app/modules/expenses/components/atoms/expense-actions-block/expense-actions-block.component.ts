@@ -8,9 +8,12 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 export class ExpenseActionsBlockComponent implements OnInit {
 
   @Output('newBill') newBill: EventEmitter<void> = new EventEmitter<void>();
-  @Output('filter') filter: EventEmitter<void> = new EventEmitter<void>();
+  @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
   @Input('disableNewBill') disableNewBill: boolean = true;
+
+  filtered: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -20,8 +23,9 @@ export class ExpenseActionsBlockComponent implements OnInit {
     this.newBill.next();
   }
 
-  filterBills(): void {
-    this.filter.next();
+  filterBills(event: string): void {
+    this.filtered = event != 'clear';
+    this.filter.next(event);
   }
 
   sortBills(event: string): void {
