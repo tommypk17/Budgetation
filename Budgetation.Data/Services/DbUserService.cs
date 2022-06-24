@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Budgetation.Data.DAL;
 using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
@@ -7,6 +8,7 @@ using MongoDB.Driver;
 
 namespace Budgetation.Data.Services
 {
+    #nullable enable
     public class DbUserService : IDbUserService
     {
         private readonly IMongoCollection<User> _users;
@@ -16,29 +18,62 @@ namespace Budgetation.Data.Services
             var database = client.GetDatabase(settings.DatabaseName);
             _users = database.GetCollection<User>("user");
         }
-        public User Create(User user)
+        
+        private async Task<User> FindOrCreateUser(Guid userId)
         {
-            _users.InsertOne(user);
+            var usersCollection = await _users.FindAsync(x => x.UserId == userId);
+            User? user = await usersCollection.FirstOrDefaultAsync();
+            if (user is not null)
+            {
+                return user;
+            }
+            else
+            {
+                user = new User() {UserId = userId};
+                await _users.InsertOneAsync(user);
+                return user;
+            }
+        }
+        
+        public async Task<User> Create(User newUser)
+        {
+            User user = await FindOrCreateUser(newUser.UserId);
+            user.Roles = newUser.Roles;
+            await _users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
             return user;
         }
 
-        public IList<User> Read() =>
-            _users.Find(user => true).ToList();
-
-        public User Find(Guid id) =>
-            _users.Find(user => user.Id == id).SingleOrDefault();
-
-        public User Update(User user)
+        public async Task<IList<User>> Read()
         {
-            _users.ReplaceOne(x => x.Id == user.Id, user);
-            return _users.Find(x => x.Id == user.Id).FirstOrDefault();
+            var userCollection = await _users.FindAsync(user => true);
+            return userCollection.ToList();
         }
 
-        public User Delete(Guid id)
+        public async Task<User> Find(Guid userId)
         {
-            User user = _users.Find(x => x.Id == id).FirstOrDefault();
-            _users.DeleteOne(x => x.Id == id);
+            return await FindOrCreateUser(userId);
+        }
+
+        public async Task<User> Update(User existingUser)
+        {
+            User user = await FindOrCreateUser(existingUser.UserId);
+            await _users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
             return user;
+        }
+
+        public async Task<User?> Delete(Guid userId)
+        {
+            var userCollection = await _users.FindAsync(x => x.UserId == userId);
+            User? user = await userCollection.FirstOrDefaultAsync();
+            if (user is not null)
+            {
+                await _users.DeleteOneAsync(x => x.UserId == userId);
+                return user;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

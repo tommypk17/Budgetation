@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Budgetation.Data.Models;
 
 namespace Budgetation.Data.Interfaces.IDBServices
 {
     public interface IDbUserService
     {
-        public User Create(User user);
-        public IList<User> Read();
-        public User Find(Guid id);
-        public User Update(User user);
-        public User Delete(Guid id);
+        #nullable enable
+        public Task<User> Create(User user);
+        public Task<IList<User>> Read();
+        public Task<User> Find(Guid id);
+        public Task<User> Update(User user);
+        public Task<User?> Delete(Guid id);
     }
 }
