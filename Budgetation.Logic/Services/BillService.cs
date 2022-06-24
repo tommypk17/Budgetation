@@ -19,40 +19,28 @@ namespace Budgetation.Logic.Services
             _dbBillService = dbBillService;
         }
 
-        public async Task<Bill?> GetBillById(Guid id)
+        public async Task<Bill?> GetBillById(Guid userId, Guid id)
         {
-            return await _dbBillService.Find(id);
+            return await _dbBillService.Find(userId, id);
         }
         public async Task<List<Bill>?> GetAllUserBills(Guid userId)
         {
-            return await _dbBillService.FindByUserId(userId).ContinueWith(q =>
-            {
-                return q.Result.ToList();
-            });
+            return await _dbBillService.Read(userId);
         }
 
-        public async Task<Bill?> AddUserBill(Bill bill, Guid? userId)
+        public async Task<Bill?> AddUserBill(Guid userId, Bill bill)
         {
-            if (userId != null)
-            {
-                bill.UserId = (Guid)userId;
-            }
-            return await _dbBillService.Create(bill);
+            return await _dbBillService.Create(userId, bill);
         }
 
-        public async Task<Bill?> UpdateBill(Bill bill, Guid? id)
+        public async Task<Bill?> UpdateBill(Guid userId, Bill bill)
         {
-            if (id != null)
-            {
-                bill.Id = (Guid)id;
-            }
-
-            return await _dbBillService.Update(bill);
+            return await _dbBillService.Update(userId, bill);
         }
 
-        public async Task<Bill?> DeleteBill(Guid id)
+        public async Task<Bill?> DeleteBill(Guid userId, Guid id)
         {
-            return await _dbBillService.Delete(id);
+            return await _dbBillService.Delete(userId, id);
         }
 
     }

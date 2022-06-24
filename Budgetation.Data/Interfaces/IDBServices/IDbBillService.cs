@@ -7,11 +7,11 @@ namespace Budgetation.Data.Interfaces.IDBServices
 {
     public interface IDbBillService
     {
-        public Task<Bill> Create(Bill user);
-        public Task<IList<Bill>> Read();
-        public Task<IList<Bill>> FindByUserId(Guid id);
-        public Task<Bill> Find(Guid id);
-        public Task<Bill> Update(Bill user);
-        public Task<Bill> Delete(Guid id);
+        #nullable enable
+        public Task<Bill?> Find(Guid userId, Guid id);
+        public Task<Bill?> Create(Guid userId, Bill user);
+        public Task<List<Bill>?> Read(Guid userId);
+        public Task<Bill?> Update(Guid userId, Bill user);
+        public Task<Bill?> Delete(Guid userId, Guid id);
     }
 }

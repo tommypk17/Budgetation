@@ -62,7 +62,8 @@ namespace Budgetation.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            Bill? res = await _billService.GetBillById(id);
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            Bill? res = await _billService.GetBillById(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bill not found", Success = true});
@@ -75,7 +76,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Post([FromBody] Bill bill)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            Bill? res = await _billService.AddUserBill(bill, userId);
+            Bill? res = await _billService.AddUserBill(userId, bill);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bill not found", Success = true});
@@ -87,7 +88,8 @@ namespace Budgetation.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> Put(Guid id, [FromBody] Bill bill)
         {
-            Bill? res = await _billService.UpdateBill(bill, id);
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            Bill? res = await _billService.UpdateBill(userId, bill);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bill not updated", Success = true});
@@ -99,7 +101,8 @@ namespace Budgetation.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(Guid id)
         {
-            Bill? res = await _billService.DeleteBill(id);
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            Bill? res = await _billService.DeleteBill(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bill not deleted", Success = true});
