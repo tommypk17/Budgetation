@@ -14,7 +14,7 @@
   </div>
   <ng-container *ngFor="let currentBill of currentBills">
     <div class="block">
-      <app-existing-expense-block [bill]="currentBill" (save)="saveExistingBill($event)"></app-existing-expense-block>
+      <app-existing-expense-block [bill]="currentBill" (save)="saveExistingBill($event)" (delete)="deleteBill($event)"></app-existing-expense-block>
     </div>
   </ng-container>
 </div>

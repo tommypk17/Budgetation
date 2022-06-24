@@ -98,7 +98,7 @@ namespace Budgetation.API.Controllers
         }
 
         // DELETE: api/Bills/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);

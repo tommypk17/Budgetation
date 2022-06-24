@@ -52,6 +52,15 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  deleteBill(bill: iBill): void {
+    this.billService.deleteBill(bill).subscribe((res: iResponse<iBill>) => {
+      if(res && res.data){
+        let billIdx = this.currentBills.findIndex(x => x.id == bill.id);
+        this.currentBills.splice(billIdx);
+      }
+    });
+  }
+
   createNewBill(): void {
     this.newBill = new cBill();
   }
