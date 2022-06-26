@@ -6,7 +6,8 @@ namespace Budgetation.Data.Models
 {
     public class Role
     {
-        [Required] public string Name { get; set; } = null!;
+        [DefaultValue("basic")]
+        [Required] public string Name { get; set; } = "basic";
         [Required]
         [DefaultValue(true)]
         public bool Active { get; set; } = true;

@@ -63,9 +63,11 @@ namespace Budgetation.API
             //MongoDB services
             services.AddSingleton<IDbUserService, DbUserService>();
             services.AddSingleton<IDbBillService, DbBillService>();
+            services.AddSingleton<IDbUserIncomeService, DbUserIncomeService>();
 
             //Logic services
             services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IUserService, UserService>();
 
         }
 
