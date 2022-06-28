@@ -1,0 +1,38 @@
+<mat-card *ngIf="income">
+  <mat-card-content>
+    <div class="d-flex flex-column">
+      <ng-container>
+        <mat-form-field appearance="fill" class="mb-2">
+          <mat-label>enter the amount</mat-label>
+          <input [(ngModel)]="income.amount" (change)="checkValid()" matInput type="number" min=".01" step="0.01" required>
+          <span matPrefix>$&nbsp;</span>
+          <mat-hint align="end">amount coming into account(s)</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="mb-2">
+          <mat-label>select the expense type</mat-label>
+          <mat-select [(ngModel)]="income.type" (selectionChange)="checkValid()" required>
+            <mat-option *ngFor="let incomeType of incomeTypes.types" [value]="incomeType.value">
+              {{incomeType.display}}
+            </mat-option>
+          </mat-select>
+          <mat-hint align="end">select the type of income to categorize under</mat-hint>
+        </mat-form-field>
+      </ng-container>
+      <mat-form-field appearance="fill" class="mb-2">
+        <mat-label>select the date</mat-label>
+        <input matInput [(ngModel)]="income.date" (dateChange)="checkValid()" [matDatepicker]="datePicker" required>
+        <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+        <mat-hint align="end">select the date this income should be recorded for</mat-hint>
+      </mat-form-field>
+      <div class="d-flex flex-end">
+        <div class="mr-2">
+          <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewIncome()" type="button">cancel</button>
+        </div>
+        <div>
+          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveIncome()" type="submit">save new income</button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

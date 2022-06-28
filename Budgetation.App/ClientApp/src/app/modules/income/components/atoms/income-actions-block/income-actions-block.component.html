@@ -1,0 +1,88 @@
+<mat-card>
+  <mat-card-content>
+    <div class="d-flex justify-content-between">
+      <div>
+        <button [disabled]="disableNewIncome" mat-raised-button color="accent" id="newBillButton" (click)="createNewIncome()"  matTooltip="add a new bill">Add New Income</button>
+      </div>
+      <div>
+        <button mat-icon-button matTooltip="filter current list of income" aria-label="filter current income" [matMenuTriggerFor]="filterMenu">
+          <mat-icon *ngIf="filtered">filter_list_off</mat-icon>
+          <mat-icon *ngIf="!filtered">filter_list</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+          <button *ngIf="filtered" mat-menu-item (click)="filterIncome('clear')">
+            <mat-icon>close</mat-icon>
+            <span>Clear Filter</span>
+          </button>
+          <hr *ngIf="filtered">
+          <button mat-menu-item [matMenuTriggerFor]="filterByTypeMenu">
+            <mat-icon>merge_type</mat-icon>
+            <span>By Type</span>
+          </button>
+        </mat-menu>
+        <mat-menu #filterByTypeMenu="matMenu">
+          <button mat-menu-item (click)="filterIncome('salary')">
+            <span>Salary</span>
+          </button>
+          <button mat-menu-item (click)="filterIncome('hourly')">
+            <span>Hourly</span>
+          </button>
+          <button mat-menu-item (click)="filterIncome('interest')">
+            <span>Interest</span>
+          </button>
+          <button mat-menu-item (click)="filterIncome('other')">
+            <span>Other</span>
+          </button>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="sortMenu" matTooltip="sort current list of income" aria-label="sort current income">
+          <mat-icon>sort</mat-icon>
+        </button>
+        <mat-menu #sortMenu="matMenu">
+          <button mat-menu-item [matMenuTriggerFor]="sortByTypeMenu">
+            <mat-icon>merge_type</mat-icon>
+            <span>By Type</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="sortByCostMenu">
+            <mat-icon>attach_money</mat-icon>
+            <span>By Amount</span>
+          </button>
+          <button mat-menu-item [matMenuTriggerFor]="sortByDateMenu">
+            <mat-icon>schedule</mat-icon>
+            <span>By Date</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByTypeMenu="matMenu">
+          <button mat-menu-item (click)="sortIncome('byTypeSalaryToOther')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Salary to Other</span>
+          </button>
+          <button mat-menu-item (click)="sortIncome('byTypeOtherToSalary')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Other to Salary</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByCostMenu="matMenu">
+          <button mat-menu-item (click)="sortIncome('byAmountLowToHigh')">
+            <mat-icon>attach_money</mat-icon>
+            <span>Low to High</span>
+          </button>
+          <button mat-menu-item (click)="sortIncome('byAmountHighToLow')">
+            <mat-icon>attach_money</mat-icon>
+            <span>High to Low</span>
+          </button>
+        </mat-menu>
+        <mat-menu #sortByDateMenu="matMenu">
+          <button mat-menu-item (click)="sortIncome('byDateSoonToFar')">
+            <mat-icon>update</mat-icon>
+            <span>Sooner to Later</span>
+          </button>
+          <button mat-menu-item (click)="sortIncome('byDateFarToSoon')">
+            <mat-icon>history</mat-icon>
+            <span>Later to Sooner</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

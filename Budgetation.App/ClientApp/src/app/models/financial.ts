@@ -1,13 +1,10 @@
 ﻿import {cValidator, eValidationType, iValidator} from "./validation";
 
 export interface iIncome {
-  name: string;
+  id?: string;
+  type: string;
   amount: number;
-  type: eIncomeType;
-  received: boolean;
-  begin: Date;
-  due: Date;
-  reoccurrence: eReoccurrence;
+  date: Date;
 }
 
 export interface iExpense {
@@ -37,6 +34,11 @@ export interface iReoccurrence {
   value: eReoccurrence;
 }
 
+export interface iIncomeType {
+  display: string;
+  value: eIncomeType;
+}
+
 export enum eReoccurrence {
   Single = 'Single',
   Weekly = 'Weekly',
@@ -50,13 +52,22 @@ export enum eReoccurrence {
 export enum eIncomeType {
   Hourly = 'Hourly',
   Salary = 'Salary',
-  Interest = 'Interest'
+  Interest = 'Interest',
+  Other = 'Other'
 }
 
 export enum eExpenseType {
   Need = 'Need',
   Want = 'Want',
   Extra = 'Extra'
+}
+
+export class cIncome implements iIncome {
+  amount: number = 0;
+  date: Date = new Date(Date.now());
+  type: eIncomeType | null = null;
+
+  [key: string]: any;
 }
 
 export class cExpense implements iExpense {
@@ -134,6 +145,11 @@ export class cBill implements iBill {
   ])
 }
 
+export class cIncomeType implements iIncomeType {
+  display: string;
+  value: eIncomeType;
+}
+
 export class cExpenseType implements iExpenseType {
   display: string;
   value: eExpenseType;
@@ -158,6 +174,27 @@ export class cExpenseTypes {
       display: "Extra",
       value: eExpenseType.Extra
     },
+  ]
+}
+
+export class cIncomeTypes {
+  types: cIncomeType[] = [
+    {
+      display: "Salary",
+      value: eIncomeType.Salary
+    },
+    {
+      display: "Hourly",
+      value: eIncomeType.Hourly
+    },
+    {
+      display: "Interest",
+      value: eIncomeType.Interest
+    },
+    {
+      display: "Other",
+      value: eIncomeType.Other
+    }
   ]
 }
 

@@ -1,0 +1,20 @@
+<div class="panel">
+  <app-header-block
+    [blockTitle]="headerBlock.blockTitle"
+    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockContent]="headerBlock.blockContent"
+    class="block"
+  >
+  </app-header-block>
+  <div class="block">
+    <app-income-actions-block (filter)="filterIncome($event)" (sort)="sortIncome($event)" (newIncome)="createNewIncome()" [disableNewIncome]="newIncome != undefined"></app-income-actions-block>
+  </div>
+  <div class="block">
+    <app-new-income-block [income]="newIncome" (cancel)="cancelNewIncome()" (save)="saveNewIncome($event)"></app-new-income-block>
+  </div>
+  <ng-container *ngFor="let income of currentIncome">
+    <div class="block">
+      <app-existing-income-block [income]="income" (save)="saveExistingIncome($event)" (delete)="deleteIncome($event)"></app-existing-income-block>
+    </div>
+  </ng-container>
+</div>

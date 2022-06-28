@@ -64,6 +64,7 @@ namespace Budgetation.Data.Services
         {
             User? user = await FindOrCreateUser(userId);
             var incomeIdx = user.Incomes.FindIndex(x => x.Id == income.Id);
+            if (incomeIdx <= -1) return null;
             user.Incomes.RemoveAt(incomeIdx);
             user.Incomes.Add(income);
             await _users.ReplaceOneAsync(x => x.UserId == userId, user);
@@ -74,6 +75,7 @@ namespace Budgetation.Data.Services
         {
             User? user = await FindOrCreateUser(userId);
             var incomeIdx = user.Incomes.FindIndex(x => x.Id == id);
+            if (incomeIdx <= -1) return null;
             UserIncome? income = user.Incomes.Find(x => x.Id == id);
             user.Incomes.RemoveAt(incomeIdx);
             await _users.ReplaceOneAsync(x => x.UserId == userId, user);
