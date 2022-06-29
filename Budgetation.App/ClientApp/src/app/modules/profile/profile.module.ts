@@ -7,6 +7,8 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatCardModule} from "@angular/material/card";
+import {MatListModule} from "@angular/material/list";
 
 
 @NgModule({
@@ -16,7 +18,10 @@ import {MatChipsModule} from '@angular/material/chips';
     ProfileRoutingModule,
     SharedModule,
     ReactiveFormsModule,
+
     MatChipsModule,
+    MatCardModule,
+    MatListModule,
   ]
 })
 // @ts-ignore

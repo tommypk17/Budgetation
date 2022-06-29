@@ -12,6 +12,13 @@ import {MatMenuModule} from "@angular/material/menu";
 import { ExistingIncomeBlockComponent } from './components/atoms/existing-income-block/existing-income-block.component';
 import { NewIncomeBlockComponent } from './components/atoms/new-income-block/new-income-block.component';
 import { EditIncomeBlockComponent } from './components/atoms/edit-income-block/edit-income-block.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatCardModule} from "@angular/material/card";
+import {MatButtonModule} from "@angular/material/button";
+import {MatInputModule} from "@angular/material/input";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
+import {MatSelectModule} from "@angular/material/select";
 
 
 @NgModule({
@@ -30,6 +37,15 @@ import { EditIncomeBlockComponent } from './components/atoms/edit-income-block/e
     IncomeRoutingModule,
     SharedModule,
     MatMenuModule,
-  ]
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule
+  ],
+  providers: [MatDatepickerModule]
 })
 export class IncomeModule { }

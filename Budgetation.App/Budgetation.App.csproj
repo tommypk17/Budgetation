@@ -11,6 +11,8 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\src\app\guards" />
+      <Folder Include="ClientApp\src\app\shared\blocks" />
+      <Folder Include="ClientApp\src\app\shared\dialogs" />
     </ItemGroup>
 
 

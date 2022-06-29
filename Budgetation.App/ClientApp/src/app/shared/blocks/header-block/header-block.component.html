@@ -6,12 +6,6 @@
         arrow_back_ios
       </mat-icon>
     </button>
-    <button matTooltip="add new task list" *ngIf="addLink == 'taskList'" (click)="openNewTaskListDialog()" mat-button class="card-addButton">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button matTooltip="add new task" *ngIf="addLink == 'task'" (click)="openNewTaskDialog()" mat-button class="card-addButton">
-      <mat-icon>add</mat-icon>
-    </button>
   </div>
   <mat-card-title class="card-head card-head-w-back">
     <span class="card-title">{{title}}</span>
