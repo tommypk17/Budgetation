@@ -3,6 +3,7 @@
 export interface iIncome {
   id?: string;
   type: string;
+  incomingBalance: number;
   amount: number;
   date: Date;
 }
@@ -63,6 +64,8 @@ export enum eExpenseType {
 }
 
 export class cIncome implements iIncome {
+  id?: string;
+  incomingBalance: number = 0;
   amount: number = 0;
   date: Date = new Date(Date.now());
   type: eIncomeType | null = null;

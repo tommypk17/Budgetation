@@ -19,7 +19,8 @@ namespace Budgetation.Data.Models
         [BsonId]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public double Amount { get; set; }
+        public double IncomingBalance { get; set; } = 0;
+        public double Amount { get; set; } = 0;
         public string Type { get; set; } = null!;
         public DateTime Date { get; set; } = DateTime.Today;
     }
