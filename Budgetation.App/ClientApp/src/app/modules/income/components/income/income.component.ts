@@ -26,6 +26,7 @@ export class IncomeComponent implements OnInit {
     this.incomeService.getAllIncome().subscribe((res:iResponse<iIncome[]>) => {
       if(res && res.data){
         this.currentIncome = res.data;
+        this.sortIncome('byDateSoonToFar');
       }
     });
   }

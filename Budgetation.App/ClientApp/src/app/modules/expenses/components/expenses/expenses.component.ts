@@ -26,6 +26,7 @@ export class ExpensesComponent implements OnInit {
     this.billService.getAllBills().subscribe((res:iResponse<iBill[]>) => {
       if(res && res.data){
         this.currentBills = res.data;
+        this.sortBills('byDateDueSoonToFar');
       }
     });
   }
