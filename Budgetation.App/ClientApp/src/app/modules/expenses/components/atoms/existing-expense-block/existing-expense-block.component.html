@@ -1,6 +1,10 @@
 <mat-card *ngIf="bill != undefined && !edit">
   <mat-card-header>
     <div class="d-flex justify-content-end w-100">
+      <button (click)="markPaid(bill)" mat-icon-button matTooltip="{{bill.paid? 'mark not paid': 'mark paid'}}" aria-label="marked as {{!bill.paid? 'not': ''}} paid" >
+        <mat-icon *ngIf="bill.paid">paid</mat-icon>
+        <mat-icon *ngIf="!bill.paid">attach_money</mat-icon>
+      </button>
       <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{bill.expense.name}} options" >
         <mat-icon>more_horiz</mat-icon>
       </button>
