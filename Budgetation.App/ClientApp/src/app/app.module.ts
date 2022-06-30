@@ -47,7 +47,7 @@ import { environment } from '../environments/environment';
     }, {
       interactionType: InteractionType.Redirect,
       protectedResourceMap: new Map([
-        [environment.URL+'/*', ['https://tkovdev.onmicrosoft.com/c8fc6146-82a2-4427-aa8a-2424a4f768e3/API.Default']],
+        [environment.URL+'/*', ['https://login.tkov.dev/c8fc6146-82a2-4427-aa8a-2424a4f768e3/API.Default']],
       ])})
   ],
   providers: [AuthService, {
