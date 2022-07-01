@@ -1,34 +1,34 @@
 <mat-card *ngIf="bill != undefined && !edit">
   <mat-card-header>
-    <div class="d-flex justify-content-end w-100">
-      <button *ngIf="bill.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
-        <mat-icon matTooltip="paid">paid</mat-icon>
-      </button>
-      <button *ngIf="!bill.paid" (click)="markPaid(bill)" mat-icon-button aria-label="not paid" >
-        <mat-icon matTooltip="mark paid">attach_money</mat-icon>
-      </button>
-      <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{bill.expense.name}} options" >
-        <mat-icon>more_horiz</mat-icon>
-      </button>
-      <mat-menu #optionsMenu="matMenu">
-        <button mat-menu-item (click)="edit = !edit">
-          <mat-icon>edit</mat-icon>
-          <span>Edit</span>
+    <div class="d-flex justify-content-between w-100">
+      <div class="d-flex align-items-center">
+        <p class="mat-card-title mb-0">{{bill.expense.name}}</p>
+      </div>
+      <div class="d-flex align-items-center">
+        <button *ngIf="bill.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
+          <mat-icon matTooltip="paid">paid</mat-icon>
         </button>
-        <button mat-menu-item (click)="deleteBill(bill)">
-          <mat-icon>delete</mat-icon>
-          <span>Delete</span>
+        <button *ngIf="!bill.paid" (click)="markPaid(bill)" mat-icon-button aria-label="not paid" >
+          <mat-icon matTooltip="mark paid">attach_money</mat-icon>
         </button>
-      </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{bill.expense.name}} options" >
+          <mat-icon>more_horiz</mat-icon>
+        </button>
+        <mat-menu #optionsMenu="matMenu">
+          <button mat-menu-item (click)="edit = !edit">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item (click)="deleteBill(bill)">
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
     </div>
   </mat-card-header>
   <mat-card-content>
     <div class="d-flex justify-content-around">
-      <div class="d-flex flex-column">
-        <strong>Name</strong>
-        <hr class="w-100" />
-        <p>{{bill.expense.name}}</p>
-      </div>
       <div class="d-flex flex-column">
         <strong>Type</strong>
         <hr class="w-100" />
