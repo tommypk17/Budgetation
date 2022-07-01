@@ -46,10 +46,6 @@
         <mat-datepicker #duePicker></mat-datepicker>
         <mat-hint align="end">select the date this expense will first be due</mat-hint>
       </mat-form-field>
-      <div class="mb-2 d-flex flex-column">
-        <mat-label>paid</mat-label>
-        <mat-slide-toggle [(ngModel)]="bill.paid" color="primary"></mat-slide-toggle>
-      </div>
       <div class="d-flex flex-end">
         <div class="mr-2">
           <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewBill()" type="button">cancel</button>

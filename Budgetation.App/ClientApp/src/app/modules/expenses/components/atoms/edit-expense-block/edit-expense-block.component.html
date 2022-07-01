@@ -48,8 +48,15 @@
       </mat-form-field>
       <div class="mb-2 d-flex flex-column">
         <mat-label>paid</mat-label>
-        <mat-slide-toggle [(ngModel)]="bill.paid" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="bill.paid" (change)="checkValid()" color="primary"></mat-slide-toggle>
       </div>
+      <mat-form-field *ngIf="bill.paid" appearance="fill" class="mb-2">
+        <mat-label>paid on date</mat-label>
+        <input matInput [(ngModel)]="bill.paidOn" (dateChange)="checkValid()" [matDatepicker]="paidOnPicker" [required]="bill.paid">
+        <mat-datepicker-toggle matSuffix [for]="paidOnPicker"></mat-datepicker-toggle>
+        <mat-datepicker #paidOnPicker></mat-datepicker>
+        <mat-hint align="end">select the date this expense was paid on</mat-hint>
+      </mat-form-field>
       <div class="d-flex flex-end">
         <div class="mr-2">
           <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewBill()" type="button">cancel</button>

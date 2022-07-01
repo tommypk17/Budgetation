@@ -24,6 +24,8 @@ namespace Budgetation.Data.Models
         [BsonIgnoreIfNull]
         public DateTime? Due { get; set; } = null;
         [BsonIgnoreIfNull]
+        public DateTime? PaidOn { get; set; } = null;
+        [BsonIgnoreIfNull]
         public bool Paid { get; set; }
 
         public string Reoccurrence { get; set; } = null!;

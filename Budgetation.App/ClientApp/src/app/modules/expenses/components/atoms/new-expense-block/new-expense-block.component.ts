@@ -52,7 +52,7 @@ export class NewExpenseBlockComponent implements OnInit {
     this.invalid = false;
     keys.forEach((v, i, a) => {
       if(this.bill[v] == null || this.bill[v] == undefined){
-        if(v != 'begin' && v != 'paid'){
+        if(v != 'begin' && v != 'paid' && v != 'paidOn'){
           this.invalid = true;
         }
       }

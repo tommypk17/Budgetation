@@ -19,6 +19,7 @@ export interface iBill {
   expense: iExpense;
   begin: Date;
   due: Date;
+  paidOn: Date;
   paid: boolean;
   reoccurrence: eReoccurrence;
 
@@ -85,6 +86,7 @@ export class cBill implements iBill {
   id?: string;
   begin: Date | null = null;
   due: Date | null = null;
+  paidOn: Date | null = null;
   expense: iExpense | null = new cExpense();
   paid: boolean | null = null;
   reoccurrence: eReoccurrence | null = null;

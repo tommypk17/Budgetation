@@ -43,6 +43,7 @@ export class ExpensesComponent implements OnInit {
 
   saveExistingBill(bill: iBill): void {
     if(!bill.paid) bill.paid = !!bill.paid;
+    if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
     this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
         let existingBillIdx = this.currentBills.findIndex(x => x.id == bill.id);
@@ -64,6 +65,7 @@ export class ExpensesComponent implements OnInit {
 
   markBillPaid(bill: iBill): void {
     bill.paid = !!!bill.paid;
+    if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
     this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
         let existingBillIdx = this.currentBills.findIndex(x => x.id == bill.id);
