@@ -7,7 +7,10 @@
   >
   </app-header-block>
   <div class="block">
-    <app-expense-actions-block (filter)="filterBills($event)" (sort)="sortBills($event)" (newBill)="createNewBill()" [disableNewBill]="newBill != undefined"></app-expense-actions-block>
+    <app-stats-expense-block [bills]="currentBills"></app-stats-expense-block>
+  </div>
+  <div class="block">
+    <app-expense-actions-block [filtered]="!!currentFilter" (filter)="filterBills($event)" (sort)="sortBills($event)" (newBill)="createNewBill()" [disableNewBill]="newBill != undefined"></app-expense-actions-block>
   </div>
   <div class="block">
     <app-new-expense-block [bill]="newBill" (cancel)="cancelNewBill()" (save)="saveNewBill($event)"></app-new-expense-block>

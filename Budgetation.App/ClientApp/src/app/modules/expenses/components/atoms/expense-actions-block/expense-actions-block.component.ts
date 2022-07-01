@@ -11,8 +11,7 @@ export class ExpenseActionsBlockComponent implements OnInit {
   @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
   @Input('disableNewBill') disableNewBill: boolean = true;
-
-  filtered: boolean = false;
+  @Input('filtered') filtered: boolean = false;
 
   constructor() { }
 
@@ -24,7 +23,6 @@ export class ExpenseActionsBlockComponent implements OnInit {
   }
 
   filterBills(event: string): void {
-    this.filtered = event != 'clear';
     this.filter.next(event);
   }
 

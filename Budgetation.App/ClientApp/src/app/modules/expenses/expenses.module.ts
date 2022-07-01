@@ -22,9 +22,10 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import { StatsExpenseBlockComponent } from './components/atoms/stats-expense-block/stats-expense-block.component';
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent],
+  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,

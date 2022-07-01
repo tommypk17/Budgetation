@@ -14,7 +14,11 @@ export class ExpensesComponent implements OnInit {
 
   newBill: iBill | undefined;
 
+  allBills: iBill[] = [];
   currentBills: iBill[] = [];
+
+  currentSort: string | undefined;
+  currentFilter: string | undefined;
 
   constructor(private billService: BillService) { }
 
@@ -25,7 +29,8 @@ export class ExpensesComponent implements OnInit {
   getAllBills(): void {
     this.billService.getAllBills().subscribe((res:iResponse<iBill[]>) => {
       if(res && res.data){
-        this.currentBills = res.data;
+        this.allBills = res.data;
+        this.currentBills = this.allBills;
         this.sortBills('byDateDueSoonToFar');
       }
     });
@@ -35,8 +40,9 @@ export class ExpensesComponent implements OnInit {
     if(!bill.paid) bill.paid = !!bill.paid;
     this.billService.saveBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
-        this.currentBills.push(res.data);
+        this.allBills.push(res.data);
         this.newBill = undefined;
+        this.reFilterSort();
       }
     });
   }
@@ -46,10 +52,11 @@ export class ExpensesComponent implements OnInit {
     if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
     this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
-        let existingBillIdx = this.currentBills.findIndex(x => x.id == bill.id);
+        let existingBillIdx = this.allBills.findIndex(x => x.id == bill.id);
         if(existingBillIdx > -1){
-          this.currentBills[existingBillIdx] = res.data;
+          this.allBills[existingBillIdx] = res.data;
         }
+        this.reFilterSort();
       }
     });
   }
@@ -57,8 +64,9 @@ export class ExpensesComponent implements OnInit {
   deleteBill(bill: iBill): void {
     this.billService.deleteBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
-        let billIdx = this.currentBills.findIndex(x => x.id == bill.id);
-        this.currentBills.splice(billIdx);
+        let billIdx = this.allBills.findIndex(x => x.id == bill.id);
+        this.allBills.splice(billIdx, 1);
+        this.currentBills = this.allBills
       }
     });
   }
@@ -68,12 +76,18 @@ export class ExpensesComponent implements OnInit {
     if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
     this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
       if(res && res.data){
-        let existingBillIdx = this.currentBills.findIndex(x => x.id == bill.id);
+        let existingBillIdx = this.allBills.findIndex(x => x.id == bill.id);
         if(existingBillIdx > -1){
-          this.currentBills[existingBillIdx] = res.data;
+          this.allBills[existingBillIdx] = res.data;
         }
+        this.reFilterSort();
       }
     });
+  }
+
+  reFilterSort(): void {
+    if(this.currentSort) this.sortBills(this.currentSort);
+    if(this.currentFilter) this.filterBills(this.currentFilter);
   }
 
   createNewBill(): void {
@@ -85,23 +99,27 @@ export class ExpensesComponent implements OnInit {
   }
 
   filterBills(filterBy: string): void {
+    this.currentFilter = filterBy;
     switch (filterBy){
       case 'clear':
-        this.getAllBills();
+        this.currentBills = this.allBills;
+        this.currentFilter = undefined;
         break;
       case 'need':
-        this.currentBills = this.currentBills.filter(x => x.expense.type == eExpenseType.Need);
+        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Need);
         break;
       case 'want':
-        this.currentBills = this.currentBills.filter(x => x.expense.type == eExpenseType.Want);
+        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Want);
         break;
       case 'extra':
-        this.currentBills = this.currentBills.filter(x => x.expense.type == eExpenseType.Extra);
+        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Extra);
         break;
     }
   }
 
   sortBills(sortOrder: string): void {
+    this.currentSort = sortOrder;
+    this.currentBills = this.allBills;
     let keyVal = [];
     let i = 0;
     Object.keys(eExpenseType).forEach((v) => {
@@ -110,7 +128,7 @@ export class ExpensesComponent implements OnInit {
     });
     switch (sortOrder){
       case 'clear':
-        this.getAllBills();
+        this.currentBills = this.allBills;
         break;
       case 'byTypeNeedToExtra':
         this.currentBills.sort( (a,b ) => {
