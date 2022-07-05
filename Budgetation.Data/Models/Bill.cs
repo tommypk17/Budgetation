@@ -30,4 +30,15 @@ namespace Budgetation.Data.Models
 
         public string Reoccurrence { get; set; } = null!;
     }
+
+    public enum eReoccurrence
+    {
+        Single,
+        Weekly,
+        Biweekly,
+        Monthly,
+        Quarterly,
+        Biquarterly,
+        Yearly,
+    }
 }

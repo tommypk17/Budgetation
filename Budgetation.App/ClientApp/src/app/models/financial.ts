@@ -46,8 +46,8 @@ export enum eReoccurrence {
   Weekly = 'Weekly',
   Biweekly = 'Biweekly',
   Monthly = 'Monthly',
-  Quaterly = 'Quaterly',
-  Biquarterly = 'Biquaterly',
+  Quarterly = 'Quarterly',
+  Biquarterly = 'Biquarterly',
   Yearly = 'Yearly'
 }
 
@@ -226,8 +226,8 @@ export class cReoccurrences {
       value: eReoccurrence.Biquarterly
     },
     {
-      display: "Quaterly",
-      value: eReoccurrence.Quaterly
+      display: "Quarterly",
+      value: eReoccurrence.Quarterly
     },
     {
       display: "Yearly",

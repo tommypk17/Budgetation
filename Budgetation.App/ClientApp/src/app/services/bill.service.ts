@@ -75,6 +75,23 @@ export class BillService {
     );
   }
 
+  public addReoccurrences(bills: iBill[]): Observable<iResponse<iBill[]>> {
+    this.sharedService.queueLoading('addReoccurrences');
+    let billIds: string[] = bills.map(x => x.id);
+    return this.http.post<iResponse<iBill[]>>(environment.URL + '/api/bills/reoccurrences', billIds).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<iBill[]>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('addReoccurrences');
+      })
+    );
+  }
+
   private handleError(err: any): void {
     console.log('Error: ' + err)
     this.sharedService.clearLoading();

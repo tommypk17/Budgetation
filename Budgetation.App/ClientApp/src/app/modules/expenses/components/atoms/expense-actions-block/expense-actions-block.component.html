@@ -1,11 +1,11 @@
 <mat-card>
   <mat-card-content>
     <div class="d-flex justify-content-between">
-      <div>
-        <button [disabled]="disableNewBill" mat-raised-button color="accent" id="newBillButton" (click)="createNewBill()"  matTooltip="add a new bill">Add New Bill</button>
+      <div class="d-flex">
+        <button class="mr-1" [disabled]="disableNewBill" mat-raised-button color="accent" id="newBillButton" (click)="createNewBill()"  matTooltip="add a new bill">Add New Bill</button>
+        <button class="ml-1" (click)="recurringBillsSelected()" [disabled]="disablePrepareRecurring" mat-raised-button color="primary" id="prepareRecurringButton"  matTooltip="prepare recurring bills">Prepare Recurring</button>
       </div>
       <div>
-
         <button mat-icon-button matTooltip="filter current list of bills" aria-label="filter current bills" [matMenuTriggerFor]="filterMenu">
           <mat-icon *ngIf="filtered">filter_list_off</mat-icon>
           <mat-icon *ngIf="!filtered">filter_list</mat-icon>

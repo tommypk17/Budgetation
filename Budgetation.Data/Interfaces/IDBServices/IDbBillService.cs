@@ -9,9 +9,11 @@ namespace Budgetation.Data.Interfaces.IDBServices
     {
         #nullable enable
         public Task<Bill?> Find(Guid userId, Guid id);
+        public Task<List<Bill>?> All(Guid userId, List<Guid> billIds);
         public Task<Bill?> Create(Guid userId, Bill user);
         public Task<List<Bill>?> Read(Guid userId);
         public Task<Bill?> Update(Guid userId, Bill user);
         public Task<Bill?> Delete(Guid userId, Guid id);
+        public Task<List<Bill>?> BulkCreate(Guid userId, List<Bill> bills);
     }
 }

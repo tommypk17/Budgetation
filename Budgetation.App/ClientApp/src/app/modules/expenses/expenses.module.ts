@@ -23,9 +23,13 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import { StatsExpenseBlockComponent } from './components/atoms/stats-expense-block/stats-expense-block.component';
+import {MatDividerModule} from "@angular/material/divider";
+import {MatDialogModule} from "@angular/material/dialog";
+import { RecurringExpenseSelectorDialogComponent } from './components/atoms/recurring-expense-selector-dialog/recurring-expense-selector-dialog.component';
+import {MatListModule} from "@angular/material/list";
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent],
+  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -44,6 +48,9 @@ import { StatsExpenseBlockComponent } from './components/atoms/stats-expense-blo
     MatDatepickerModule,
     MatNativeDateModule,
     MatTooltipModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatListModule
   ],
   providers: [MatDatepickerModule]
 })

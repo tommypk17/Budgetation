@@ -85,6 +85,18 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  prepareRecurring(bills: iBill[]): void {
+    if(bills && bills.length > 0){
+      this.billService.addReoccurrences(bills).subscribe((res: iResponse<iBill[]>) => {
+        if(res && res.data){
+          this.allBills = this.allBills.concat(res.data);
+          this.newBill = undefined;
+          this.reFilterSort();
+        }
+      });
+    }
+  }
+
   reFilterSort(): void {
     if(this.currentSort) this.sortBills(this.currentSort);
     if(this.currentFilter) this.filterBills(this.currentFilter);

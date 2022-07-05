@@ -45,6 +45,13 @@ namespace Budgetation.Data.Services
             return userBill.Bills.FirstOrDefault(x => x.Id == id);
         }
 
+        
+        public async Task<List<Bill>?> All(Guid userId, List<Guid> billIds)
+        {
+            UserBill userBill = await FindOrCreateUserBill(userId);
+            return userBill.Bills.Where(x => billIds.Contains(x.Id)).ToList();
+        }
+        
         public async Task<Bill?> Create(Guid userId, Bill bill)
         {
             UserBill userBill = await FindOrCreateUserBill(userId);
@@ -77,6 +84,15 @@ namespace Budgetation.Data.Services
             userBill.Bills.RemoveAt(billIdx);
             await _userBills.ReplaceOneAsync(x => x.UserId == userId, userBill);
             return bill;
+        }
+        
+        
+        public async Task<List<Bill>?> BulkCreate(Guid userId, List<Bill> bills)
+        {
+            UserBill? userBill = await FindOrCreateUserBill(userId);
+            userBill.Bills.AddRange(bills);
+            await _userBills.ReplaceOneAsync(x => x.UserId == userId, userBill);
+            return userBill.Bills;
         }
     }
 }

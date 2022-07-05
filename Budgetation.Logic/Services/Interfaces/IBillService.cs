@@ -15,5 +15,6 @@ namespace Budgetation.Logic.Services.Interfaces
         public Task<Bill?> UpdateBill(Guid userId, Bill bill);
 
         public Task<Bill?> DeleteBill(Guid userId, Guid id);
+        public Task<List<Bill>?> AddReoccurrences(Guid userId, List<Guid> billIds);
     }
 }

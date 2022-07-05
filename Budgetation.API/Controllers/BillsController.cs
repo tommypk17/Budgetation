@@ -109,5 +109,18 @@ namespace Budgetation.API.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Bill deleted", Success = true});
         }
+        
+        // POST: api/Bills/reoccurrences
+        [HttpPost("reoccurrences")]
+        public async Task<IActionResult> Post([FromBody] List<Guid> billIds)
+        {
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            List<Bill>? res = await _billService.AddReoccurrences(userId, billIds);
+            if (res is null)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bills not duplicated", Success = true});
+            }
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Bills duplicated", Success = true});
+        }
     }
 }
