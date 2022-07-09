@@ -7,17 +7,17 @@
   >
   </app-header-block>
   <div class="block">
-    <app-stats-expense-block [bills]="currentBills"></app-stats-expense-block>
+    <app-stats-expense-block [expenses]="currentExpenses"></app-stats-expense-block>
   </div>
   <div class="block">
-    <app-expense-actions-block [bills]="allBills" [filtered]="!!currentFilter" [disablePrepareRecurring]="false" (prepareRecurring)="prepareRecurring($event)" (filter)="filterBills($event)" (sort)="sortBills($event)" (newBill)="createNewBill()" [disableNewBill]="newBill != undefined"></app-expense-actions-block>
+    <app-expense-actions-block [expenses]="allExpenses" [filtered]="!!currentFilter" [disablePrepareRecurring]="false" (prepareRecurring)="prepareRecurring($event)" (filter)="filterExpenses($event)" (sort)="sortExpenses($event)" (newExpense)="createNewExpense()" [disableNewExpense]="newExpense != undefined"></app-expense-actions-block>
   </div>
   <div class="block">
-    <app-new-expense-block [bill]="newBill" (cancel)="cancelNewBill()" (save)="saveNewBill($event)"></app-new-expense-block>
+    <app-new-expense-block [expense]="newExpense" (cancel)="cancelNewExpense()" (save)="saveNewExpense($event)"></app-new-expense-block>
   </div>
-  <ng-container *ngFor="let currentBill of currentBills">
+  <ng-container *ngFor="let currentExpense of currentExpenses">
     <div class="block">
-      <app-existing-expense-block [bill]="currentBill" (save)="saveExistingBill($event)" (delete)="deleteBill($event)" (paid)="markBillPaid($event)"></app-existing-expense-block>
+      <app-existing-expense-block [expense]="currentExpense" (save)="saveExistingExpense($event)" (delete)="deleteExpense($event)" (paid)="markExpensePaid($event)"></app-existing-expense-block>
     </div>
   </ng-container>
 </div>

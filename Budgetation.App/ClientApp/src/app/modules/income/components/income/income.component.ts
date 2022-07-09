@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {cBill, cIncome, eExpenseType, eIncomeType, iBill, iIncome} from "../../../../models/financial";
+import {Income, eExpenseType, eIncomeType} from "../../../../models/financial";
 import {iResponse} from "../../../../models/response";
 import {IncomeService} from "../../../../services/income.service";
 
@@ -12,9 +12,9 @@ export class IncomeComponent implements OnInit {
 
   headerBlock = {blockTitle: "Income", blockSubtitle: "", blockContent: ""};
 
-  newIncome: iIncome | undefined;
+  newIncome: Income | undefined;
 
-  currentIncome: iIncome[] = [];
+  currentIncome: Income[] = [];
 
   constructor(private incomeService: IncomeService) { }
 
@@ -23,7 +23,7 @@ export class IncomeComponent implements OnInit {
   }
 
   getAllIncome(): void {
-    this.incomeService.getAllIncome().subscribe((res:iResponse<iIncome[]>) => {
+    this.incomeService.getAllIncome().subscribe((res:iResponse<Income[]>) => {
       if(res && res.data){
         this.currentIncome = res.data;
         this.sortIncome('byDateSoonToFar');
@@ -31,8 +31,8 @@ export class IncomeComponent implements OnInit {
     });
   }
 
-  saveNewIncome(income: iIncome): void {
-    this.incomeService.saveIncome(income).subscribe((res: iResponse<iIncome>) => {
+  saveNewIncome(income: Income): void {
+    this.incomeService.saveIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
         this.currentIncome.push(res.data);
         this.newIncome = undefined;
@@ -40,8 +40,8 @@ export class IncomeComponent implements OnInit {
     });
   }
 
-  saveExistingIncome(income: iIncome): void {
-    this.incomeService.updateIncome(income).subscribe((res: iResponse<iIncome>) => {
+  saveExistingIncome(income: Income): void {
+    this.incomeService.updateIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
         let existingIncomeIdx = this.currentIncome.findIndex(x => x.id == income.id);
         if(existingIncomeIdx > -1){
@@ -51,8 +51,8 @@ export class IncomeComponent implements OnInit {
     });
   }
 
-  deleteIncome(income: iIncome): void {
-    this.incomeService.deleteIncome(income).subscribe((res: iResponse<iIncome>) => {
+  deleteIncome(income: Income): void {
+    this.incomeService.deleteIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
         let incomeIdx = this.currentIncome.findIndex(x => x.id == income.id);
         this.currentIncome.splice(incomeIdx);
@@ -61,7 +61,7 @@ export class IncomeComponent implements OnInit {
   }
 
   createNewIncome(): void {
-    this.newIncome = new cIncome();
+    this.newIncome = new Income();
   }
 
   cancelNewIncome(): void {

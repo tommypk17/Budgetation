@@ -1,17 +1,17 @@
-<mat-card *ngIf="bill != undefined && !edit">
+<mat-card *ngIf="expense != undefined && !edit">
   <mat-card-header>
     <div class="d-flex justify-content-between w-100">
       <div class="d-flex align-items-center">
-        <p class="mat-card-title mb-0">{{bill.expense.name}}</p>
+        <p class="mat-card-title mb-0">{{expense.name}}</p>
       </div>
       <div class="d-flex align-items-center">
-        <button *ngIf="bill.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
+        <button *ngIf="expense.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
           <mat-icon matTooltip="paid">paid</mat-icon>
         </button>
-        <button *ngIf="!bill.paid" (click)="markPaid(bill)" mat-icon-button aria-label="not paid" >
+        <button *ngIf="!expense.paid" (click)="markPaid(expense)" mat-icon-button aria-label="not paid" >
           <mat-icon matTooltip="mark paid">attach_money</mat-icon>
         </button>
-        <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{bill.expense.name}} options" >
+        <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{expense.name}} options" >
           <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #optionsMenu="matMenu">
@@ -19,7 +19,7 @@
             <mat-icon>edit</mat-icon>
             <span>Edit</span>
           </button>
-          <button mat-menu-item (click)="deleteBill(bill)">
+          <button mat-menu-item (click)="deleteExpense(expense)">
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
           </button>
@@ -32,34 +32,34 @@
       <div class="d-flex flex-column">
         <strong>Type</strong>
         <hr class="w-100" />
-        <p>{{bill.expense.type}}</p>
+        <p>{{expense.type}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Amount</strong>
         <hr class="w-100" />
-        <p>$ {{bill.expense.amount}}</p>
+        <p>$ {{expense.amount}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Reoccurs</strong>
         <hr class="w-100" />
-        <p>{{bill.reoccurrence == 'Single'? 'No' : bill.reoccurrence}}</p>
+        <p>{{expense.reoccurrence == 'Single'? 'No' : expense.reoccurrence}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Starts On</strong>
         <hr class="w-100" />
-        <p>{{displayDate(bill.begin)}}</p>
+        <p>{{displayDate(expense.begin)}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Due On</strong>
         <hr class="w-100" />
-        <p>{{displayDate(bill.due)}}</p>
+        <p>{{displayDate(expense.due)}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Paid On</strong>
         <hr class="w-100" />
-        <p>{{displayDate(bill.paidOn)}}</p>
+        <p>{{displayDate(expense.paidOn)}}</p>
       </div>
     </div>
   </mat-card-content>
 </mat-card>
-<app-edit-expense-block *ngIf="edit" [bill]="bill" (cancel)="edit = !edit" (save)="saveBill($event)"></app-edit-expense-block>
+<app-edit-expense-block *ngIf="edit" [expense]="expense" (cancel)="edit = !edit" (save)="saveExpense($event)"></app-edit-expense-block>

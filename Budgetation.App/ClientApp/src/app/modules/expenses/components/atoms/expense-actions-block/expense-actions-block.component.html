@@ -2,7 +2,7 @@
   <mat-card-content>
     <div class="d-flex justify-content-between">
       <div class="d-flex">
-        <button class="mr-1" [disabled]="disableNewBill" mat-raised-button color="accent" id="newBillButton" (click)="createNewBill()"  matTooltip="add a new bill">Add New Bill</button>
+        <button class="mr-1" [disabled]="disableNewExpense" mat-raised-button color="accent" id="newBillButton" (click)="createNewExpense()"  matTooltip="add a new bill">Add New Bill</button>
         <button class="ml-1" (click)="recurringBillsSelected()" [disabled]="disablePrepareRecurring" mat-raised-button color="primary" id="prepareRecurringButton"  matTooltip="prepare recurring bills">Prepare Recurring</button>
       </div>
       <div>
@@ -11,7 +11,7 @@
           <mat-icon *ngIf="!filtered">filter_list</mat-icon>
         </button>
         <mat-menu #filterMenu="matMenu">
-          <button *ngIf="filtered" mat-menu-item (click)="filterBills('clear')">
+          <button *ngIf="filtered" mat-menu-item (click)="filterExpenses('clear')">
             <mat-icon>close</mat-icon>
             <span>Clear Filter</span>
           </button>
@@ -22,13 +22,13 @@
           </button>
         </mat-menu>
         <mat-menu #filterByTypeMenu="matMenu">
-          <button mat-menu-item (click)="filterBills('need')">
+          <button mat-menu-item (click)="filterExpenses('need')">
             <span>Need</span>
           </button>
-          <button mat-menu-item (click)="filterBills('want')">
+          <button mat-menu-item (click)="filterExpenses('want')">
             <span>Want</span>
           </button>
-          <button mat-menu-item (click)="filterBills('extra')">
+          <button mat-menu-item (click)="filterExpenses('extra')">
             <span>Extra</span>
           </button>
         </mat-menu>
@@ -51,39 +51,39 @@
           </button>
         </mat-menu>
         <mat-menu #sortByTypeMenu="matMenu">
-          <button mat-menu-item (click)="sortBills('byTypeNeedToExtra')">
+          <button mat-menu-item (click)="sortExpenses('byTypeNeedToExtra')">
             <mat-icon>attach_money</mat-icon>
             <span>Need to Extra</span>
           </button>
-          <button mat-menu-item (click)="sortBills('byTypeExtraToNeed')">
+          <button mat-menu-item (click)="sortExpenses('byTypeExtraToNeed')">
             <mat-icon>attach_money</mat-icon>
             <span>Extra to Need</span>
           </button>
         </mat-menu>
         <mat-menu #sortByCostMenu="matMenu">
-          <button mat-menu-item (click)="sortBills('byCostLowToHigh')">
+          <button mat-menu-item (click)="sortExpenses('byCostLowToHigh')">
             <mat-icon>attach_money</mat-icon>
             <span>Low to High</span>
           </button>
-          <button mat-menu-item (click)="sortBills('byCostHighToLow')">
+          <button mat-menu-item (click)="sortExpenses('byCostHighToLow')">
             <mat-icon>attach_money</mat-icon>
             <span>High to Low</span>
           </button>
         </mat-menu>
         <mat-menu #sortByDateMenu="matMenu">
-          <button mat-menu-item (click)="sortBills('byDateStartSoonToFar')">
+          <button mat-menu-item (click)="sortExpenses('byDateStartSoonToFar')">
             <mat-icon>update</mat-icon>
             <span>Begin Sooner</span>
           </button>
-          <button mat-menu-item (click)="sortBills('byDateStartFarToSoon')">
+          <button mat-menu-item (click)="sortExpenses('byDateStartFarToSoon')">
             <mat-icon>history</mat-icon>
             <span>Begin Later</span>
           </button>
-          <button mat-menu-item (click)="sortBills('byDateDueSoonToFar')">
+          <button mat-menu-item (click)="sortExpenses('byDateDueSoonToFar')">
             <mat-icon>update</mat-icon>
             <span>Due Sooner</span>
           </button>
-          <button mat-menu-item (click)="sortBills('byDateDueFarToSoon')">
+          <button mat-menu-item (click)="sortExpenses('byDateDueFarToSoon')">
             <mat-icon>history</mat-icon>
             <span>Due Later</span>
           </button>

@@ -24,4 +24,12 @@ namespace Budgetation.Data.Models
         public string Type { get; set; } = null!;
         public DateTime Date { get; set; } = DateTime.Today;
     }
+    
+    public class UserExpense
+    {
+        [BsonId]
+        public Guid UserId { get; set; }
+        public List<SingleExpense> SingleExpenses { get; set; } = new List<SingleExpense>();
+        public List<RecurringExpense> RecurringExpenses { get; set; } = new List<RecurringExpense>();
+    }
 }

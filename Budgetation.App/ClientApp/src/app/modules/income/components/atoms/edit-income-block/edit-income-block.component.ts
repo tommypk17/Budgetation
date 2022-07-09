@@ -1,5 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {cIncomeTypes, iIncome} from "../../../../../models/financial";
+import {eIncomeType, Income} from "../../../../../models/financial";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-edit-income-block',
@@ -8,17 +9,20 @@ import {cIncomeTypes, iIncome} from "../../../../../models/financial";
 })
 export class EditIncomeBlockComponent implements OnInit {
 
-  @Output('save') save: EventEmitter<iIncome> = new EventEmitter<iIncome>();
+  @Output('save') save: EventEmitter<Income> = new EventEmitter<Income>();
   @Output('cancel') cancel: EventEmitter<void> = new EventEmitter<void>();
-  @Input('income') income: iIncome | undefined;
+  @Input('income') income: Income | undefined;
 
   invalid: boolean = true;
 
-  incomeTypes: cIncomeTypes = new cIncomeTypes();
+  incomeTypes: KeyValue<number, string>[] = [];
 
   constructor() { }
 
   ngOnInit(): void {
+    Object.keys(eIncomeType).forEach((v) => {
+      this.incomeTypes.push({key: eIncomeType[v], value: v});
+    })
   }
 
   public saveIncome(): void {

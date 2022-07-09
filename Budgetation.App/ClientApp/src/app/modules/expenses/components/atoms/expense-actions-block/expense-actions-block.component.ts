@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {eReoccurrence, iBill} from "../../../../../models/financial";
 import {RecurringExpenseSelectorDialogComponent} from "../recurring-expense-selector-dialog/recurring-expense-selector-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {AbstractExpense} from "../../../../../models/financial";
 
 @Component({
   selector: 'app-expense-actions-block',
@@ -10,13 +10,13 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class ExpenseActionsBlockComponent implements OnInit {
 
-  @Output('newBill') newBill: EventEmitter<void> = new EventEmitter<void>();
+  @Output('newExpense') newExpense: EventEmitter<void> = new EventEmitter<void>();
   @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
-  @Output('prepareRecurring') prepareRecurring: EventEmitter<iBill[]> = new EventEmitter<iBill[]>();
+  @Output('prepareRecurring') prepareRecurring: EventEmitter<AbstractExpense[]> = new EventEmitter<AbstractExpense[]>();
 
-  @Input('bills') bills: iBill[] = [];
-  @Input('disableNewBill') disableNewBill: boolean = true;
+  @Input('expenses') expenses: AbstractExpense[] = [];
+  @Input('disableNewExpense') disableNewExpense: boolean = true;
   @Input('disablePrepareRecurring') disablePrepareRecurring: boolean = true;
   @Input('filtered') filtered: boolean = false;
 
@@ -26,20 +26,20 @@ export class ExpenseActionsBlockComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createNewBill(): void {
-    this.newBill.next();
+  createNewExpense(): void {
+    this.newExpense.next();
   }
 
-  filterBills(event: string): void {
+  filterExpenses(event: string): void {
     this.filter.next(event);
   }
 
-  sortBills(event: string): void {
+  sortExpenses(event: string): void {
     this.sort.next(event);
   }
 
   recurringBillsSelected(): void {
-    let bills: iBill[] = [];
+    let bills: AbstractExpense[] = [];
     const dialogRef = this.recurringDialog.open(RecurringExpenseSelectorDialogComponent, {
       data: bills
     });

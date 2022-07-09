@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {iBill} from "../../../../../models/financial";
+import {AbstractExpense} from "../../../../../models/financial";
 import {Subject} from "rxjs";
 import {B} from "@angular/cdk/keycodes";
 
@@ -10,10 +10,10 @@ import {B} from "@angular/cdk/keycodes";
 })
 export class ExistingExpenseBlockComponent implements OnInit {
 
-  @Input('bill') bill: iBill | undefined;
-  @Output('save') save: Subject<iBill> = new Subject<iBill>();
-  @Output('delete') delete: Subject<iBill> = new Subject<iBill>();
-  @Output('paid') paid: Subject<iBill> = new Subject<iBill>();
+  @Input('expense') expense: AbstractExpense | undefined;
+  @Output('save') save: Subject<AbstractExpense> = new Subject<AbstractExpense>();
+  @Output('delete') delete: Subject<AbstractExpense> = new Subject<AbstractExpense>();
+  @Output('paid') paid: Subject<AbstractExpense> = new Subject<AbstractExpense>();
 
   edit: boolean = false;
 
@@ -30,15 +30,15 @@ export class ExistingExpenseBlockComponent implements OnInit {
     }
   }
 
-  saveBill(bill: iBill): void {
-    this.save.next(bill);
+  saveExpense(expense: AbstractExpense): void {
+    this.save.next(expense);
   }
 
-  deleteBill(bill: iBill): void {
-    this.delete.next(bill);
+  deleteExpense(expense: AbstractExpense): void {
+    this.delete.next(expense);
   }
 
-  markPaid(bill: iBill): void {
-    this.paid.next(bill)
+  markPaid(expense: AbstractExpense): void {
+    this.paid.next(expense)
   }
 }

@@ -1,6 +1,6 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {iBill, iIncome} from "../../../../../models/financial";
 import {Subject} from "rxjs";
+import {Income} from "../../../../../models/financial";
 
 @Component({
   selector: 'app-existing-income-block',
@@ -9,9 +9,9 @@ import {Subject} from "rxjs";
 })
 export class ExistingIncomeBlockComponent implements OnInit {
 
-  @Input('income') income: iIncome | undefined;
-  @Output('save') save: Subject<iIncome> = new Subject<iIncome>();
-  @Output('delete') delete: Subject<iIncome> = new Subject<iIncome>();
+  @Input('income') income: Income | undefined;
+  @Output('save') save: Subject<Income> = new Subject<Income>();
+  @Output('delete') delete: Subject<Income> = new Subject<Income>();
 
   edit: boolean = false;
 
@@ -28,11 +28,11 @@ export class ExistingIncomeBlockComponent implements OnInit {
     }
   }
 
-  saveIncome(income: iIncome): void {
+  saveIncome(income: Income): void {
     this.save.next(income);
   }
 
-  deleteIncome(income: iIncome): void {
+  deleteIncome(income: Income): void {
     this.delete.next(income);
   }
 }

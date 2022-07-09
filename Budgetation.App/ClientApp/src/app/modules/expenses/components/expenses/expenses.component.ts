@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {cBill, eExpenseType, iBill} from "../../../../models/financial";
-import {BillService} from "../../../../services/bill.service";
+import {SingleExpense, RecurringExpense, eExpenseType, AbstractExpense} from "../../../../models/financial";
+import {ExpenseService} from "../../../../services/expense.service";
 import {iResponse} from "../../../../models/response";
 
 @Component({
@@ -12,126 +12,170 @@ export class ExpensesComponent implements OnInit {
 
   headerBlock = {blockTitle: "Expenses", blockSubtitle: "", blockContent: ""};
 
-  newBill: iBill | undefined;
+  newExpense: AbstractExpense | undefined;
 
-  allBills: iBill[] = [];
-  currentBills: iBill[] = [];
+  allExpenses: AbstractExpense[] = [];
+  currentExpenses: AbstractExpense[] = [];
 
   currentSort: string | undefined;
   currentFilter: string | undefined;
 
-  constructor(private billService: BillService) { }
+  constructor(private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
-    this.getAllBills();
+    this.getAllExpenses();
   }
 
-  getAllBills(): void {
-    this.billService.getAllBills().subscribe((res:iResponse<iBill[]>) => {
+  getAllExpenses(): void {
+    this.expenseService.getAllExpenses().subscribe((res:iResponse<AbstractExpense[]>) => {
       if(res && res.data){
-        this.allBills = res.data;
-        this.currentBills = this.allBills;
-        this.sortBills('byDateDueSoonToFar');
+        this.allExpenses = res.data;
+        this.currentExpenses = this.allExpenses;
+        this.sortExpenses('byDateDueSoonToFar');
       }
     });
   }
 
-  saveNewBill(bill: iBill): void {
-    if(!bill.paid) bill.paid = !!bill.paid;
-    this.billService.saveBill(bill).subscribe((res: iResponse<iBill>) => {
-      if(res && res.data){
-        this.allBills.push(res.data);
-        this.newBill = undefined;
-        this.reFilterSort();
-      }
-    });
-  }
-
-  saveExistingBill(bill: iBill): void {
-    if(!bill.paid) bill.paid = !!bill.paid;
-    if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
-    this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
-      if(res && res.data){
-        let existingBillIdx = this.allBills.findIndex(x => x.id == bill.id);
-        if(existingBillIdx > -1){
-          this.allBills[existingBillIdx] = res.data;
-        }
-        this.reFilterSort();
-      }
-    });
-  }
-
-  deleteBill(bill: iBill): void {
-    this.billService.deleteBill(bill).subscribe((res: iResponse<iBill>) => {
-      if(res && res.data){
-        let billIdx = this.allBills.findIndex(x => x.id == bill.id);
-        this.allBills.splice(billIdx, 1);
-        this.currentBills = this.allBills
-      }
-    });
-  }
-
-  markBillPaid(bill: iBill): void {
-    bill.paid = !!!bill.paid;
-    if(bill.paid && !bill.paidOn) bill.paidOn = new Date(Date.now());
-    this.billService.updateBill(bill).subscribe((res: iResponse<iBill>) => {
-      if(res && res.data){
-        let existingBillIdx = this.allBills.findIndex(x => x.id == bill.id);
-        if(existingBillIdx > -1){
-          this.allBills[existingBillIdx] = res.data;
-        }
-        this.reFilterSort();
-      }
-    });
-  }
-
-  prepareRecurring(bills: iBill[]): void {
-    if(bills && bills.length > 0){
-      this.billService.addReoccurrences(bills).subscribe((res: iResponse<iBill[]>) => {
+  saveNewExpense(expense: SingleExpense | RecurringExpense): void {
+    if(typeof(expense) == typeof(SingleExpense)){
+      this.expenseService.saveSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
-          this.allBills = this.allBills.concat(res.data);
-          this.newBill = undefined;
+          this.allExpenses.push(res.data);
+          this.newExpense = undefined;
+          this.reFilterSort();
+        }
+      });
+    }else if (typeof(expense) == typeof(RecurringExpense) ){
+      this.expenseService.saveRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
+        if(res && res.data){
+          this.allExpenses.push(res.data);
+          this.newExpense = undefined;
           this.reFilterSort();
         }
       });
     }
   }
 
+  saveExistingExpense(expense: SingleExpense | RecurringExpense): void {
+    if(typeof(expense) == typeof(SingleExpense)){
+      this.expenseService.updateSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
+        if(res && res.data){
+          let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          if(existingExpenseIdx > -1){
+            this.allExpenses[existingExpenseIdx] = res.data;
+          }
+          this.reFilterSort();
+        }
+      });
+    }else if (typeof(expense) == typeof(RecurringExpense) ){
+      this.expenseService.updateRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
+        if(res && res.data){
+          let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          if(existingExpenseIdx > -1){
+            this.allExpenses[existingExpenseIdx] = res.data;
+          }
+          this.reFilterSort();
+        }
+      });
+    }
+
+
+  }
+
+  deleteExpense(expense: SingleExpense | RecurringExpense): void {
+    if(typeof(expense) == typeof(SingleExpense)){
+      this.expenseService.deleteSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
+        if(res && res.data){
+          let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          this.allExpenses.splice(expenseIdx, 1);
+          this.currentExpenses = this.allExpenses;
+        }
+      });
+
+    }else if (typeof(expense) == typeof(RecurringExpense) ){
+      this.expenseService.deleteRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
+        if(res && res.data){
+          let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          this.allExpenses.splice(expenseIdx, 1);
+          this.currentExpenses = this.allExpenses;
+        }
+      });
+    }
+  }
+
+  markExpensePaid(expense: SingleExpense | RecurringExpense): void {
+    if(!expense.paidOn) expense.paidOn = new Date(Date.now());
+    else expense.paidOn = undefined;
+    if(typeof(expense) == typeof(SingleExpense)){
+      this.expenseService.updateSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
+        if(res && res.data){
+          let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          if(existingExpenseIdx > -1){
+            this.allExpenses[existingExpenseIdx] = res.data;
+          }
+          this.reFilterSort();
+        }
+      });
+    }else if (typeof(expense) == typeof(RecurringExpense) ){
+      this.expenseService.updateRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
+        if(res && res.data){
+          let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
+          if(existingExpenseIdx > -1){
+            this.allExpenses[existingExpenseIdx] = res.data;
+          }
+          this.reFilterSort();
+        }
+      });
+    }
+  }
+
+  prepareRecurring(bills: AbstractExpense[]): void {
+    // if(bills && bills.length > 0){
+    //   this.billService.addReoccurrences(bills).subscribe((res: iResponse<iBill[]>) => {
+    //     if(res && res.data){
+    //       this.allBills = this.allBills.concat(res.data);
+    //       this.newBill = undefined;
+    //       this.reFilterSort();
+    //     }
+    //   });
+    // }
+  }
+
   reFilterSort(): void {
-    if(this.currentSort) this.sortBills(this.currentSort);
-    if(this.currentFilter) this.filterBills(this.currentFilter);
+    if(this.currentSort) this.sortExpenses(this.currentSort);
+    if(this.currentFilter) this.filterExpenses(this.currentFilter);
   }
 
-  createNewBill(): void {
-    this.newBill = new cBill();
+  createNewExpense(): void {
+    this.newExpense = new SingleExpense();
   }
 
-  cancelNewBill(): void {
-    this.newBill = undefined;
+  cancelNewExpense(): void {
+    this.newExpense = undefined;
   }
 
-  filterBills(filterBy: string): void {
+  filterExpenses(filterBy: string): void {
     this.currentFilter = filterBy;
     switch (filterBy){
       case 'clear':
-        this.currentBills = this.allBills;
+        this.currentExpenses = this.allExpenses;
         this.currentFilter = undefined;
         break;
       case 'need':
-        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Need);
+        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Need);
         break;
       case 'want':
-        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Want);
+        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Want);
         break;
       case 'extra':
-        this.currentBills = this.allBills.filter(x => x.expense.type == eExpenseType.Extra);
+        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Extra);
         break;
     }
   }
 
-  sortBills(sortOrder: string): void {
+  sortExpenses(sortOrder: string): void {
     this.currentSort = sortOrder;
-    this.currentBills = this.allBills;
+    this.currentExpenses = this.allExpenses;
     let keyVal = [];
     let i = 0;
     Object.keys(eExpenseType).forEach((v) => {
@@ -140,30 +184,30 @@ export class ExpensesComponent implements OnInit {
     });
     switch (sortOrder){
       case 'clear':
-        this.currentBills = this.allBills;
+        this.currentExpenses = this.allExpenses;
         break;
       case 'byTypeNeedToExtra':
-        this.currentBills.sort( (a,b ) => {
+        this.currentExpenses.sort( (a,b ) => {
           return keyVal[a.expense.type] - keyVal[b.expense.type];
         });
         break;
       case 'byTypeExtraToNeed':
-        this.currentBills.sort( (a,b ) => {
+        this.currentExpenses.sort( (a,b ) => {
           return keyVal[b.expense.type] - keyVal[a.expense.type];
         });
         break;
       case 'byCostLowToHigh':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           return a.expense.amount - b.expense.amount;
         });
         break;
       case 'byCostHighToLow':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           return b.expense.amount - a.expense.amount;
         });
         break;
       case 'byDateStartSoonToFar':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           let aDate: Date, bDate: Date;
           if(!b.begin) bDate = new Date(0);
           else bDate = new Date(b.begin)
@@ -173,7 +217,7 @@ export class ExpensesComponent implements OnInit {
         });
         break;
       case 'byDateStartFarToSoon':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           let aDate, bDate: Date;
           if(!b.begin) bDate = new Date(0);
           else bDate = new Date(b.begin)
@@ -183,7 +227,7 @@ export class ExpensesComponent implements OnInit {
         });
         break;
       case 'byDateDueSoonToFar':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           let aDate, bDate: Date;
           if(!b.due) bDate = new Date(0);
           else bDate = new Date(b.due)
@@ -193,7 +237,7 @@ export class ExpensesComponent implements OnInit {
         });
         break;
       case 'byDateDueFarToSoon':
-        this.currentBills.sort((a,b) => {
+        this.currentExpenses.sort((a,b) => {
           let aDate, bDate: Date;
           if(!b.due) bDate = new Date(0);
           else bDate = new Date(b.due)

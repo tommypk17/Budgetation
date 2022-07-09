@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {SharedService} from "./shared.service";
 import {Observable} from "rxjs";
 import {iResponse} from "../models/response";
-import {iBill, iIncome} from "../models/financial";
+import {Income} from "../models/financial";
 import {environment} from "../../environments/environment";
 import {catchError, finalize, retry} from "rxjs/operators";
 
@@ -14,13 +14,13 @@ export class IncomeService {
 
   constructor(private http: HttpClient, private sharedService: SharedService) { }
 
-  public getAllIncome(): Observable<iResponse<iIncome[]>> {
+  public getAllIncome(): Observable<iResponse<Income[]>> {
     this.sharedService.queueLoading('getAllIncome');
-    return this.http.get<iResponse<iIncome[]>>(environment.URL + '/api/users/income').pipe(
+    return this.http.get<iResponse<Income[]>>(environment.URL + '/api/users/income').pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iResponse<iIncome[]>>((subscriber) => {
+        return new Observable<iResponse<Income[]>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),
@@ -30,13 +30,13 @@ export class IncomeService {
     );
   }
 
-  public saveIncome(income: iIncome): Observable<iResponse<iIncome>> {
+  public saveIncome(income: Income): Observable<iResponse<Income>> {
     this.sharedService.queueLoading('saveIncome');
-    return this.http.post<iResponse<iIncome>>(environment.URL + '/api/users/income', income).pipe(
+    return this.http.post<iResponse<Income>>(environment.URL + '/api/users/income', income).pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iResponse<iIncome>>((subscriber) => {
+        return new Observable<iResponse<Income>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),
@@ -46,13 +46,13 @@ export class IncomeService {
     );
   }
 
-  public updateIncome(income: iIncome): Observable<iResponse<iIncome>> {
+  public updateIncome(income: Income): Observable<iResponse<Income>> {
     this.sharedService.queueLoading('updateIncome');
-    return this.http.put<iResponse<iIncome>>(environment.URL + `/api/users/income`, income).pipe(
+    return this.http.put<iResponse<Income>>(environment.URL + `/api/users/income`, income).pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iResponse<iIncome>>((subscriber) => {
+        return new Observable<iResponse<Income>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),
@@ -62,13 +62,13 @@ export class IncomeService {
     );
   }
 
-  public deleteIncome(income: iIncome): Observable<iResponse<iIncome>> {
+  public deleteIncome(income: Income): Observable<iResponse<Income>> {
     this.sharedService.queueLoading('deleteIncome');
-    return this.http.delete<iResponse<iIncome>>(environment.URL + `/api/users/income/${income.id}`).pipe(
+    return this.http.delete<iResponse<Income>>(environment.URL + `/api/users/income/${income.id}`).pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
-        return new Observable<iResponse<iIncome>>((subscriber) => {
+        return new Observable<iResponse<Income>>((subscriber) => {
           subscriber.next(undefined);
         })
       }),

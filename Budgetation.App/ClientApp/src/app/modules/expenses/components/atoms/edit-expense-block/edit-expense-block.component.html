@@ -1,23 +1,23 @@
-<mat-card *ngIf="bill">
+<mat-card *ngIf="expense">
   <mat-card-content>
     <div class="d-flex flex-column">
       <ng-container>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the expense name</mat-label>
-          <input [(ngModel)]="bill.expense.name" (change)="checkValid()" matInput name="name" required>
+          <input [(ngModel)]="expense.name" (change)="checkValid()" matInput name="name" required>
           <mat-hint align="end">name used to identify expense</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the amount</mat-label>
-          <input [(ngModel)]="bill.expense.amount" (change)="checkValid()" matInput type="number" min=".01" step="0.01" required>
+          <input [(ngModel)]="expense.amount" (change)="checkValid()" matInput type="number" min=".01" step="0.01" required>
           <span matPrefix>$&nbsp;</span>
           <mat-hint align="end">amount due to satisfy the expense</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>select the expense type</mat-label>
-          <mat-select [(ngModel)]="bill.expense.type" (selectionChange)="checkValid()">
-            <mat-option *ngFor="let expenseType of expenseTypes.types" [value]="expenseType.value">
-              {{expenseType.display}}
+          <mat-select [(ngModel)]="expense.type" (selectionChange)="checkValid()">
+            <mat-option *ngFor="let expenseType of expenseTypes" [value]="expenseType.value">
+              {{expenseType.value}}
             </mat-option>
           </mat-select>
           <mat-hint align="end">select the type of expense to categorize under</mat-hint>
@@ -25,44 +25,44 @@
       </ng-container>
       <mat-form-field appearance="fill" class="mb-2">
         <mat-label>select the reoccurrence frequency</mat-label>
-        <mat-select #reoccurrence [(ngModel)]="bill.reoccurrence" (selectionChange)="checkValid()">
-          <mat-option  *ngFor="let reoccurrence of reoccurrences.reoccurrences" [value]="reoccurrence.value">
-            {{reoccurrence.display}}
+        <mat-select #reoccurrence [(ngModel)]="expense.reoccurrence" (selectionChange)="checkValid()">
+          <mat-option  *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence.value">
+            {{reoccurrence.value}}
           </mat-option>
         </mat-select>
         <mat-hint align="end">select how often this expense is expected to reoccur</mat-hint>
       </mat-form-field>
       <mat-form-field *ngIf="reoccurrence.value != 'Single'" appearance="fill" class="mb-2">
         <mat-label>begin date</mat-label>
-        <input matInput [(ngModel)]="bill.begin" (dateChange)="checkValid()" [matDatepicker]="beginPicker" [required]="reoccurrence.value > 0">
+        <input matInput [(ngModel)]="expense.begin" (dateChange)="checkValid()" [matDatepicker]="beginPicker" [required]="reoccurrence.value > 0">
         <mat-datepicker-toggle matSuffix [for]="beginPicker"></mat-datepicker-toggle>
         <mat-datepicker #beginPicker></mat-datepicker>
         <mat-hint align="end">select the date this expense should reoccur from</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill" class="mb-2">
         <mat-label>due date</mat-label>
-        <input matInput [(ngModel)]="bill.due" (dateChange)="checkValid()" [matDatepicker]="duePicker" required>
+        <input matInput [(ngModel)]="expense.due" (dateChange)="checkValid()" [matDatepicker]="duePicker" required>
         <mat-datepicker-toggle matSuffix [for]="duePicker"></mat-datepicker-toggle>
         <mat-datepicker #duePicker></mat-datepicker>
         <mat-hint align="end">select the date this expense will first be due</mat-hint>
       </mat-form-field>
       <div class="mb-2 d-flex flex-column">
         <mat-label>paid</mat-label>
-        <mat-slide-toggle [(ngModel)]="bill.paid" (change)="checkValid()" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="expense.paid" (change)="checkValid()" color="primary"></mat-slide-toggle>
       </div>
-      <mat-form-field *ngIf="bill.paid" appearance="fill" class="mb-2">
+      <mat-form-field *ngIf="expense.paid" appearance="fill" class="mb-2">
         <mat-label>paid on date</mat-label>
-        <input matInput [(ngModel)]="bill.paidOn" (dateChange)="checkValid()" [matDatepicker]="paidOnPicker" [required]="bill.paid">
+        <input matInput [(ngModel)]="expense.paidOn" (dateChange)="checkValid()" [matDatepicker]="paidOnPicker" [required]="expense.paid">
         <mat-datepicker-toggle matSuffix [for]="paidOnPicker"></mat-datepicker-toggle>
         <mat-datepicker #paidOnPicker></mat-datepicker>
         <mat-hint align="end">select the date this expense was paid on</mat-hint>
       </mat-form-field>
       <div class="d-flex flex-end">
         <div class="mr-2">
-          <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewBill()" type="button">cancel</button>
+          <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewExpense()" type="button">cancel</button>
         </div>
         <div>
-          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveBill()" type="submit">update expense</button>
+          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveExpense()" type="submit">update expense</button>
         </div>
       </div>
     </div>

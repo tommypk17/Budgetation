@@ -1,6 +1,6 @@
 using Budgetation.Data.DAL;
-using Budgetation.Data.Interfaces;
 using Budgetation.Data.Interfaces.IDBServices;
+using Budgetation.Data.Models;
 using Budgetation.Data.Services;
 using Budgetation.Logic.Services;
 using Budgetation.Logic.Services.Interfaces;
@@ -12,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
-using IBillService = Budgetation.Logic.Services.Interfaces.IBillService;
 
 namespace Budgetation.API
 {
@@ -62,11 +61,13 @@ namespace Budgetation.API
             });
             //MongoDB services
             services.AddSingleton<IDbUserService, DbUserService>();
-            services.AddSingleton<IDbBillService, DbBillService>();
+            services.AddSingleton<IDbExpenseService<SingleExpense>, DbSingleExpenseService>();
+            services.AddSingleton<IDbExpenseService<RecurringExpense>, DbRecurringExpenseService>();
             services.AddSingleton<IDbUserIncomeService, DbUserIncomeService>();
 
             //Logic services
-            services.AddScoped<IBillService, BillService>();
+            services.AddScoped<IExpenseService<SingleExpense>, SingleExpenseService>();
+            services.AddScoped<IExpenseService<RecurringExpense>, RecurringExpenseService>();
             services.AddScoped<IUserService, UserService>();
 
         }

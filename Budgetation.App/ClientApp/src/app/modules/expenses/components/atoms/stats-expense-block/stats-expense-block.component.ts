@@ -1,5 +1,5 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {iBill} from "../../../../../models/financial";
+import {AbstractExpense} from "../../../../../models/financial";
 
 @Component({
   selector: 'app-stats-expense-block',
@@ -8,7 +8,7 @@ import {iBill} from "../../../../../models/financial";
 })
 export class StatsExpenseBlockComponent implements OnInit, OnChanges {
 
-  @Input('bills') bills: iBill[] = [];
+  @Input('expenses') expenses: AbstractExpense[] = [];
 
   expenseTotal: number = 0;
 
@@ -19,7 +19,7 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
 
   public getTotalOutgoing(): number {
     let total: number = 0;
-    this.bills.forEach((v) => {
+    this.expenses.forEach((v) => {
       total += v.expense.amount;
     });
     return total;
