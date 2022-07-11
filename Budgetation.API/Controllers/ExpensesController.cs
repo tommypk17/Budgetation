@@ -25,6 +25,25 @@ namespace Budgetation.API.Controllers
             _singleExpenseService = singleExpenseService;
             _recurringExpenseService = recurringExpenseService;
         }
+        
+        // GET: api/expenses
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            List<SingleExpense>? singleExpenses = await _singleExpenseService.GetAllUserExpenses(userId);
+            List<RecurringExpense>? recurringExpenses = await _recurringExpenseService.GetAllUserExpenses(userId);
+            List<AbstractExpense>? expenses = new List<AbstractExpense>();
+            if(singleExpenses is not null) expenses = expenses.Concat(singleExpenses).ToList();
+            if(recurringExpenses is not null) expenses = expenses.Concat(recurringExpenses).ToList();
+            if (!expenses.Any())
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
+            }
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = expenses, Message = "Expenses found", Success = true});
+
+        }
+        
         // GET: api/expenses/single
         [HttpGet("single")]
         public async Task<IActionResult> GetSingle()

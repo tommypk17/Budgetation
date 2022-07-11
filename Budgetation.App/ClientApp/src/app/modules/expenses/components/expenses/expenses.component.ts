@@ -37,7 +37,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   saveNewExpense(expense: SingleExpense | RecurringExpense): void {
-    if(typeof(expense) == typeof(SingleExpense)){
+    if(expense instanceof SingleExpense){
       this.expenseService.saveSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
           this.allExpenses.push(res.data);
@@ -45,7 +45,7 @@ export class ExpensesComponent implements OnInit {
           this.reFilterSort();
         }
       });
-    }else if (typeof(expense) == typeof(RecurringExpense) ){
+    }else if (expense instanceof RecurringExpense){
       this.expenseService.saveRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
         if(res && res.data){
           this.allExpenses.push(res.data);

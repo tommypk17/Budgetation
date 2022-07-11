@@ -17,6 +17,8 @@ export class EditExpenseBlockComponent implements OnInit {
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
+  reoccurs: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -29,7 +31,7 @@ export class EditExpenseBlockComponent implements OnInit {
   }
 
   public saveExpense(): void {
-    if(this.expense.reoccurrence == eReoccurrence.Single){
+    if(this.reoccurs){
       this.expense.begin = null;
     }
     this.save.next(this.expense);
@@ -39,8 +41,8 @@ export class EditExpenseBlockComponent implements OnInit {
     this.cancel.next();
   }
 
-  clearReoccur(reoccurrence: eReoccurrence){
-    if(reoccurrence == eReoccurrence.Single) {
+  clearReoccur(){
+    if(this.reoccurs) {
       this.expense.begin = null;
     }
   }

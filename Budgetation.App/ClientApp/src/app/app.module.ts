@@ -14,6 +14,7 @@ import { MsalModule, MsalService, MsalGuard, MsalInterceptor, MsalBroadcastServi
 import { PublicClientApplication, InteractionType, BrowserCacheLocation } from "@azure/msal-browser";
 
 import { environment } from '../environments/environment';
+import {ValidationInterceptor} from "./interceptors/validation.interceptor";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,11 @@ import { environment } from '../environments/environment';
     useClass: MsalInterceptor,
     multi: true
   },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ValidationInterceptor,
+      multi: true
+    },
     MsalService,
     MsalGuard,
     MsalBroadcastService],

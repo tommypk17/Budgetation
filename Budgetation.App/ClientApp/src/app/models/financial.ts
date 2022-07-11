@@ -1,19 +1,32 @@
-﻿import {KeyValue} from "@angular/common";
+﻿import {eValidationType, iValidationField, Validator} from "./validation";
 
-export class Income {
+export class Income extends Validator{
   id?: string;
   incomingBalance: number = 0;
   amount: number = 0;
   date: Date = new Date(Date.now());
   type: eIncomeType;
+
+  validationFields: iValidationField[] = [
+    {fieldName: 'incomingBalance', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
+    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
+    {fieldName: 'date', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isDate]},
+    {fieldName: 'type', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]}
+  ];
 }
 
-export abstract class AbstractExpense {
+export abstract class AbstractExpense extends Validator{
   id?: string;
-  name: string;
+  name: string = '';
   amount: number = 0;
   type: eExpenseType;
   paidOn?: Date = undefined;
+
+  validationFields: iValidationField[] = [
+    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
+    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
+    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]}
+  ];
 
   [key: string]: any;
 }
@@ -29,13 +42,12 @@ export class RecurringExpense extends AbstractExpense {
 }
 
 export enum eReoccurrence {
-  Single = 'Single',
-  Weekly = 'Weekly',
-  Biweekly = 'Biweekly',
-  Monthly = 'Monthly',
-  Quarterly = 'Quarterly',
-  Biquarterly = 'Biquarterly',
-  Yearly = 'Yearly'
+  Weekly ,
+  Biweekly ,
+  Monthly ,
+  Quarterly ,
+  Biquarterly ,
+  Yearly
 }
 
 export enum eIncomeType {
@@ -46,7 +58,7 @@ export enum eIncomeType {
 }
 
 export enum eExpenseType {
-  Need = 'Need',
-  Want = 'Want',
-  Extra = 'Extra'
+  Need ,
+  Want ,
+  Extra
 }

@@ -7,7 +7,7 @@ namespace Budgetation.Data.Models
     public abstract class AbstractExpense
     {
         [BsonId]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         [BsonRequired]
         public string Name { get; set; } = null!;
         [BsonRequired]

@@ -3,18 +3,17 @@ export interface iValidator {
 
   isObjectValid(): boolean;
 
-  validObjectFields(): cFieldValidationMessage[];
+  validObjectFields(): FieldValidationMessage[];
 
-  invalidObjectFields(): cFieldValidationMessage[];
+  invalidObjectFields(): FieldValidationMessage[];
 }
 
 export interface iValidationField {
   fieldName: string;
-  fieldValue: any;
   validationTypes: eValidationType[];
 }
 
-export class cValidator implements iValidator {
+export class Validator implements iValidator {
 
   constructor(validationFields?: iValidationField[]) {
     if (validationFields) this.validationFields = validationFields;
@@ -23,20 +22,28 @@ export class cValidator implements iValidator {
 
   validationFields: iValidationField[];
 
-  private validFields: cFieldValidationMessage[] = [];
-  private invalidFields: cFieldValidationMessage[] = [];
+  private validFields: FieldValidationMessage[] = [];
+  private invalidFields: FieldValidationMessage[] = [];
+
+  asPayload(): any {
+    let payload = Object.assign({}, this);
+    delete payload.validFields;
+    delete payload.invalidFields;
+    delete payload.validationFields;
+    return payload;
+  }
 
   isObjectValid(): boolean {
     let res: boolean = true;
     if (this.validationFields){
-     //console.log(this.validationFields)
+     // console.log(this.validationFields)
      for (let validationField of this.validationFields){
-       if(!cValidator.isValid(validationField.fieldValue, validationField.validationTypes)){
+       if(!this.isValid(validationField.fieldName, validationField.validationTypes)){
          //track which fields failed validation
          if (!this.invalidFields.find(x => x.fieldName == validationField.fieldName)){
-           let message: cFieldValidationMessage = new cFieldValidationMessage();
+           let message: FieldValidationMessage = new FieldValidationMessage();
            message.fieldName = validationField.fieldName;
-           message.messages = cValidator.getValidationMessages(validationField);
+           message.messages = Validator.getValidationMessages(validationField);
            this.invalidFields.push(message);
          }
          //remove which fields were valid but now failed
@@ -49,9 +56,9 @@ export class cValidator implements iValidator {
        }else{
          //track which fields passed validation
          if (!this.validFields.find(x => x.fieldName == validationField.fieldName)){
-           let message: cFieldValidationMessage = new cFieldValidationMessage();
+           let message: FieldValidationMessage = new FieldValidationMessage();
            message.fieldName = validationField.fieldName;
-           message.messages = cValidator.getValidationMessages(validationField);
+           message.messages = Validator.getValidationMessages(validationField);
            this.validFields.push(message);
          }
          //remove which fields were invalid but now passed
@@ -67,25 +74,25 @@ export class cValidator implements iValidator {
     return res;
   }
 
-  private static isValid(value: any, types: eValidationType[]){
+  private isValid(fieldName: string, types: eValidationType[]){
     let res = false;
     for (let type of types) {
       switch (type){
         case eValidationType.isEmpty:
-          if (value == "") res = true;
+          if (this[fieldName] == "") res = true;
           else return false;
           break;
         case eValidationType.isNotEmpty:
-          if (value != "") res = true;
+          if (this[fieldName] != "") res = true;
           else return false;
           break;
         case eValidationType.isNotNull:
-          if (value != null) res = true;
+          if (this[fieldName] != null) res = true;
           else return false;
           break;
         case eValidationType.isDate:
-            if(value){
-              let tempDate: Date = new Date(value);
+            if(this[fieldName]){
+              let tempDate: Date = new Date(this[fieldName]);
               if(tempDate > new Date(null)){
                 res = true;
               }else{
@@ -104,12 +111,12 @@ export class cValidator implements iValidator {
     return res;
   }
 
-  protected static getValidationMessages(validationField: iValidationField): cValidationMessage[]{
-    let res: cValidationMessage[] = [];
+  protected static getValidationMessages(validationField: iValidationField): ValidationMessage[]{
+    let res: ValidationMessage[] = [];
     validationField.validationTypes.forEach((v, i, a) => {
-      let message = cValidator.getMessage(v);
+      let message = Validator.getMessage(v);
       let type = v;
-      let tempRes: cValidationMessage = new cValidationMessage(message, type);
+      let tempRes: ValidationMessage = new ValidationMessage(message, type);
       res.push(tempRes);
     })
     return res;
@@ -144,11 +151,11 @@ export class cValidator implements iValidator {
     }
   }
 
-  validObjectFields(): cFieldValidationMessage[] {
+  validObjectFields(): FieldValidationMessage[] {
     return this.validFields;
   }
 
-  invalidObjectFields(): cFieldValidationMessage[] {
+  invalidObjectFields(): FieldValidationMessage[] {
     return this.invalidFields;
   }
 }
@@ -167,12 +174,12 @@ export enum eValidationType {
   isNotRequired,
 }
 
-export class cFieldValidationMessage {
+export class FieldValidationMessage {
   fieldName: string;
-  messages: cValidationMessage[];
+  messages: ValidationMessage[];
 }
 
-export class cValidationMessage {
+export class ValidationMessage {
   message: string;
   type: eValidationType;
 

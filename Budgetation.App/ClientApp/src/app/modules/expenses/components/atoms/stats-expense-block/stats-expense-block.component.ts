@@ -20,7 +20,7 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
   public getTotalOutgoing(): number {
     let total: number = 0;
     this.expenses.forEach((v) => {
-      total += v.expense.amount;
+      total += v.amount;
     });
     return total;
   }

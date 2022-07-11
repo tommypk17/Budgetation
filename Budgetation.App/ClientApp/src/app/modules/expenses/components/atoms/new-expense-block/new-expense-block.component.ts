@@ -2,7 +2,7 @@ import {Component, OnInit, Output, EventEmitter, Input} from '@angular/core';
 import {
   AbstractExpense,
   eExpenseType,
-  eReoccurrence
+  eReoccurrence, RecurringExpense, SingleExpense
 } from "../../../../../models/financial";
 import {KeyValue} from "@angular/common";
 
@@ -14,30 +14,38 @@ import {KeyValue} from "@angular/common";
 })
 export class NewExpenseBlockComponent implements OnInit {
 
-  @Output('save') save: EventEmitter<AbstractExpense> = new EventEmitter<AbstractExpense>();
+  @Output('save') save: EventEmitter<SingleExpense | RecurringExpense> = new EventEmitter<SingleExpense | RecurringExpense>();
   @Output('cancel') cancel: EventEmitter<void> = new EventEmitter<void>();
-  @Input('expense') expense: AbstractExpense | undefined;
+  @Input('expense') expense: SingleExpense | RecurringExpense | undefined;
 
   invalid: boolean = true;
 
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
+  reoccurs: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
-    Object.keys(eReoccurrence).forEach((v) => {
-      this.reoccurrences.push({key: eReoccurrence[v], value: v});
-    })
-    Object.keys(eExpenseType).forEach((v) => {
-      this.expenseTypes.push({key: eExpenseType[v], value: v});
-    })
+    Object.values(eReoccurrence).filter((o) => typeof o == 'string').forEach((v) => {
+      this.reoccurrences.push({key: eReoccurrence[v], value: v as string});
+    });
+    Object.values(eExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
+      this.expenseTypes.push({key: eExpenseType[v], value: v as string});
+    });
+  }
+
+  public changeReoccurs(reoccurs: boolean) {
+    if(reoccurs){
+      this.expense = Object.assign(new RecurringExpense(), this.expense);
+    }else{
+      this.expense = Object.assign(new SingleExpense(), this.expense);
+    }
   }
 
   public saveExpense(): void {
-    if(this.expense.reoccurrence == eReoccurrence.Single){
-      this.expense.begin = null;
-    }
+    this.reoccurs = false;
     this.save.next(this.expense);
   }
 
@@ -45,22 +53,10 @@ export class NewExpenseBlockComponent implements OnInit {
     this.cancel.next();
   }
 
-  clearReoccur(reoccurrence: eReoccurrence){
-    if(reoccurrence == eReoccurrence.Single) {
+  clearReoccur(){
+    if(this.reoccurs) {
       this.expense.begin = null;
     }
-  }
-
-  public checkValid(): void {
-    let keys = Object.keys(this.expense);
-    this.invalid = false;
-    keys.forEach((v, i, a) => {
-      if(this.expense[v] == null || this.expense[v] == undefined){
-        if(v != 'begin' && v != 'paid' && v != 'paidOn'){
-          this.invalid = true;
-        }
-      }
-    });
   }
 
 }
