@@ -22,12 +22,6 @@ export abstract class AbstractExpense extends Validator{
   type: eExpenseType;
   paidOn?: Date = undefined;
 
-  validationFields: iValidationField[] = [
-    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
-    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
-    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]}
-  ];
-
   public static getInstance(expense: any): string{
     if(expense.interval != undefined){
       return 'RecurringExpense';
@@ -40,13 +34,24 @@ export abstract class AbstractExpense extends Validator{
 }
 
 export class SingleExpense extends AbstractExpense {
-
+  validationFields: iValidationField[] = [
+    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
+    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
+    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]}
+  ];
 }
 
 export class RecurringExpense extends AbstractExpense {
   reoccurrenceId?: string;
   interval: eReoccurrence;
   due: Date = new Date(Date.now());
+  validationFields: iValidationField[] = [
+    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
+    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
+    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]},
+    {fieldName: 'interval', validationTypes: [eValidationType.isNotNull]},
+    {fieldName: 'due', validationTypes: [eValidationType.isNotNull]},
+  ];
 }
 
 export enum eReoccurrence {
