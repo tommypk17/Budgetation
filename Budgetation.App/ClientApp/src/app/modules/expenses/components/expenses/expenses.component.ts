@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SingleExpense, RecurringExpense, eExpenseType, AbstractExpense} from "../../../../models/financial";
 import {ExpenseService} from "../../../../services/expense.service";
 import {iResponse} from "../../../../models/response";
+import {StatsExpenseBlockComponent} from "../atoms/stats-expense-block/stats-expense-block.component";
 
 @Component({
   selector: 'app-expenses',
@@ -19,6 +20,8 @@ export class ExpensesComponent implements OnInit {
 
   currentSort: string | undefined;
   currentFilter: string | undefined;
+
+  @ViewChild('expenseStats') expenseStats: StatsExpenseBlockComponent;
 
   constructor(private expenseService: ExpenseService) { }
 
@@ -145,6 +148,7 @@ export class ExpensesComponent implements OnInit {
     this.currentExpenses = this.allExpenses;
     if(this.currentSort) this.sortExpenses(this.currentSort);
     if(this.currentFilter) this.filterExpenses(this.currentFilter);
+    this.expenseStats.refreshTotal();
   }
 
   createNewExpense(): void {

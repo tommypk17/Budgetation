@@ -10,7 +10,7 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
 
   @Input('expenses') expenses: AbstractExpense[] = [];
 
-  expenseTotal: number = 0;
+  expenseTotal: number = this.getTotalOutgoing();
 
   constructor() { }
 
@@ -26,6 +26,10 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.refreshTotal();
+  }
+
+  public refreshTotal(): void {
     this.expenseTotal = this.getTotalOutgoing();
   }
 }
