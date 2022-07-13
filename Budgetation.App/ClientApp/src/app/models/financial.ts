@@ -28,6 +28,14 @@ export abstract class AbstractExpense extends Validator{
     {fieldName: 'type', validationTypes: [eValidationType.isNotNull]}
   ];
 
+  public static getInstance(expense: any): string{
+    if(expense.interval != undefined){
+      return 'RecurringExpense';
+    }else{
+      return 'SingleExpense';
+    }
+  }
+
   [key: string]: any;
 }
 

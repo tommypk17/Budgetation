@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {AbstractExpense} from "../../../../../models/financial";
+import {AbstractExpense, RecurringExpense, SingleExpense} from "../../../../../models/financial";
 import {Subject} from "rxjs";
 import {B} from "@angular/cdk/keycodes";
 
@@ -11,9 +11,9 @@ import {B} from "@angular/cdk/keycodes";
 export class ExistingExpenseBlockComponent implements OnInit {
 
   @Input('expense') expense: AbstractExpense | undefined;
-  @Output('save') save: Subject<AbstractExpense> = new Subject<AbstractExpense>();
-  @Output('delete') delete: Subject<AbstractExpense> = new Subject<AbstractExpense>();
-  @Output('paid') paid: Subject<AbstractExpense> = new Subject<AbstractExpense>();
+  @Output('save') save: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
+  @Output('delete') delete: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
+  @Output('paid') paid: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
 
   edit: boolean = false;
 
@@ -35,6 +35,11 @@ export class ExistingExpenseBlockComponent implements OnInit {
   }
 
   deleteExpense(expense: AbstractExpense): void {
+    if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
+      expense = Object.assign(new RecurringExpense(), expense);
+    }else{
+      expense = Object.assign(new SingleExpense(), expense);
+    }
     this.delete.next(expense);
   }
 

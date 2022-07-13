@@ -1,9 +1,12 @@
 ﻿
 using System;
+using System.Runtime.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
 
 namespace Budgetation.Data.Models
 {
+    [KnownType(typeof(SingleExpense))]
+    [KnownType(typeof(RecurringExpense))]
     public abstract class AbstractExpense
     {
         [BsonId]

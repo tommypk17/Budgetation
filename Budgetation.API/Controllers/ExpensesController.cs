@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Budgetation.API.Models;
 using Budgetation.API.Utlities;
@@ -33,7 +34,7 @@ namespace Budgetation.API.Controllers
             Guid userId = UserUtility.GetCurrentUserId(User);
             List<SingleExpense>? singleExpenses = await _singleExpenseService.GetAllUserExpenses(userId);
             List<RecurringExpense>? recurringExpenses = await _recurringExpenseService.GetAllUserExpenses(userId);
-            List<AbstractExpense>? expenses = new List<AbstractExpense>();
+            List<object>? expenses = new List<object>();
             if(singleExpenses is not null) expenses = expenses.Concat(singleExpenses).ToList();
             if(recurringExpenses is not null) expenses = expenses.Concat(recurringExpenses).ToList();
             if (!expenses.Any())

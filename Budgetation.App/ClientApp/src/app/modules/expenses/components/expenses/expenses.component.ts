@@ -57,7 +57,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   saveExistingExpense(expense: SingleExpense | RecurringExpense): void {
-    if(typeof(expense) == typeof(SingleExpense)){
+    if(expense instanceof SingleExpense){
       this.expenseService.updateSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
           let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -67,7 +67,7 @@ export class ExpensesComponent implements OnInit {
           this.reFilterSort();
         }
       });
-    }else if (typeof(expense) == typeof(RecurringExpense) ){
+    }else if (expense instanceof RecurringExpense){
       this.expenseService.updateRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
         if(res && res.data){
           let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -83,7 +83,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   deleteExpense(expense: SingleExpense | RecurringExpense): void {
-    if(typeof(expense) == typeof(SingleExpense)){
+    if(expense instanceof SingleExpense){
       this.expenseService.deleteSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
           let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -92,7 +92,7 @@ export class ExpensesComponent implements OnInit {
         }
       });
 
-    }else if (typeof(expense) == typeof(RecurringExpense) ){
+    }else if (expense instanceof RecurringExpense ){
       this.expenseService.deleteRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
         if(res && res.data){
           let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -106,7 +106,7 @@ export class ExpensesComponent implements OnInit {
   markExpensePaid(expense: SingleExpense | RecurringExpense): void {
     if(!expense.paidOn) expense.paidOn = new Date(Date.now());
     else expense.paidOn = undefined;
-    if(typeof(expense) == typeof(SingleExpense)){
+    if(expense instanceof SingleExpense){
       this.expenseService.updateSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
           let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -116,7 +116,7 @@ export class ExpensesComponent implements OnInit {
           this.reFilterSort();
         }
       });
-    }else if (typeof(expense) == typeof(RecurringExpense) ){
+    }else if (expense instanceof RecurringExpense){
       this.expenseService.updateRecurrringExpense(expense as RecurringExpense).subscribe((res: iResponse<RecurringExpense>) => {
         if(res && res.data){
           let existingExpenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
@@ -142,6 +142,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   reFilterSort(): void {
+    this.currentExpenses = this.allExpenses;
     if(this.currentSort) this.sortExpenses(this.currentSort);
     if(this.currentFilter) this.filterExpenses(this.currentFilter);
   }
