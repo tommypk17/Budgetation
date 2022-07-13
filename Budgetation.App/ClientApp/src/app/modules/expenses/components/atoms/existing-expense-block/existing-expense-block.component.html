@@ -3,6 +3,7 @@
     <div class="d-flex justify-content-between w-100">
       <div class="d-flex align-items-center">
         <p class="mat-card-title mb-0">{{expense.name}}</p>
+        <p class="mat-card-subtitle d-flex my-0 mx-1" *ngIf="expense.paidOn"> {{displayDate(expense.paidOn)}}</p>
       </div>
       <div class="d-flex align-items-center">
         <button *ngIf="expense.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
@@ -32,7 +33,7 @@
       <div class="d-flex flex-column">
         <strong>Type</strong>
         <hr class="w-100" />
-        <p>{{expense.type}}</p>
+        <p>{{displayExpenseType(expense.type)}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Amount</strong>
@@ -42,22 +43,12 @@
       <div class="d-flex flex-column">
         <strong>Reoccurs</strong>
         <hr class="w-100" />
-        <p>{{expense.reoccurrence == 'Single'? 'No' : expense.reoccurrence}}</p>
-      </div>
-      <div class="d-flex flex-column">
-        <strong>Starts On</strong>
-        <hr class="w-100" />
-        <p>{{displayDate(expense.begin)}}</p>
+        <p>{{displayReoccurrenceType(expense.interval)}}</p>
       </div>
       <div class="d-flex flex-column">
         <strong>Due On</strong>
         <hr class="w-100" />
         <p>{{displayDate(expense.due)}}</p>
-      </div>
-      <div class="d-flex flex-column">
-        <strong>Paid On</strong>
-        <hr class="w-100" />
-        <p>{{displayDate(expense.paidOn)}}</p>
       </div>
     </div>
   </mat-card-content>

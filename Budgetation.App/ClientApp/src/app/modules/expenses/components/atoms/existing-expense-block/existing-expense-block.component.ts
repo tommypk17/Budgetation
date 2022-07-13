@@ -1,7 +1,13 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {AbstractExpense, RecurringExpense, SingleExpense} from "../../../../../models/financial";
+import {
+  AbstractExpense,
+  eExpenseType,
+  eReoccurrence,
+  RecurringExpense,
+  SingleExpense
+} from "../../../../../models/financial";
 import {Subject} from "rxjs";
-import {B} from "@angular/cdk/keycodes";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-existing-expense-block',
@@ -16,10 +22,18 @@ export class ExistingExpenseBlockComponent implements OnInit {
   @Output('paid') paid: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
 
   edit: boolean = false;
+  expenseTypes: KeyValue<number, string>[] = [];
+  reoccurrences: KeyValue<number, string>[] = [];
 
   constructor() { }
 
   ngOnInit(): void {
+    Object.values(eReoccurrence).filter((o) => typeof o == 'string').forEach((v) => {
+      this.reoccurrences.push({key: eReoccurrence[v], value: v as string});
+    });
+    Object.values(eExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
+      this.expenseTypes.push({key: eExpenseType[v], value: v as string});
+    });
   }
 
   displayDate(inDate: Date): string {
@@ -27,6 +41,8 @@ export class ExistingExpenseBlockComponent implements OnInit {
     if(inDate != null) {
       let date: Date = new Date(inDate);
       return date.toLocaleDateString();
+    }else{
+      return 'N/A';
     }
   }
 
@@ -45,5 +61,16 @@ export class ExistingExpenseBlockComponent implements OnInit {
 
   markPaid(expense: AbstractExpense): void {
     this.paid.next(expense)
+  }
+
+  displayExpenseType(type: number): string {
+    let typeString: string | undefined = this.expenseTypes.find(x => x.key == type)?.value;
+    return typeString? typeString: 'N/A';
+  }
+
+  displayReoccurrenceType(type: number | undefined): string {
+    if(type == undefined) return 'No';
+    let typeString: string | undefined = this.reoccurrences.find(x => x.key == type)?.value;
+    return typeString? typeString: 'No';
   }
 }

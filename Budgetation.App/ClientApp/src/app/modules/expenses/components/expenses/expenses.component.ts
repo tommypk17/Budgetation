@@ -163,13 +163,13 @@ export class ExpensesComponent implements OnInit {
         this.currentFilter = undefined;
         break;
       case 'need':
-        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Need);
+        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Need);
         break;
       case 'want':
-        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Want);
+        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Want);
         break;
       case 'extra':
-        this.currentExpenses = this.allExpenses.filter(x => x.expense.type == eExpenseType.Extra);
+        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Extra);
         break;
     }
   }
@@ -189,42 +189,22 @@ export class ExpensesComponent implements OnInit {
         break;
       case 'byTypeNeedToExtra':
         this.currentExpenses.sort( (a,b ) => {
-          return keyVal[a.expense.type] - keyVal[b.expense.type];
+          return keyVal[a.type] - keyVal[b.type];
         });
         break;
       case 'byTypeExtraToNeed':
         this.currentExpenses.sort( (a,b ) => {
-          return keyVal[b.expense.type] - keyVal[a.expense.type];
+          return keyVal[b.type] - keyVal[a.type];
         });
         break;
       case 'byCostLowToHigh':
         this.currentExpenses.sort((a,b) => {
-          return a.expense.amount - b.expense.amount;
+          return a.amount - b.amount;
         });
         break;
       case 'byCostHighToLow':
         this.currentExpenses.sort((a,b) => {
-          return b.expense.amount - a.expense.amount;
-        });
-        break;
-      case 'byDateStartSoonToFar':
-        this.currentExpenses.sort((a,b) => {
-          let aDate: Date, bDate: Date;
-          if(!b.begin) bDate = new Date(0);
-          else bDate = new Date(b.begin)
-          if(!a.begin) aDate = new Date(0);
-          else aDate = new Date(a.begin)
-          return aDate.valueOf() - bDate.valueOf()
-        });
-        break;
-      case 'byDateStartFarToSoon':
-        this.currentExpenses.sort((a,b) => {
-          let aDate, bDate: Date;
-          if(!b.begin) bDate = new Date(0);
-          else bDate = new Date(b.begin)
-          if(!a.begin) aDate = new Date(0);
-          else aDate = new Date(a.begin)
-          return bDate.valueOf() - aDate.valueOf()
+          return b.amount - a.amount;
         });
         break;
       case 'byDateDueSoonToFar':
