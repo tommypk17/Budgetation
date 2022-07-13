@@ -30,7 +30,7 @@
       <ng-container *ngIf="reoccurs">
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>select the reoccurrence frequency</mat-label>
-          <mat-select #reoccurrence [(ngModel)]="expense.reoccurrence">
+          <mat-select #reoccurrence [(ngModel)]="expense.interval">
             <mat-option *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence.key">
               {{reoccurrence.value}}
             </mat-option>
