@@ -5,6 +5,7 @@ import {
   eReoccurrence, RecurringExpense, SingleExpense
 } from "../../../../../models/financial";
 import {KeyValue} from "@angular/common";
+import {SharedService} from "../../../../../services/shared.service";
 
 
 @Component({
@@ -25,15 +26,11 @@ export class NewExpenseBlockComponent implements OnInit {
 
   reoccurs: boolean = false;
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    Object.values(eReoccurrence).filter((o) => typeof o == 'string').forEach((v) => {
-      this.reoccurrences.push({key: eReoccurrence[v], value: v as string});
-    });
-    Object.values(eExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
-      this.expenseTypes.push({key: eExpenseType[v], value: v as string});
-    });
+    this.expenseTypes = this.sharedService.expenseTypes;
+    this.reoccurrences = this.sharedService.reoccurrences;
   }
 
   public changeReoccurs(reoccurs: boolean) {

@@ -7,6 +7,7 @@ import {
   SingleExpense
 } from "../../../../../models/financial";
 import {KeyValue} from "@angular/common";
+import {SharedService} from "../../../../../services/shared.service";
 
 @Component({
   selector: 'app-edit-expense-block',
@@ -25,10 +26,9 @@ export class EditExpenseBlockComponent implements OnInit {
 
   reoccurs: boolean = false;
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    console.log(this.expense.interval)
     if(this.expense.interval != undefined){
       this.reoccurs = true;
       this.expense = Object.assign(new RecurringExpense(), this.expense);
@@ -36,12 +36,8 @@ export class EditExpenseBlockComponent implements OnInit {
       this.reoccurs = false;
       this.expense = Object.assign(new SingleExpense(), this.expense);
     }
-    Object.values(eReoccurrence).filter((o) => typeof o == 'string').forEach((v) => {
-      this.reoccurrences.push({key: eReoccurrence[v], value: v as string});
-    });
-    Object.values(eExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
-      this.expenseTypes.push({key: eExpenseType[v], value: v as string});
-    });
+    this.expenseTypes = this.sharedService.expenseTypes;
+    this.reoccurrences = this.sharedService.reoccurrences;
   }
 
   public saveExpense(): void {
