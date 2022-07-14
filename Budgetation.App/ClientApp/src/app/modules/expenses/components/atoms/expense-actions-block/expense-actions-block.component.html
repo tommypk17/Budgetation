@@ -20,19 +20,24 @@
             <mat-icon>merge_type</mat-icon>
             <span>By Type</span>
           </button>
+          <button mat-menu-item [matMenuTriggerFor]="filterByIntervalMenu">
+            <mat-icon>schedule</mat-icon>
+            <span>By Interval</span>
+          </button>
         </mat-menu>
         <mat-menu #filterByTypeMenu="matMenu">
-          <button mat-menu-item (click)="filterExpenses('need')">
-            <span>Need</span>
-          </button>
-          <button mat-menu-item (click)="filterExpenses('want')">
-            <span>Want</span>
-          </button>
-          <button mat-menu-item (click)="filterExpenses('extra')">
-            <span>Extra</span>
+          <button *ngFor="let expenseType of expenseTypes" mat-menu-item (click)="filterExpenses(expenseType.value.toLowerCase())">
+            <span>{{expenseType.value}}</span>
           </button>
         </mat-menu>
-
+        <mat-menu #filterByIntervalMenu="matMenu">
+          <button mat-menu-item (click)="filterExpenses('single')">
+            <span>Non-recurring</span>
+          </button>
+          <button *ngFor="let interval of reoccurrences" mat-menu-item (click)="filterExpenses(interval.value.toLowerCase())">
+            <span>{{interval.value}}</span>
+          </button>
+        </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="sortMenu" matTooltip="sort current list of bills" aria-label="sort current bills">
           <mat-icon>sort</mat-icon>
         </button>

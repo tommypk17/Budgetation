@@ -2,6 +2,8 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RecurringExpenseSelectorDialogComponent} from "../recurring-expense-selector-dialog/recurring-expense-selector-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AbstractExpense} from "../../../../../models/financial";
+import {SharedService} from "../../../../../services/shared.service";
+import {KeyValue} from "@angular/common";
 
 @Component({
   selector: 'app-expense-actions-block',
@@ -20,10 +22,14 @@ export class ExpenseActionsBlockComponent implements OnInit {
   @Input('disablePrepareRecurring') disablePrepareRecurring: boolean = true;
   @Input('filtered') filtered: boolean = false;
 
+  expenseTypes: KeyValue<number, string>[] = [];
+  reoccurrences: KeyValue<number, string>[] = [];
 
-  constructor(private recurringDialog: MatDialog) { }
+  constructor(private recurringDialog: MatDialog, private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.expenseTypes = this.sharedService.expenseTypes;
+    this.reoccurrences = this.sharedService.reoccurrences;
   }
 
   createNewExpense(): void {

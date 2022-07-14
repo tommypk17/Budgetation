@@ -1,5 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SingleExpense, RecurringExpense, eExpenseType, AbstractExpense} from "../../../../models/financial";
+import {
+  SingleExpense,
+  RecurringExpense,
+  eExpenseType,
+  AbstractExpense,
+  eReoccurrence
+} from "../../../../models/financial";
 import {ExpenseService} from "../../../../services/expense.service";
 import {iResponse} from "../../../../models/response";
 import {StatsExpenseBlockComponent} from "../atoms/stats-expense-block/stats-expense-block.component";
@@ -174,6 +180,27 @@ export class ExpensesComponent implements OnInit {
         break;
       case 'extra':
         this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Extra);
+        break;
+      case 'single':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == undefined);
+        break;
+      case 'weekly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Weekly);
+        break;
+      case 'biweekly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Biweekly);
+        break;
+      case 'monthly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Monthly);
+        break;
+      case 'quarterly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Quarterly);
+        break;
+      case 'biquarterly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Biquarterly);
+        break;
+      case 'yearly':
+        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Yearly);
         break;
     }
   }
