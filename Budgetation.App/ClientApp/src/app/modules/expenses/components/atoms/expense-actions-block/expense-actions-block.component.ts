@@ -17,7 +17,7 @@ export class ExpenseActionsBlockComponent implements OnInit {
   @Output('newExpense') newExpense: EventEmitter<void> = new EventEmitter<void>();
   @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
-  @Output('prepareRecurring') prepareRecurring: EventEmitter<AbstractExpense[]> = new EventEmitter<AbstractExpense[]>();
+  @Output('prepareRecurring') prepareRecurring: EventEmitter<RecurringExpense[]> = new EventEmitter<RecurringExpense[]>();
 
   @Input('expenses') expenses: AbstractExpense[] = [];
   @Input('disableNewExpense') disableNewExpense: boolean = true;
