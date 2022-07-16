@@ -6,10 +6,10 @@
         <p class="mat-card-subtitle d-flex my-0 mx-1" *ngIf="expense.paidOn"> {{displayDate(expense.paidOn)}}</p>
       </div>
       <div class="d-flex align-items-center">
-        <button *ngIf="expense.paid" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
+        <button *ngIf="expense.paidOn" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
           <mat-icon matTooltip="paid">paid</mat-icon>
         </button>
-        <button *ngIf="!expense.paid" (click)="markPaid(expense)" mat-icon-button aria-label="not paid" >
+        <button *ngIf="!expense.paidOn" (click)="markPaid(expense)" mat-icon-button aria-label="not paid" >
           <mat-icon matTooltip="mark paid">attach_money</mat-icon>
         </button>
         <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{expense.name}} options" >
