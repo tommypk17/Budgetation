@@ -1,9 +1,11 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {RecurringExpenseSelectorDialogComponent} from "../recurring-expense-selector-dialog/recurring-expense-selector-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {AbstractExpense} from "../../../../../models/financial";
+import {AbstractExpense, RecurringExpense} from "../../../../../models/financial";
 import {SharedService} from "../../../../../services/shared.service";
 import {KeyValue} from "@angular/common";
+import {ExpenseService} from "../../../../../services/expense.service";
+import {iResponse} from "../../../../../models/response";
 
 @Component({
   selector: 'app-expense-actions-block',
@@ -25,7 +27,7 @@ export class ExpenseActionsBlockComponent implements OnInit {
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
-  constructor(private recurringDialog: MatDialog, private sharedService: SharedService) { }
+  constructor(private recurringDialog: MatDialog, private sharedService: SharedService, private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
     this.expenseTypes = this.sharedService.expenseTypes;
@@ -45,13 +47,16 @@ export class ExpenseActionsBlockComponent implements OnInit {
   }
 
   recurringBillsSelected(): void {
-    let bills: AbstractExpense[] = [];
-    const dialogRef = this.recurringDialog.open(RecurringExpenseSelectorDialogComponent, {
-      data: bills
-    });
+    this.expenseService.prepareReoccurrences().subscribe((res: iResponse<RecurringExpense[]>) => {
+      if(res && res.data){
+        const dialogRef = this.recurringDialog.open(RecurringExpenseSelectorDialogComponent, {
+          data: res.data
+        });
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.prepareRecurring.next(result);
-    });
+        dialogRef.afterClosed().subscribe(result => {
+          this.prepareRecurring.next(result);
+        });
+      }
+    })
   }
 }

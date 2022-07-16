@@ -1,8 +1,10 @@
-import {AfterViewInit, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {MatSelectionList, MatSelectionListChange} from "@angular/material/list";
 import {KeyValue} from "@angular/common";
-import {AbstractExpense, eIncomeType, eReoccurrence} from "../../../../../models/financial";
+import {AbstractExpense, eIncomeType, eReoccurrence, RecurringExpense} from "../../../../../models/financial";
+import {SharedService} from "../../../../../services/shared.service";
+import {MatSelectChange} from "@angular/material/select";
 
 @Component({
   selector: 'app-recurring-expense-selector-dialog',
@@ -12,15 +14,14 @@ import {AbstractExpense, eIncomeType, eReoccurrence} from "../../../../../models
 export class RecurringExpenseSelectorDialogComponent implements OnInit {
 
   @ViewChild('expenseSelectionList') expenseSelectionList: MatSelectionList;
-  selected: AbstractExpense[] = [];
+  selected: RecurringExpense[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: AbstractExpense[], public dialogRef: MatDialogRef<RecurringExpenseSelectorDialogComponent>) { }
+
+  constructor(private sharedService:SharedService, @Inject(MAT_DIALOG_DATA) public data: RecurringExpense[], public dialogRef: MatDialogRef<RecurringExpenseSelectorDialogComponent>) { }
 
   ngOnInit(): void {
-    Object.keys(eReoccurrence).forEach((v) => {
-      this.reoccurrences.push({key: eIncomeType[v], value: v});
-    })
+    this.reoccurrences = this.sharedService.reoccurrences;
   }
 
   closeDialog() {
@@ -36,17 +37,23 @@ export class RecurringExpenseSelectorDialogComponent implements OnInit {
   }
 
   selectBills(): void {
-    let bills: AbstractExpense[] = this.expenseSelectionList.selectedOptions.selected.map(x => x.value as AbstractExpense).filter(x => x != undefined);
+    let bills: RecurringExpense[] = this.expenseSelectionList.selectedOptions.selected.map(x => x.value as RecurringExpense).filter(x => x != undefined);
     this.dialogRef.close(bills);
   }
 
-  quickSelect(data: KeyValue<number, string>): void {
+  quickSelect(data: MatSelectChange): void {
     this.expenseSelectionList.options.forEach((v) => {
-      if(v.value.reoccurrence == data.value){
+      if(v.value.interval == data.value){
         this.expenseSelectionList.selectedOptions.select(v);
       }else{
         this.expenseSelectionList.selectedOptions.deselect(v);
       }
     })
+  }
+
+  displayReoccurrenceType(type: number | undefined): string {
+    if(type == undefined) return 'No';
+    let typeString: string | undefined = this.reoccurrences.find(x => x.key == type)?.value;
+    return typeString? typeString: 'No';
   }
 }

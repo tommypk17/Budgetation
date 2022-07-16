@@ -152,6 +152,36 @@ export class ExpenseService {
     );
   }
 
+  public prepareReoccurrences(): Observable<iResponse<RecurringExpense[]>> {
+    return this.http.get<iResponse<RecurringExpense[]>>(environment.URL + '/api/expenses/recurring/duplicate').pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<RecurringExpense[]>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+
+      })
+    );
+  }
+
+  public addReoccurrences(expenses: RecurringExpense[]): Observable<iResponse<RecurringExpense[]>> {
+    return this.http.post<iResponse<RecurringExpense[]>>(environment.URL + '/api/expenses/recurring/duplicate', expenses.map(x => x.id)).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<RecurringExpense[]>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+
+      })
+    );
+  }
+
   private handleError(err: any): void {
     console.log('Error: ' + err)
     this.sharedService.clearLoading();

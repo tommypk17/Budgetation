@@ -132,18 +132,31 @@ namespace Budgetation.API.Controllers
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expense deleted", Success = true});
         }
         
-        // POST: api/Bills/reoccurrences
-        // [HttpPost("reoccurrences")]
-        // public async Task<IActionResult> Post([FromBody] List<Guid> billIds)
-        // {
-        //     Guid userId = UserUtility.GetCurrentUserId(User);
-        //     List<Bill>? res = await _billService.AddReoccurrences(userId, billIds);
-        //     if (res is null)
-        //     {
-        //         return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Bills not duplicated", Success = true});
-        //     }
-        //     return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Bills duplicated", Success = true});
-        // }
+        // POST: api/Bills/recurring/duplicate
+        [HttpPost("recurring/duplicate")]
+        public async Task<IActionResult> Post([FromBody] List<Guid> expenseIds)
+        {
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            List<RecurringExpense>? res = await _recurringExpenseService.DuplicateExpenses(userId, expenseIds);
+            if (res is null)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not duplicated", Success = true});
+            }
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expenses duplicated", Success = true});
+        }
+        
+        // GET: api/Bills/recurring/duplicate
+        [HttpGet("recurring/duplicate")]
+        public async Task<IActionResult> GetDuplicateRecurringExpenses()
+        {
+            Guid userId = UserUtility.GetCurrentUserId(User);
+            List<RecurringExpense>? res = await _recurringExpenseService.GetDuplicateExpenses(userId);
+            if (res is null)
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No duplicate expenses", Success = true});
+            }
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expense duplicates found", Success = true});
+        }
         
         // GET: api/expenses/recurring
         [HttpGet("recurring")]

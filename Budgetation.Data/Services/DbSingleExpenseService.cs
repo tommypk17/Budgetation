@@ -90,7 +90,7 @@ namespace Budgetation.Data.Services
         }
         
         
-        public async Task<List<SingleExpense>?> BulkCreate(Guid userId, List<SingleExpense> expenses)
+        public async Task<List<SingleExpense>?> Create(Guid userId, List<SingleExpense> expenses)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
             userExpense.SingleExpenses.AddRange(expenses);

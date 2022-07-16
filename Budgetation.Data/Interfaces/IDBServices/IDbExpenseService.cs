@@ -15,6 +15,6 @@ namespace Budgetation.Data.Interfaces.IDBServices
         public Task<List<T>?> Read(Guid userId);
         public Task<T?> Update(Guid userId, T expense);
         public Task<T?> Delete(Guid userId, Guid id);
-        public Task<List<T>?> BulkCreate(Guid userId, List<T> expenses);
+        public Task<List<T>?> Create(Guid userId, List<T> expenses);
     }
 }

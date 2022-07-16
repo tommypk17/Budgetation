@@ -42,5 +42,15 @@ namespace Budgetation.Logic.Services
         {
             return await _dbExpenseService.Delete(userId, id);
         }
+
+        public async Task<List<SingleExpense>?> DuplicateExpenses(Guid userId, List<Guid> ids)
+        {
+            return null;
+        }
+
+        public async Task<List<SingleExpense>?> GetDuplicateExpenses(Guid userId)
+        {
+            return null;
+        }
     }
 }

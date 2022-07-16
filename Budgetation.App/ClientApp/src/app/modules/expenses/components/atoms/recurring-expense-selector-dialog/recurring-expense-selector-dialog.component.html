@@ -1,27 +1,35 @@
 <div mat-dialog-title>
-  <h3>Select recurring bills to duplicate</h3>
+  <ng-container *ngIf="data.length > 0">
+    <h3>Select recurring bills to duplicate</h3>
+  </ng-container>
 </div>
 <div mat-dialog-content>
-  <mat-form-field appearance="fill" class="mb-2">
-    <mat-label>Quick select by reoccurence</mat-label>
-    <mat-select (selectionChange)="quickSelect($event.value)">
-      <mat-option *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence">
-        {{reoccurrence.value}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <div class="d-flex">
-    <button mat-button (click)="selectAll()">Select All</button>
-    <button mat-button (click)="deselectAll()">Deselect All</button>
-  </div>
-  <mat-selection-list #billSelectionList>
-    <mat-list-option *ngFor="let expense of data" [value]="expense">
-      <p matLine>{{expense.name}}</p>
-      <small matLine>Prev.: $ {{expense.amount}} - Reoccurs: {{expense.reoccurrence}}</small>
-    </mat-list-option>
-  </mat-selection-list>
+  <ng-container *ngIf="data.length > 0">
+    <mat-form-field appearance="fill" class="mb-2">
+      <mat-label>Quick select by reoccurence</mat-label>
+      <mat-select (selectionChange)="quickSelect($event)">
+        <mat-option *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence.key">
+          {{reoccurrence.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="d-flex">
+      <button mat-button (click)="selectAll()">Select All</button>
+      <button mat-button (click)="deselectAll()">Deselect All</button>
+    </div>
+    <mat-selection-list #expenseSelectionList>
+      <mat-list-option *ngFor="let expense of data" [value]="expense">
+        <p matLine>{{expense.name}}</p>
+        <small matLine>Prev.: $ {{expense.amount}} - {{displayReoccurrenceType(expense.interval)}}</small>
+      </mat-list-option>
+    </mat-selection-list>
+  </ng-container>
+  <ng-container *ngIf="data.length <= 0">
+    <p>No expenses to duplicate.</p>
+    <small>Only recurring expenses that have been paid can be duplicated.</small>
+  </ng-container>
 </div>
 <div mat-dialog-actions class="d-flex justify-content-end">
   <button mat-button (click)="closeDialog()">Nevermind</button>
-  <button mat-button (click)="selectBills()">Ok</button>
+  <button mat-button [disabled]="data.length <= 0" (click)="selectBills()">Ok</button>
 </div>

@@ -98,6 +98,7 @@ export class ExpensesComponent implements OnInit {
           let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
           this.allExpenses.splice(expenseIdx, 1);
           this.currentExpenses = this.allExpenses;
+          this.reFilterSort();
         }
       });
 
@@ -107,6 +108,7 @@ export class ExpensesComponent implements OnInit {
           let expenseIdx = this.allExpenses.findIndex(x => x.id == expense.id);
           this.allExpenses.splice(expenseIdx, 1);
           this.currentExpenses = this.allExpenses;
+          this.reFilterSort();
         }
       });
     }
@@ -138,16 +140,16 @@ export class ExpensesComponent implements OnInit {
     }
   }
 
-  prepareRecurring(bills: AbstractExpense[]): void {
-    // if(bills && bills.length > 0){
-    //   this.billService.addReoccurrences(bills).subscribe((res: iResponse<iBill[]>) => {
-    //     if(res && res.data){
-    //       this.allBills = this.allBills.concat(res.data);
-    //       this.newBill = undefined;
-    //       this.reFilterSort();
-    //     }
-    //   });
-    // }
+  prepareRecurring(expense: RecurringExpense[]): void {
+    if(expense && expense.length > 0){
+      this.expenseService.addReoccurrences(expense).subscribe((res: iResponse<RecurringExpense[]>) => {
+        if(res && res.data){
+          this.allExpenses = this.allExpenses.concat(res.data);
+          this.newExpense = undefined;
+          this.reFilterSort();
+        }
+      });
+    }
   }
 
   reFilterSort(): void {

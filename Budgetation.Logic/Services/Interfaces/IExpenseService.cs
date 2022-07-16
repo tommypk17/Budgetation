@@ -15,5 +15,7 @@ namespace Budgetation.Logic.Services.Interfaces
         public Task<T?> UpdateExpense(Guid userId, T expense);
 
         public Task<T?> DeleteExpense(Guid userId, Guid id);
+        public Task<List<T>?> DuplicateExpenses(Guid userId, List<Guid> ids);
+        public Task<List<T>?> GetDuplicateExpenses(Guid userId);
     }
 }
