@@ -1,14 +1,14 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, Input, OnInit, Output, TemplateRef, ViewChild} from '@angular/core';
 import {
   AbstractExpense,
-  eExpenseType,
-  eReoccurrence,
   RecurringExpense,
   SingleExpense
 } from "../../../../../models/financial";
 import {Subject} from "rxjs";
 import {KeyValue} from "@angular/common";
 import {SharedService} from "../../../../../services/shared.service";
+import {MatDialog} from "@angular/material/dialog";
+import {PaidExpenseDialogComponent} from "../paid-expense-dialog/paid-expense-dialog.component";
 
 @Component({
   selector: 'app-existing-expense-block',
@@ -26,7 +26,9 @@ export class ExistingExpenseBlockComponent implements OnInit {
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
-  constructor(private sharedService: SharedService) { }
+  @ViewChild('paidDialog') paidDialog: TemplateRef<any>;
+
+  constructor(private sharedService: SharedService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.expenseTypes = this.sharedService.expenseTypes;
@@ -57,7 +59,28 @@ export class ExistingExpenseBlockComponent implements OnInit {
   }
 
   markPaid(expense: AbstractExpense): void {
-    this.paid.next(expense)
+    if(expense.amount <= 0){
+      let dialog = this.dialog.open(PaidExpenseDialogComponent, {disableClose: true, data: expense.amount });
+      dialog.afterClosed().subscribe((res: number) => {
+        if(res > 0){
+          expense.amount = res;
+          if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
+            expense = Object.assign(new RecurringExpense(), expense);
+          }else{
+            expense = Object.assign(new SingleExpense(), expense);
+          }
+          this.paid.next(expense)
+        }
+      });
+    }else{
+
+      if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
+        expense = Object.assign(new RecurringExpense(), expense);
+      }else{
+        expense = Object.assign(new SingleExpense(), expense);
+      }
+      this.paid.next(expense)
+    }
   }
 
   displayExpenseType(type: number): string {

@@ -27,9 +27,10 @@ import {MatDividerModule} from "@angular/material/divider";
 import {MatDialogModule} from "@angular/material/dialog";
 import { RecurringExpenseSelectorDialogComponent } from './components/atoms/recurring-expense-selector-dialog/recurring-expense-selector-dialog.component';
 import {MatListModule} from "@angular/material/list";
+import { PaidExpenseDialogComponent } from './components/atoms/paid-expense-dialog/paid-expense-dialog.component';
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent],
+  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent, PaidExpenseDialogComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
