@@ -28,6 +28,8 @@ export class ExpensesComponent implements OnInit {
   currentSort: string | undefined;
   currentFilter: string | undefined;
 
+  currentExpensesFor: number = eExpensesFor.Current;
+
   @ViewChild('expenseStats') expenseStats: StatsExpenseBlockComponent;
 
   constructor(private expenseService: ExpenseService, private sharedService: SharedService) { }
@@ -42,7 +44,7 @@ export class ExpensesComponent implements OnInit {
         this.allExpenses = res.data;
         this.currentExpenses = this.allExpenses;
         this.sortExpenses('byDateDueSoonToFar');
-        this.showExpenses(eExpensesFor.Current);
+        this.showExpenses(this.currentExpensesFor);
       }
     });
   }
@@ -158,6 +160,7 @@ export class ExpensesComponent implements OnInit {
     this.currentExpenses = this.allExpenses;
     if(this.currentSort) this.sortExpenses(this.currentSort);
     if(this.currentFilter) this.filterExpenses(this.currentFilter);
+    this.showExpenses(this.currentExpensesFor);
     this.expenseStats.refreshTotal();
   }
 
@@ -170,13 +173,14 @@ export class ExpensesComponent implements OnInit {
   }
 
   showExpenses(expensesFor: number){
+    this.currentExpensesFor = expensesFor;
     switch (expensesFor){
       case eExpensesFor.All:
         this.currentExpenses = this.allExpenses;
         break;
       case eExpensesFor.Current:
-        this.currentExpenses = this.currentExpenses.filter(x => x.due >= this.sharedService.firstDayOfMonthCurrent);
-        this.currentExpenses = this.currentExpenses.filter(x => x.due <= this.sharedService.lastDayOfMonthCurrent);
+        this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) >= this.sharedService.firstDayOfMonthCurrent);
+        this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= this.sharedService.lastDayOfMonthCurrent);
         break;
     }
   }
@@ -219,6 +223,7 @@ export class ExpensesComponent implements OnInit {
         this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Yearly);
         break;
     }
+    this.showExpenses(this.currentExpensesFor);
   }
 
   sortExpenses(sortOrder: string): void {
