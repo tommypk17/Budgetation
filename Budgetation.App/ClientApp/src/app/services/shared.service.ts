@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {KeyValue} from "@angular/common";
-import {eExpenseType, eReoccurrence} from "../models/financial";
+import {eExpensesFor, eExpenseType, eReoccurrence} from "../models/financial";
 
 
 @Injectable({
@@ -59,6 +59,34 @@ export class SharedService {
       expenseTypes.push({key: eExpenseType[v], value: v as string});
     });
     return expenseTypes;
+  }
+
+  get expensesFor(): KeyValue<number, string>[] {
+    let expensesFor: KeyValue<number, string>[] = [];
+    Object.values(eExpensesFor).filter((o) => typeof o == 'string').forEach((v) => {
+      expensesFor.push({key: eExpensesFor[v], value: v as string});
+    });
+    return expensesFor;
+  }
+
+  get firstDayOfMonthCurrent(): Date{
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 1);
+  }
+
+  get lastDayOfMonthCurrent(): Date{
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth() + 1, 0);
+  }
+
+  get firstDayOfMonthPrevious(): Date{
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  }
+
+  get lastDayOfMonthPrevious(): Date{
+    let now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), 0);
   }
 
 }

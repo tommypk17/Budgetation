@@ -75,3 +75,9 @@ export enum eExpenseType {
   Want ,
   Extra
 }
+
+
+export enum eExpensesFor {
+  All,
+  Current,
+}

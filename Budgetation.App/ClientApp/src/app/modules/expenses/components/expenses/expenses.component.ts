@@ -4,11 +4,12 @@ import {
   RecurringExpense,
   eExpenseType,
   AbstractExpense,
-  eReoccurrence
+  eReoccurrence, eExpensesFor
 } from "../../../../models/financial";
 import {ExpenseService} from "../../../../services/expense.service";
 import {iResponse} from "../../../../models/response";
 import {StatsExpenseBlockComponent} from "../atoms/stats-expense-block/stats-expense-block.component";
+import {SharedService} from "../../../../services/shared.service";
 
 @Component({
   selector: 'app-expenses',
@@ -29,7 +30,7 @@ export class ExpensesComponent implements OnInit {
 
   @ViewChild('expenseStats') expenseStats: StatsExpenseBlockComponent;
 
-  constructor(private expenseService: ExpenseService) { }
+  constructor(private expenseService: ExpenseService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getAllExpenses();
@@ -41,6 +42,7 @@ export class ExpensesComponent implements OnInit {
         this.allExpenses = res.data;
         this.currentExpenses = this.allExpenses;
         this.sortExpenses('byDateDueSoonToFar');
+        this.showExpenses(eExpensesFor.Current);
       }
     });
   }
@@ -165,6 +167,18 @@ export class ExpensesComponent implements OnInit {
 
   cancelNewExpense(): void {
     this.newExpense = undefined;
+  }
+
+  showExpenses(expensesFor: number){
+    switch (expensesFor){
+      case eExpensesFor.All:
+        this.currentExpenses = this.allExpenses;
+        break;
+      case eExpensesFor.Current:
+        this.currentExpenses = this.currentExpenses.filter(x => x.due >= this.sharedService.firstDayOfMonthCurrent);
+        this.currentExpenses = this.currentExpenses.filter(x => x.due <= this.sharedService.lastDayOfMonthCurrent);
+        break;
+    }
   }
 
   filterExpenses(filterBy: string): void {
