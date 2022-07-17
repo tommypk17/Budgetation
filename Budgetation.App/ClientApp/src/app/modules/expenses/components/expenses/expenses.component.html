@@ -7,7 +7,7 @@
   >
   </app-header-block>
   <div class="block">
-    <app-stats-expense-block #expenseStats [expenses]="currentExpenses" (show)="showExpenses($event)"></app-stats-expense-block>
+    <app-stats-expense-block #expenseStats [expenses]="currentExpenses" (show)="showExpenses($event)" (monthSelected)="showMonth($event)"></app-stats-expense-block>
   </div>
   <div class="block">
     <app-expense-actions-block [expenses]="allExpenses" [filtered]="!!currentFilter" [disablePrepareRecurring]="false" (prepareRecurring)="prepareRecurring($event)" (filter)="filterExpenses($event)" (sort)="sortExpenses($event)" (newExpense)="createNewExpense()" [disableNewExpense]="newExpense != undefined"></app-expense-actions-block>

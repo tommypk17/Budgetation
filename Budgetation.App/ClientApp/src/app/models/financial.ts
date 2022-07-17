@@ -78,6 +78,7 @@ export enum eExpenseType {
 
 
 export enum eExpensesFor {
-  All,
-  Current,
+  All= "All",
+  Current = "This Month",
+  Month = "Month"
 }

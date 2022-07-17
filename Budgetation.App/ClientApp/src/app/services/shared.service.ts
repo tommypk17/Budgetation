@@ -66,10 +66,10 @@ export class SharedService {
     return expenseTypes;
   }
 
-  get expensesFor(): KeyValue<number, string>[] {
-    let expensesFor: KeyValue<number, string>[] = [];
-    Object.values(eExpensesFor).filter((o) => typeof o == 'string').forEach((v) => {
-      expensesFor.push({key: eExpensesFor[v], value: v as string});
+  get expensesFor(): KeyValue<string, string>[] {
+    let expensesFor: KeyValue<string, string>[] = [];
+    Object.keys(eExpensesFor).forEach((v) => {
+      expensesFor.push({key: v, value: eExpensesFor[v]});
     });
     return expensesFor;
   }

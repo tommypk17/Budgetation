@@ -6,13 +6,14 @@ import {
   OnChanges,
   OnInit,
   Output,
-  SimpleChanges,
+  SimpleChanges, TemplateRef,
   ViewChild
 } from '@angular/core';
 import {AbstractExpense, eExpensesFor} from "../../../../../models/financial";
 import {KeyValue} from "@angular/common";
 import {SharedService} from "../../../../../services/shared.service";
 import {MatSelect} from "@angular/material/select";
+import {MatDatepickerInputEvent} from "@angular/material/datepicker";
 
 @Component({
   selector: 'app-stats-expense-block',
@@ -22,12 +23,17 @@ import {MatSelect} from "@angular/material/select";
 export class StatsExpenseBlockComponent implements OnInit, OnChanges {
 
   @Input('expenses') expenses: AbstractExpense[] = [];
-  @Output('show') show: EventEmitter<number> = new EventEmitter<number>();
+  @Output('show') show: EventEmitter<string> = new EventEmitter<string>();
+  @Output('monthSelected') monthSelected: EventEmitter<Date> = new EventEmitter<Date>();
 
   expenseTotal: number = this.getTotalOutgoing();
 
-  expensesFor: KeyValue<number, string>[] = this.sharedService.expensesFor;
-  showingExpenses: number = eExpensesFor.Current;
+  expensesFor: KeyValue<string, string>[] = this.sharedService.expensesFor;
+  showingExpenses: string = eExpensesFor.Current;
+
+  showingMonth: Date;
+
+  showMonthPicker: boolean = false;
 
   constructor(private sharedService: SharedService) { }
 
@@ -50,7 +56,16 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
     this.expenseTotal = this.getTotalOutgoing();
   }
 
-  showExpensesFor(expensesFor: number){
+  showExpensesFor(expensesFor: string){
+    if(expensesFor == eExpensesFor.Month){
+      this.showMonthPicker = true;
+    }else{
+      this.showMonthPicker = false;
+    }
     this.show.next(expensesFor);
+  }
+
+  dateChanged(date: Date): void {
+    this.monthSelected.next(date);
   }
 }

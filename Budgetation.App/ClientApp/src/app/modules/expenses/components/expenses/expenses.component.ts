@@ -28,7 +28,8 @@ export class ExpensesComponent implements OnInit {
   currentSort: string | undefined;
   currentFilter: string | undefined;
 
-  currentExpensesFor: number = eExpensesFor.Current;
+  currentExpensesFor: string = eExpensesFor.Current;
+  currentMonth: Date;
 
   @ViewChild('expenseStats') expenseStats: StatsExpenseBlockComponent;
 
@@ -172,7 +173,7 @@ export class ExpensesComponent implements OnInit {
     this.newExpense = undefined;
   }
 
-  showExpenses(expensesFor: number){
+  showExpenses(expensesFor: string){
     this.currentExpensesFor = expensesFor;
     switch (expensesFor){
       case eExpensesFor.All:
@@ -182,6 +183,21 @@ export class ExpensesComponent implements OnInit {
         this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) >= this.sharedService.firstDayOfMonthCurrent);
         this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= this.sharedService.lastDayOfMonthCurrent);
         break;
+      case eExpensesFor.Month:
+        break;
+    }
+  }
+
+  showMonth(date: Date){
+      this.reFilterSort();
+      this.currentMonth = date;
+      this.filterByMonth(date);
+  }
+
+  filterByMonth(date: Date | undefined){
+    if(date){
+      this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) >= date);
+      this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= new Date(date.getFullYear(), date.getMonth() + 1, 0));
     }
   }
 
@@ -224,6 +240,7 @@ export class ExpensesComponent implements OnInit {
         break;
     }
     this.showExpenses(this.currentExpensesFor);
+    this.filterByMonth(this.currentMonth);
   }
 
   sortExpenses(sortOrder: string): void {
