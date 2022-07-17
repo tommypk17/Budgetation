@@ -42,7 +42,6 @@ namespace Budgetation.Data.Models
     
     public enum EReoccurrence
     {
-        Single,
         Weekly,
         Biweekly,
         Monthly,
