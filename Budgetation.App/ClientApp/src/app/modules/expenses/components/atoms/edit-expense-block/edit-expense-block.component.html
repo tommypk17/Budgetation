@@ -48,9 +48,9 @@
       </ng-container>
       <div class="mb-2 d-flex flex-column">
         <mat-label>paid</mat-label>
-        <mat-slide-toggle [(ngModel)]="expense.paid" color="primary"></mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="paid" color="primary"></mat-slide-toggle>
       </div>
-      <mat-form-field *ngIf="expense.paid" appearance="fill" class="mb-2">
+      <mat-form-field *ngIf="paid" appearance="fill" class="mb-2">
         <mat-label>paid on date</mat-label>
         <input matInput [(ngModel)]="expense.paidOn" [matDatepicker]="paidOnPicker" [required]="expense.paid">
         <mat-datepicker-toggle matSuffix [for]="paidOnPicker"></mat-datepicker-toggle>

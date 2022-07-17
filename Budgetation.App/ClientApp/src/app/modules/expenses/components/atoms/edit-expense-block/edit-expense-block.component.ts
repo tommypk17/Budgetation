@@ -26,9 +26,14 @@ export class EditExpenseBlockComponent implements OnInit {
 
   reoccurs: boolean = false;
 
+  paid: boolean = false;
+
   constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    if(this.expense){
+      this.paid = !!this.expense.paidOn;
+    }
     if(this.expense.interval != undefined){
       this.reoccurs = true;
       this.expense = Object.assign(new RecurringExpense(), this.expense);
@@ -41,6 +46,7 @@ export class EditExpenseBlockComponent implements OnInit {
   }
 
   public saveExpense(): void {
+    if(!this.paid) this.expense.paidOn = undefined;
     this.save.next(this.expense);
   }
 
