@@ -107,15 +107,23 @@ body { margin: 0; /*font-family: Roboto, "Helvetica Neue", sans-serif;*/ }
 ::-webkit-scrollbar-thumb {background: #686868;}
 ::-webkit-scrollbar-thumb:hover {background: #303030;}
 
-@media only screen and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2) {
+@media only screen and (max-width: 996px){
   .panel {
     display: flex;
     flex-direction: column;
     .block{
-      width: 95%;
+      width: 75%;
       margin-left: auto;
       margin-right: auto;
       margin-top: 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 678px){
+  .panel {
+    .block{
+      width: 95%;
     }
   }
 }

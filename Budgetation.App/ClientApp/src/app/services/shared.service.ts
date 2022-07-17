@@ -12,9 +12,14 @@ import {eExpensesFor, eExpenseType, eReoccurrence} from "../models/financial";
 export class SharedService {
   navigationToggled: Subject<void> = new Subject<void>();
   loading: Subject<boolean> = new Subject<boolean>();
+  screenWidth: Subject<number> = new Subject<number>();
   loadingQueue: string[] = [];
 
   constructor(private http: HttpClient) { }
+
+  changeScreenWidth(size: number){
+    this.screenWidth.next(size);
+  }
 
   navigationToggle(): void {
     return this.navigationToggled.next();

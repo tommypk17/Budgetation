@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {MsalBroadcastService} from "@azure/msal-angular";
 import {InteractionStatus} from "@azure/msal-browser";
 import {filter, takeUntil} from "rxjs/operators";
@@ -16,11 +16,15 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit, OnDestroy{
   title = 'Budgetation';
   private readonly _destroying$ = new Subject<void>();
-
-  constructor() {
+  constructor(private sharedService: SharedService) {
   }
 
   ngOnDestroy(): void {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.sharedService.changeScreenWidth(window.innerWidth);
   }
 
   ngOnInit(): void {

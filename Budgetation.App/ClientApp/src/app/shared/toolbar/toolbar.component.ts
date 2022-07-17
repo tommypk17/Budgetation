@@ -16,6 +16,8 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private readonly _destroying$ = new Subject<void>();
   isUserLoggedIn: boolean = false;
 
+  displayMenu: boolean = window.innerWidth <= 996;
+
   constructor(private msalBroadcastService: MsalBroadcastService, private route: ActivatedRoute, private authService: AuthService, private router: Router, private sharedService: SharedService) {
   }
 
@@ -30,6 +32,10 @@ export class ToolbarComponent implements OnInit, OnDestroy {
           this.isUserLoggedIn = res;
         });
       })
+
+    this.sharedService.screenWidth.subscribe((size: number) => {
+      this.displayMenu = size <= 996;
+    });
   }
 
   ngOnDestroy(): void {

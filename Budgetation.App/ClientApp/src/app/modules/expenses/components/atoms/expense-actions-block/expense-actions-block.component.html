@@ -2,8 +2,8 @@
   <mat-card-content>
     <div class="d-flex justify-content-between">
       <div class="d-flex">
-        <button class="mr-1" [disabled]="disableNewExpense" mat-raised-button color="accent" id="newBillButton" (click)="createNewExpense()"  matTooltip="add a new bill">Add New Bill</button>
-        <button class="ml-1" (click)="recurringBillsSelected()" [disabled]="disablePrepareRecurring" mat-raised-button color="primary" id="prepareRecurringButton"  matTooltip="prepare recurring bills">Prepare Recurring</button>
+        <button [disabled]="disableNewExpense" mat-icon-button color="accent" id="newBillButton" (click)="createNewExpense()"  matTooltip="add a new bill"><mat-icon>add</mat-icon></button>
+        <button (click)="recurringBillsSelected()" [disabled]="disablePrepareRecurring" mat-icon-button color="primary" id="prepareRecurringButton"  matTooltip="prepare recurring bills"><mat-icon>update</mat-icon></button>
       </div>
       <div>
         <button mat-icon-button matTooltip="filter current list of bills" aria-label="filter current bills" [matMenuTriggerFor]="filterMenu">

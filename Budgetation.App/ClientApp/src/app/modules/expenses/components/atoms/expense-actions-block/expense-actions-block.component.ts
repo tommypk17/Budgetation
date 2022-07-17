@@ -49,11 +49,13 @@ export class ExpenseActionsBlockComponent implements OnInit {
   recurringBillsSelected(): void {
     this.expenseService.prepareReoccurrences().subscribe((res: iResponse<RecurringExpense[]>) => {
       if(res && res.data){
+        this.disablePrepareRecurring = true;
         const dialogRef = this.recurringDialog.open(RecurringExpenseSelectorDialogComponent, {
           data: res.data
         });
 
         dialogRef.afterClosed().subscribe(result => {
+          this.disablePrepareRecurring = false;
           this.prepareRecurring.next(result);
         });
       }

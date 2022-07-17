@@ -26,7 +26,7 @@ import { SharedService } from '../../services/shared.service';
 })
 export class SidenavComponent implements OnInit {
   @HostBinding('attr.tabindex') tabindex = '-1';
-  isOpen = false;
+  isOpen = window.innerWidth > 996;
 
   constructor(private sharedService: SharedService, private hostElement: ElementRef) { }
 
@@ -34,10 +34,14 @@ export class SidenavComponent implements OnInit {
     this.sharedService.navigationToggled.subscribe(() => {
       this.isOpen = !this.isOpen;
     });
+
+    this.sharedService.screenWidth.subscribe((size: number) => {
+      this.isOpen = size > 996;
+    });
   }
 
   toggleNavigation(): void {
-    if(this.isOpen){
+    if(this.isOpen && window.innerWidth <= 996){
       this.sharedService.navigationToggle();
     }
   }
