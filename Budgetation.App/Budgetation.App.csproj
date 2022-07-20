@@ -1,19 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
-
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="3.1.27" />
       <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="6.0.7" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="ClientApp\src\app\guards" />
-      <Folder Include="ClientApp\src\app\shared\blocks" />
-      <Folder Include="ClientApp\src\app\shared\dialogs" />
-    </ItemGroup>
-
-
 </Project>
