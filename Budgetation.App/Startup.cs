@@ -25,6 +25,7 @@ namespace Budgetation.App
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
             services.AddSpaStaticFiles(c =>
             {
                 c.RootPath = "ClientApp/dist";
@@ -46,6 +47,7 @@ namespace Budgetation.App
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
