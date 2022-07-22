@@ -2,15 +2,15 @@
 </div>
 <nav [@openClose]="isOpen? 'open' : 'closed'" class="bg-dark">
   <mat-action-list>
-    <button mat-list-item routerLink="/"> Home </button>
+    <button mat-list-item routerLink="/" (click)="toggleNavigation()"> Home </button>
     <hr/>
-    <button mat-list-item routerLink="budget"> Budget </button>
+    <button mat-list-item routerLink="/budget" (click)="toggleNavigation()"> Budget </button>
     <hr/>
-    <button mat-list-item routerLink="/expenses"> Expenses </button>
+    <button mat-list-item routerLink="/expenses" (click)="toggleNavigation()"> Expenses </button>
     <hr/>
-    <button mat-list-item routerLink="/income"> Income </button>
+    <button mat-list-item routerLink="/income" (click)="toggleNavigation()"> Income </button>
     <hr/>
-    <button mat-list-item routerLink="/what-if"> What-If? </button>
+    <button mat-list-item routerLink="/what-if" (click)="toggleNavigation()"> What-If? </button>
   </mat-action-list>
 </nav>
 <div [@openClose]="isOpen? 'open' : 'closed'"></div>
