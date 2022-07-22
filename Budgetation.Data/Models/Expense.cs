@@ -18,6 +18,8 @@ namespace Budgetation.Data.Models
         [BsonRequired]
         public EExpenseType Type { get; set; }
         public DateTime? PaidOn { get; set; } = null;
+        public DateTime Due { get; set; } = DateTime.Today;
+
     }
 
     public class SingleExpense : AbstractExpense
@@ -30,7 +32,6 @@ namespace Budgetation.Data.Models
         public Guid ReoccurrenceId { get; set; } = Guid.NewGuid();
         [BsonRequired]
         public EReoccurrence Interval { get; set; }
-        public DateTime Due { get; set; }
     }
 
     public enum EExpenseType

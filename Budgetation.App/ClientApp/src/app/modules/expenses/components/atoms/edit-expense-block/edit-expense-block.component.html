@@ -22,6 +22,13 @@
           </mat-select>
           <mat-hint align="end">select the type of expense to categorize under</mat-hint>
         </mat-form-field>
+        <mat-form-field appearance="fill" class="mb-2">
+          <mat-label>due date</mat-label>
+          <input matInput [(ngModel)]="expense.due" [matDatepicker]="duePicker" required>
+          <mat-datepicker-toggle matSuffix [for]="duePicker"></mat-datepicker-toggle>
+          <mat-datepicker #duePicker></mat-datepicker>
+          <mat-hint align="end">select the date this expense will be due</mat-hint>
+        </mat-form-field>
       </ng-container>
       <div class="mb-2 d-flex flex-column">
         <mat-label>expense reoccurs?</mat-label>
@@ -37,13 +44,6 @@
             </mat-option>
           </mat-select>
           <mat-hint align="end">select how often this expense is expected to reoccur</mat-hint>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="mb-2">
-          <mat-label>due date</mat-label>
-          <input matInput [(ngModel)]="expense.due" [matDatepicker]="duePicker" required>
-          <mat-datepicker-toggle matSuffix [for]="duePicker"></mat-datepicker-toggle>
-          <mat-datepicker #duePicker></mat-datepicker>
-          <mat-hint align="end">select the date this expense will first be due</mat-hint>
         </mat-form-field>
       </ng-container>
       <div class="mb-2 d-flex flex-column">
