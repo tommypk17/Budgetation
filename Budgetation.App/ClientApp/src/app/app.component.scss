@@ -1,2 +1,4 @@
-.main {display: flex; flex-direction: column; margin-bottom: 5rem;}
+:host {display: flex; height: 100%; flex-direction: column}
+
+#main {height: 100%; position: relative; top: 0; overflow-y: auto}
 .wrapper {display:flex; flex-direction:column;}
