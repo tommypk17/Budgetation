@@ -11,12 +11,12 @@ export interface AppConfig {
   knownAuthorities: string
 }
 
+if(environment.production){
+
 fetch('.info')
   .then((res) => res.json())
   .then((config: AppConfig) => {
-    if (environment.production) {
-      enableProdMode();
-    }
+    enableProdMode();
     environment.AzureAd.clientId = config.clientId;
     environment.AzureAd.authority = config.authority;
     environment.AzureAd.redirectUri = config.redirectUri;
@@ -25,3 +25,7 @@ fetch('.info')
     platformBrowserDynamic().bootstrapModule(AppModule)
       .catch(err => console.error(err));
   });
+}else{
+  platformBrowserDynamic().bootstrapModule(AppModule)
+    .catch(err => console.error(err));
+}
