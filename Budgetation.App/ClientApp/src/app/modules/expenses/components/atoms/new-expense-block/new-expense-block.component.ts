@@ -36,7 +36,6 @@ export class NewExpenseBlockComponent implements OnInit {
   public changeReoccurs(reoccurs: boolean) {
     if(reoccurs){
       this.expense = Object.assign(new RecurringExpense(), this.expense);
-      this.expense.due = undefined;
       this.expense.interval = undefined;
       this.expense.reoccurrenceId = undefined;
     }else{
