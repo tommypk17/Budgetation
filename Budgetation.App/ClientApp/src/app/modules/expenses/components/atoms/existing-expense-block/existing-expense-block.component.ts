@@ -62,7 +62,15 @@ export class ExistingExpenseBlockComponent implements OnInit {
     this.delete.next(expense);
   }
 
-  markPaid(expense: AbstractExpense): void {
+  markPaid(expense: AbstractExpense, paidOn: string): void {
+    switch(paidOn){
+      case 'today':
+        expense.paidOn = new Date();
+        break;
+      case 'onDue':
+        expense.paidOn = expense.due;
+        break;
+    }
     if(expense.amount <= 0){
       let dialog = this.dialog.open(PaidExpenseDialogComponent, {disableClose: true, data: expense.amount });
       dialog.afterClosed().subscribe((res: number) => {
@@ -77,7 +85,6 @@ export class ExistingExpenseBlockComponent implements OnInit {
         }
       });
     }else{
-
       if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
         expense = Object.assign(new RecurringExpense(), expense);
       }else{

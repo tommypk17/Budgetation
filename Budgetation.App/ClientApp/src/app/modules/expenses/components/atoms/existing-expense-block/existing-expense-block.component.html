@@ -9,9 +9,17 @@
         <button *ngIf="expense.paidOn" mat-icon-button  aria-label="marked as paid" [disabled]="true" >
           <mat-icon matTooltip="paid">paid</mat-icon>
         </button>
-        <button *ngIf="!expense.paidOn" (click)="markPaid(expense)" mat-icon-button aria-label="not paid" >
+        <button *ngIf="!expense.paidOn" [matMenuTriggerFor]="paidOptionsMenu" mat-icon-button aria-label="not paid" >
           <mat-icon matTooltip="mark paid">attach_money</mat-icon>
         </button>
+        <mat-menu #paidOptionsMenu="matMenu">
+          <button mat-menu-item (click)="markPaid(expense, 'today')">
+            <span>Today</span>
+          </button>
+          <button mat-menu-item (click)="markPaid(expense, 'onDue')">
+            <span>On Due</span>
+          </button>
+        </mat-menu>
         <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{expense.name}} options" >
           <mat-icon>more_horiz</mat-icon>
         </button>

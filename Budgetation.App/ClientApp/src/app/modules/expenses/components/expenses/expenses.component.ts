@@ -121,7 +121,6 @@ export class ExpensesComponent implements OnInit {
 
   markExpensePaid(expense: SingleExpense | RecurringExpense): void {
     if(!expense.paidOn) expense.paidOn = new Date(Date.now());
-    else expense.paidOn = undefined;
     if(expense instanceof SingleExpense){
       this.expenseService.updateSingleExpense(expense as SingleExpense).subscribe((res: iResponse<SingleExpense>) => {
         if(res && res.data){
