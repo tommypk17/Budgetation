@@ -45,6 +45,10 @@ export class ExistingExpenseBlockComponent implements OnInit {
     }
   }
 
+  displayMoney(amount: number): number{
+    return this.sharedService.moneyRound(amount);
+  }
+
   saveExpense(expense: AbstractExpense): void {
     this.save.next(expense);
   }

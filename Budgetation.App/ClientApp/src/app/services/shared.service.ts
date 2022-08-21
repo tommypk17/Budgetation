@@ -94,4 +94,8 @@ export class SharedService {
     return new Date(now.getFullYear(), now.getMonth(), 0);
   }
 
+  moneyRound(amount: number): number{
+    return Math.round(amount * 100) / 100;
+  }
+
 }
