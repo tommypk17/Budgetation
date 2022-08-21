@@ -63,14 +63,6 @@ export class ExistingExpenseBlockComponent implements OnInit {
   }
 
   markPaid(expense: AbstractExpense, paidOn: string): void {
-    switch(paidOn){
-      case 'today':
-        expense.paidOn = new Date();
-        break;
-      case 'onDue':
-        expense.paidOn = expense.due;
-        break;
-    }
     if(expense.amount <= 0){
       let dialog = this.dialog.open(PaidExpenseDialogComponent, {disableClose: true, data: expense.amount });
       dialog.afterClosed().subscribe((res: number) => {
@@ -81,6 +73,7 @@ export class ExistingExpenseBlockComponent implements OnInit {
           }else{
             expense = Object.assign(new SingleExpense(), expense);
           }
+          this.expense.paidOn = this.getPaidDate(this.expense, paidOn);
           this.paid.next(expense)
         }
       });
@@ -90,7 +83,17 @@ export class ExistingExpenseBlockComponent implements OnInit {
       }else{
         expense = Object.assign(new SingleExpense(), expense);
       }
+      this.expense.paidOn = this.getPaidDate(this.expense, paidOn);
       this.paid.next(expense)
+    }
+  }
+
+  getPaidDate(expense: AbstractExpense, paidOn: string): Date{
+    switch(paidOn){
+      case 'today':
+        return new Date();
+      case 'onDue':
+        return expense.due;
     }
   }
 
