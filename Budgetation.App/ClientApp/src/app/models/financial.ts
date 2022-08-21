@@ -65,10 +65,10 @@ export enum eReoccurrence {
 }
 
 export enum eIncomeType {
-  Hourly = 'Hourly',
-  Salary = 'Salary',
-  Interest = 'Interest',
-  Other = 'Other'
+  Hourly,
+  Salary,
+  Interest,
+  Other
 }
 
 export enum eExpenseType {

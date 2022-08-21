@@ -15,10 +15,10 @@
           <mat-hint align="end">amount coming into account(s)</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
-          <mat-label>select the expense type</mat-label>
+          <mat-label>select the income type</mat-label>
           <mat-select [(ngModel)]="income.type" (selectionChange)="checkValid()" required>
-            <mat-option *ngFor="let incomeType of incomeTypes.types" [value]="incomeType.value">
-              {{incomeType.display}}
+            <mat-option *ngFor="let incomeType of incomeTypes" [value]="incomeType.key">
+              {{incomeType.value}}
             </mat-option>
           </mat-select>
           <mat-hint align="end">select the type of income to categorize under</mat-hint>

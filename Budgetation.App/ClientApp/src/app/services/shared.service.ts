@@ -3,7 +3,7 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {KeyValue} from "@angular/common";
-import {eExpensesFor, eExpenseType, eReoccurrence} from "../models/financial";
+import {eExpensesFor, eExpenseType, eIncomeType, eReoccurrence} from "../models/financial";
 
 
 @Injectable({
@@ -48,6 +48,14 @@ export class SharedService {
   clearLoading(): void {
     this.loadingQueue = [];
     this.loading.next(false);
+  }
+
+  get incomeTypes(): KeyValue<number, string>[] {
+    let incomeTypes: KeyValue<number, string>[] = [];
+    Object.values(eIncomeType).filter((o) => typeof o == 'string').forEach((v) => {
+      incomeTypes.push({key: eIncomeType[v], value: v as string});
+    })
+    return incomeTypes;
   }
 
   get reoccurrences(): KeyValue<number, string>[] {

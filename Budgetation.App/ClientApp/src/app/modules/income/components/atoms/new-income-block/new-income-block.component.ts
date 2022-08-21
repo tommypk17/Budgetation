@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {eIncomeType, Income} from "../../../../../models/financial";
 import {KeyValue} from "@angular/common";
+import {SharedService} from "../../../../../services/shared.service";
 
 @Component({
   selector: 'app-new-income-block',
@@ -17,12 +18,10 @@ export class NewIncomeBlockComponent implements OnInit {
 
   incomeTypes: KeyValue<number, string>[] = [];
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
-    Object.keys(eIncomeType).forEach((v) => {
-      this.incomeTypes.push({key: eIncomeType[v], value: v});
-    })
+    this.incomeTypes = this.sharedService.incomeTypes;
   }
 
   public saveIncome(): void {

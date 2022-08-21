@@ -21,7 +21,7 @@ namespace Budgetation.Data.Models
 
         public double IncomingBalance { get; set; } = 0;
         public double Amount { get; set; } = 0;
-        public string Type { get; set; } = null!;
+        public int Type { get; set; } = 0;
         public DateTime Date { get; set; } = DateTime.Today;
     }
     
