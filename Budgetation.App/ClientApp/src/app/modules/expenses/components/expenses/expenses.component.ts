@@ -183,6 +183,7 @@ export class ExpensesComponent implements OnInit {
         this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= this.sharedService.lastDayOfMonthCurrent);
         break;
       case eExpensesFor.Month:
+        this.filterByMonth(this.currentMonth)
         break;
     }
   }
@@ -191,6 +192,7 @@ export class ExpensesComponent implements OnInit {
       this.reFilterSort();
       this.currentMonth = date;
       this.filterByMonth(date);
+      this.currentExpensesFor = eExpensesFor.Month;
   }
 
   filterByMonth(date: Date | undefined){

@@ -73,7 +73,7 @@ export class ExistingExpenseBlockComponent implements OnInit {
           }else{
             expense = Object.assign(new SingleExpense(), expense);
           }
-          this.expense.paidOn = this.getPaidDate(this.expense, paidOn);
+          expense.paidOn = this.getPaidDate(this.expense, paidOn);
           this.paid.next(expense)
         }
       });
@@ -83,7 +83,7 @@ export class ExistingExpenseBlockComponent implements OnInit {
       }else{
         expense = Object.assign(new SingleExpense(), expense);
       }
-      this.expense.paidOn = this.getPaidDate(this.expense, paidOn);
+      expense.paidOn = this.getPaidDate(this.expense, paidOn);
       this.paid.next(expense)
     }
   }
