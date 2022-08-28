@@ -15,3 +15,9 @@ export interface iProfile {
   lastName: string;
   email: string;
 }
+
+export class UserPreference {
+  id?: string;
+  key: string = "";
+  value: string = "";
+}

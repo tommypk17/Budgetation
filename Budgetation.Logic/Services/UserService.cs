@@ -51,5 +51,29 @@ namespace Budgetation.Logic.Services
         {
             return await _dbUserIncomeService.Delete(userId, id);
         }
+        
+        public async Task<List<UserPreference>> GetUserPreferences(Guid userId)
+        {
+            User user = await _dbUserService.Find(userId);
+            return user.Preferences;
+        }
+        
+        public async Task<List<UserPreference>> UpdateUserPreferences(Guid userId, UserPreference preference)
+        {
+            User user = await _dbUserService.Find(userId);
+            UserPreference? found = user.Preferences.Find(x => x.Key.ToLower().Trim() == preference.Key.ToLower().Trim());
+            if (found is null)
+            {
+                user.Preferences.Add(preference);
+            }
+            else
+            {
+                user.Preferences.Remove(found);
+                found.Value = preference.Value;
+                user.Preferences.Add(found);
+            }
+            user = await _dbUserService.Update(user);
+            return user.Preferences;
+        }
     }
 }

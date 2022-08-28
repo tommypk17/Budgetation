@@ -42,14 +42,14 @@ export class AuthService {
             lastName: user.idTokenClaims['family_name'] as string
           };
           let res: iResponse<iProfile> = {
-            success: 'success',
+            success: true,
             message: 'user data found',
             data: profile
           };
           subscriber.next(res);
         }else{
           let res: iResponse<iProfile> = {
-            success: 'error',
+            success: false,
             message: 'user data not found',
             data: undefined
           };

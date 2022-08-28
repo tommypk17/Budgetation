@@ -14,6 +14,9 @@ namespace Budgetation.Logic.Services.Interfaces
 
         public Task<UserIncome?> AddUserIncome(Guid userId, UserIncome income);
         public Task<UserIncome?> UpdateUserIncome(Guid userId, UserIncome income);
+        public Task<List<UserPreference>> GetUserPreferences(Guid userId);
+        public Task<List<UserPreference>> UpdateUserPreferences(Guid userId, UserPreference preference);
+
 
         public Task<UserIncome?> DeleteUserIncome(Guid userId, Guid id);
     }

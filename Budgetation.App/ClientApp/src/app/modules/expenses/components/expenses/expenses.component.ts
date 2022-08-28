@@ -10,6 +10,7 @@ import {ExpenseService} from "../../../../services/expense.service";
 import {iResponse} from "../../../../models/response";
 import {StatsExpenseBlockComponent} from "../atoms/stats-expense-block/stats-expense-block.component";
 import {SharedService} from "../../../../services/shared.service";
+import {UserPreferencesService} from "../../../../services/user-preferences.service";
 
 @Component({
   selector: 'app-expenses',

@@ -57,7 +57,8 @@ namespace Budgetation.Data.Services
         public async Task<User> Update(User existingUser)
         {
             User user = await FindOrCreateUser(existingUser.UserId);
-            await _users.ReplaceOneAsync(x => x.UserId == user.UserId, user);
+            existingUser.UserId = user.UserId;
+            await _users.ReplaceOneAsync(x => x.UserId == user.UserId, existingUser);
             return user;
         }
 

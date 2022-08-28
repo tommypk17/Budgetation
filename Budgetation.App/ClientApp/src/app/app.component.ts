@@ -7,6 +7,8 @@ import {AuthService} from "./services/auth.service";
 import {iResponse} from "./models/response";
 import {SharedService} from "./services/shared.service";
 import {Router} from "@angular/router";
+import {UserPreferencesService} from "./services/user-preferences.service";
+import {UserPreference} from "./models/user";
 
 @Component({
   selector: 'app-root',
@@ -16,7 +18,7 @@ import {Router} from "@angular/router";
 export class AppComponent implements OnInit, OnDestroy{
   title = 'Budgetation';
   private readonly _destroying$ = new Subject<void>();
-  constructor(private sharedService: SharedService) {
+  constructor(private sharedService: SharedService, private userPreferencesService: UserPreferencesService) {
   }
 
   ngOnDestroy(): void {
@@ -28,6 +30,7 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
+    this.userPreferencesService.initializeUserPreferences();
   }
 
 }
