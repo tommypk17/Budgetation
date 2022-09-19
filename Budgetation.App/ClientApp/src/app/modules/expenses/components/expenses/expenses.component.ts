@@ -177,16 +177,19 @@ export class ExpensesComponent implements OnInit {
     this.currentExpensesFor = expensesFor;
     switch (expensesFor){
       case eExpensesFor.All:
+        this.currentMonth = undefined;
         this.currentExpenses = this.allExpenses;
         break;
       case eExpensesFor.Current:
-        this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) >= this.sharedService.firstDayOfMonthCurrent);
+        this.currentMonth = new Date(Date.now());
+        this.currentExpenses = this.allExpenses.filter(x => new Date(x.due) >= this.sharedService.firstDayOfMonthCurrent);
         this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= this.sharedService.lastDayOfMonthCurrent);
         break;
       case eExpensesFor.Month:
         this.filterByMonth(this.currentMonth)
         break;
     }
+    this.currentFilter = undefined;
   }
 
   showMonth(date: Date){
@@ -198,7 +201,7 @@ export class ExpensesComponent implements OnInit {
 
   filterByMonth(date: Date | undefined){
     if(date){
-      this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) >= date);
+      this.currentExpenses = this.allExpenses.filter(x => new Date(x.due) >= date);
       this.currentExpenses = this.currentExpenses.filter(x => new Date(x.due) <= new Date(date.getFullYear(), date.getMonth() + 1, 0));
     }
   }
@@ -207,42 +210,43 @@ export class ExpensesComponent implements OnInit {
     this.currentFilter = filterBy;
     switch (filterBy){
       case 'clear':
-        this.currentExpenses = this.allExpenses;
+        this.showExpenses(this.currentExpensesFor);
+        if(this.currentMonth){
+          this.filterByMonth(this.currentMonth);
+        }
         this.currentFilter = undefined;
         break;
       case 'need':
-        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Need);
+        this.currentExpenses = this.currentExpenses.filter(x => x.type == eExpenseType.Need);
         break;
       case 'want':
-        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Want);
+        this.currentExpenses = this.currentExpenses.filter(x => x.type == eExpenseType.Want);
         break;
       case 'extra':
-        this.currentExpenses = this.allExpenses.filter(x => x.type == eExpenseType.Extra);
+        this.currentExpenses = this.currentExpenses.filter(x => x.type == eExpenseType.Extra);
         break;
       case 'single':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == undefined);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == undefined);
         break;
       case 'weekly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Weekly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Weekly);
         break;
       case 'biweekly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Biweekly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Biweekly);
         break;
       case 'monthly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Monthly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Monthly);
         break;
       case 'quarterly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Quarterly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Quarterly);
         break;
       case 'biquarterly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Biquarterly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Biquarterly);
         break;
       case 'yearly':
-        this.currentExpenses = this.allExpenses.filter(x => x.interval == eReoccurrence.Yearly);
+        this.currentExpenses = this.currentExpenses.filter(x => x.interval == eReoccurrence.Yearly);
         break;
     }
-    this.showExpenses(this.currentExpensesFor);
-    this.filterByMonth(this.currentMonth);
   }
 
   sortExpenses(sortOrder: string): void {
