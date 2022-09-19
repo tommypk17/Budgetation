@@ -20,8 +20,8 @@
     <mat-selection-list #expenseSelectionList>
       <mat-list-option *ngFor="let expense of data" [value]="expense">
         <p matLine>{{expense.name}}</p>
-        <small matLine>${{expense.amount}} - {{displayReoccurrenceType(expense.interval)}}</small>
-        <small matLine>{{expense.paidOn | date: 'yyyy-MM-dd'}}</small>
+        <small matLine>{{expense.amount | currency: 'USD'}} - {{displayReoccurrenceType(expense.interval)}}</small>
+        <small matLine>{{expense.paidOn | date: 'M-d-yyyy'}}</small>
       </mat-list-option>
     </mat-selection-list>
   </ng-container>
