@@ -9,4 +9,5 @@
 <div class="d-flex">
   <button mat-button (click)="close()">Nevermind</button>
   <button mat-button [disabled]="amount <= 0" (click)="ok()">Ok</button>
+  <button mat-button [disabled]="amount > 0" (click)="ok()">Zero Balance</button>
 </div>

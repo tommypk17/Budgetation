@@ -18,7 +18,7 @@ export class PaidExpenseDialogComponent implements OnInit {
   }
 
   close(): void{
-    this.dialogRef.close(0);
+    this.dialogRef.close(undefined);
   }
 
 }

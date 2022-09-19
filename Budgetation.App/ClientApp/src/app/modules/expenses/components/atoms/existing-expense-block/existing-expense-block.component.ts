@@ -66,7 +66,7 @@ export class ExistingExpenseBlockComponent implements OnInit {
     if(expense.amount <= 0){
       let dialog = this.dialog.open(PaidExpenseDialogComponent, {disableClose: true, data: expense.amount });
       dialog.afterClosed().subscribe((res: number) => {
-        if(res > 0){
+        if(res > -1 && res != undefined){
           expense.amount = res;
           if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
             expense = Object.assign(new RecurringExpense(), expense);
