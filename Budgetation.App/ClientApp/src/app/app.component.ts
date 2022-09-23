@@ -18,7 +18,7 @@ import {UserPreference} from "./models/user";
 export class AppComponent implements OnInit, OnDestroy{
   title = 'Budgetation';
   private readonly _destroying$ = new Subject<void>();
-  constructor(private sharedService: SharedService, private userPreferencesService: UserPreferencesService) {
+  constructor(private sharedService: SharedService) {
   }
 
   ngOnDestroy(): void {
@@ -30,7 +30,6 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   ngOnInit(): void {
-    this.userPreferencesService.initializeUserPreferences();
   }
 
 }
