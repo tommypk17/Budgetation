@@ -1,5 +1,5 @@
-:host {display: flex; position: relative; bottom: 0; width:100%; z-index:2;}
-.nav{max-height: 10vh;}
+:host {display: flex; position: fixed; bottom: 0; width:100%; z-index:2;}
+.nav{height: 8vh;}
 .search-form {flex: 4;}
 .search-box {width: 100%;}
 .search-form, .search-box{text-align: center;}
