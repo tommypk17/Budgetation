@@ -7,6 +7,9 @@
   >
   </app-header-block>
   <div class="block">
+    <app-stats-income-block #incomeStats [income]="currentIncome"></app-stats-income-block>
+  </div>
+  <div class="block">
     <app-income-actions-block (filter)="filterIncome($event)" (sort)="sortIncome($event)" (newIncome)="createNewIncome()" [disableNewIncome]="newIncome != undefined"></app-income-actions-block>
   </div>
   <div class="block">

@@ -45,7 +45,7 @@ export class StatsExpenseBlockComponent implements OnInit, OnChanges {
     this.expenses.forEach((v) => {
       total += v.amount;
     });
-    return this.sharedService.moneyRound(total);
+    return total;
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -19,6 +19,7 @@ import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
+import { StatsIncomeBlockComponent } from './components/atoms/stats-income-block/stats-income-block.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {MatSelectModule} from "@angular/material/select";
     IncomeActionsBlockComponent,
     ExistingIncomeBlockComponent,
     NewIncomeBlockComponent,
-    EditIncomeBlockComponent
+    EditIncomeBlockComponent,
+    StatsIncomeBlockComponent
   ],
   imports: [
     CommonModule,
