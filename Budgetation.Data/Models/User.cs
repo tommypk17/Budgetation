@@ -13,6 +13,7 @@ namespace Budgetation.Data.Models
         public List<Role> Roles { get; set; } = new List<Role>() {new Role()};
         public List<UserIncome> Incomes { get; set; } = new List<UserIncome>();
         public List<UserPreference> Preferences { get; set; } = new List<UserPreference>();
+        public List<UserBudget> Budgets { get; set; } = new List<UserBudget>();
     }
 
     public class UserIncome
@@ -32,6 +33,13 @@ namespace Budgetation.Data.Models
         public Guid UserId { get; set; }
         public List<SingleExpense> SingleExpenses { get; set; } = new List<SingleExpense>();
         public List<RecurringExpense> RecurringExpenses { get; set; } = new List<RecurringExpense>();
+    }
+    
+    public class UserBudget
+    {
+        [BsonId] public Guid Id { get; set; } = Guid.NewGuid();
+        public bool IsWhatIf { get; set; } = true;
+        public List<BudgetExpense> Expenses { get; set; } = new List<BudgetExpense>();
     }
 
     public class UserPreference

@@ -64,11 +64,13 @@ namespace Budgetation.API
             services.AddSingleton<IDbExpenseService<SingleExpense>, DbSingleExpenseService>();
             services.AddSingleton<IDbExpenseService<RecurringExpense>, DbRecurringExpenseService>();
             services.AddSingleton<IDbUserIncomeService, DbUserIncomeService>();
+            services.AddSingleton<IDbBudgetService, DbBudgetService>();
 
             //Logic services
             services.AddScoped<IExpenseService<SingleExpense>, SingleExpenseService>();
             services.AddScoped<IExpenseService<RecurringExpense>, RecurringExpenseService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBudgetService, BudgetService>();
 
         }
 
