@@ -1,0 +1,71 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build & Deploy Budgetation
+
+on:
+  workflow_dispatch
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation'
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '6.0.x'
+          include-prerelease: true
+
+      - name: Build solution
+        run: dotnet build --configuration Release
+
+      - name: Publish solution
+        run: dotnet publish -c Release -o drop
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: .net-app
+          path: drop
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download API Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
+
+      - name: Deploy API
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'budgetation-api'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.API_PROFILE }}
+          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
+      - name: Download App Artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
+
+      - name: Deploy App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'budgetation'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.APP_PROFILE }}
+          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
