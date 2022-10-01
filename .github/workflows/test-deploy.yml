@@ -1,5 +1,7 @@
 name: Test Deploy - budgetation-api
 
+on: workflow_dispatch
+
 env:
   AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation.API'
   
