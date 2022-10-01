@@ -28,7 +28,7 @@ jobs:
         run: dotnet build ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/Budgetation.API.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o drop/${{env.AZURE_WEBAPP_PACKAGE_PATH}} 
+        run: dotnet publish ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/Budgetation.API.csproj -c Release -o drop/${{env.AZURE_WEBAPP_PACKAGE_PATH}} 
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
