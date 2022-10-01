@@ -48,7 +48,7 @@ jobs:
           path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
 
       - name: Deploy API
-        id: deploy-to-webapp
+        id: deploy-api
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'budgetation-api'
@@ -62,7 +62,7 @@ jobs:
           path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
 
       - name: Deploy App
-        id: deploy-to-webapp
+        id: deploy-app
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'budgetation'
