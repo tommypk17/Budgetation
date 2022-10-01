@@ -1,0 +1,28 @@
+name: Test Deploy - budgetation-api
+
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation.API'
+  
+jobs:
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: .net-app
+          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'budgetation-api'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D337141D18444C9A574173208E4350 }}
+          package: 'drop/.'
