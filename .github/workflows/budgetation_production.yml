@@ -27,13 +27,16 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run:  (cd ./Budgetation.App/ClientApp && npm install && cd -)
+        run:  (cd ./Budgetation.App/ClientApp && npm install && cd ../../)
 
       - name: Build Solution
         run: dotnet build --configuration Release
 
       - name: Publish API
         run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
+        
+      - name: Build Angular App
+        run:  (cd ./Budgetation.App/ClientApp && ng build --configuration=production && cd ../../)
         
       - name: Publish App
         run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
