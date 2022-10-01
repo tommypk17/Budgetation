@@ -10,6 +10,8 @@ on:
   workflow_dispatch:
 env:
   AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation/Budgetation.API'
+  AZURE_WEBAPP_PACKAGE_NAME: 'Budgetation.API'
+  
 jobs:
   build:
     runs-on: windows-latest
@@ -24,16 +26,16 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build --configuration Release
+        run: dotnet build ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{AZURE_WEBAPP_PACKAGE_NAME}}.csproj --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.AZURE_WEBAPP_PACKAGE_PATH}}
+        run: dotnet publish -c Release -o drop/${{env.AZURE_WEBAPP_PACKAGE_PATH}}
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}
+          path: drop/${{env.AZURE_WEBAPP_PACKAGE_PATH}}
 
   deploy:
     runs-on: windows-latest
@@ -55,4 +57,4 @@ jobs:
           app-name: 'budgetation-api'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D337141D18444C9A574173208E4350 }}
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
