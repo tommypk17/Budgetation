@@ -8,7 +8,8 @@ on:
     branches:
       - master
   workflow_dispatch:
-
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation/Budgetation.API'
 jobs:
   build:
     runs-on: windows-latest
