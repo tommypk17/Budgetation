@@ -44,11 +44,12 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
-      - name: Download API Artifacts
+      - name: Download Artifacts
         uses: actions/download-artifact@v2
         with:
           name: .net-app
-          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
+          path: '.'
+          
       - name: Deploy API
         id: deploy-api
         uses: azure/webapps-deploy@v2
@@ -56,13 +57,8 @@ jobs:
           app-name: 'budgetation-api'
           slot-name: 'Production'
           publish-profile: ${{ secrets.API_PROFILE }}
-          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
+          package: 'Budgetation.API/.'
           
-      - name: Download App Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          name: .net-app
-          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
       - name: Deploy App
         id: deploy-app
         uses: azure/webapps-deploy@v2
@@ -70,4 +66,4 @@ jobs:
           app-name: 'budgetation'
           slot-name: 'Production'
           publish-profile: ${{ secrets.APP_PROFILE }}
-          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
+          package: 'Budgetation.App/.'
