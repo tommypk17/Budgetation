@@ -54,4 +54,4 @@ jobs:
           app-name: 'budgetation-api'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D337141D18444C9A574173208E4350 }}
-          package: '.'
+          package: 'drop/.'
