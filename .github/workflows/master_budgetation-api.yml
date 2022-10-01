@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'budgetation-api'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D337141D18444C9A574173208E4350 }}
+          publish-profile: ${{ secrets.API_PROFILE }}
           package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/.'
