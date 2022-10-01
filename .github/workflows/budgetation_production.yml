@@ -21,11 +21,14 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
 
-      - name: Build solution
+      - name: Build Solution
         run: dotnet build --configuration Release
 
-      - name: Publish solution
-        run: dotnet publish -c Release -o drop
+      - name: Publish API
+        run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
+        
+      - name: Publish App
+        run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
@@ -46,7 +49,6 @@ jobs:
         with:
           name: .net-app
           path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
-
       - name: Deploy API
         id: deploy-api
         uses: azure/webapps-deploy@v2
@@ -55,12 +57,12 @@ jobs:
           slot-name: 'Production'
           publish-profile: ${{ secrets.API_PROFILE }}
           package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.API/.'
+          
       - name: Download App Artifacts
         uses: actions/download-artifact@v2
         with:
           name: .net-app
           path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}.App/.'
-
       - name: Deploy App
         id: deploy-app
         uses: azure/webapps-deploy@v2
