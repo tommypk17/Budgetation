@@ -36,7 +36,7 @@ jobs:
         run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
         
       - name: Build Angular App
-        run:  (cd ./Budgetation.App/ClientApp && ng build --configuration=production && cd ../../)
+        run:  (cd ./Budgetation.App/ClientApp && npm run build -- --configuration=production && cd ../../)
         
       - name: Publish App
         run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
