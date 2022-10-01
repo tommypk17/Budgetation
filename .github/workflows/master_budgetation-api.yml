@@ -48,6 +48,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: .net-app
+          path: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -56,4 +57,4 @@ jobs:
           app-name: 'budgetation-api'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D5D337141D18444C9A574173208E4350 }}
-          package: 'drop/${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+          package: '.'
