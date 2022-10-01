@@ -9,7 +9,7 @@ on:
       - master
   workflow_dispatch:
 env:
-  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation/Budgetation.API'
+  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation.API'
   
 jobs:
   build:
