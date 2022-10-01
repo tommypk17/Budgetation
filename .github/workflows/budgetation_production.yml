@@ -20,6 +20,14 @@ jobs:
         with:
           dotnet-version: '6.0.x'
           include-prerelease: true
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install dependencies
+        run:  (cd ./Budgetation.App/ClientApp && npm start && cd -)
 
       - name: Build Solution
         run: dotnet build --configuration Release
