@@ -27,7 +27,7 @@ jobs:
           node-version: '16'
 
       - name: Install dependencies
-        run:  (cd ./Budgetation.App/ClientApp && npm start && cd -)
+        run:  (cd ./Budgetation.App/ClientApp && npm install && cd -)
 
       - name: Build Solution
         run: dotnet build --configuration Release
