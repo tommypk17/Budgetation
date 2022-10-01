@@ -10,7 +10,6 @@ on:
   workflow_dispatch:
 env:
   AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation/Budgetation.API'
-  AZURE_WEBAPP_PACKAGE_NAME: 'Budgetation.API'
   
 jobs:
   build:
@@ -26,7 +25,7 @@ jobs:
           include-prerelease: true
 
       - name: Build with dotnet
-        run: dotnet build ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{AZURE_WEBAPP_PACKAGE_NAME}}.csproj --configuration Release
+        run: dotnet build ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/Budgetation.API.csproj --configuration Release
 
       - name: dotnet publish
         run: dotnet publish -c Release -o drop/${{env.AZURE_WEBAPP_PACKAGE_PATH}} 
