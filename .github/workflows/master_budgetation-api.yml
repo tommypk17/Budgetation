@@ -4,10 +4,7 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - budgetation-api
 
 on:
-  push:
-    branches:
-      - master
-  workflow_dispatch:
+  workflow_dispatch
 env:
   AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation.API'
   
