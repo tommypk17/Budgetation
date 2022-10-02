@@ -40,7 +40,7 @@ jobs:
       - name: Build Angular App
         run:  (cd ./Budgetation.App/ClientApp && npm run build:prod && cd ../../)
       - name: Copy Angular Build
-        run: (cd ./Budgetation.App/ClientApp && cp dist ../../drop/Budgetation.App/ClientApp && cd ../../)
+        run: (cd ./Budgetation.App/ClientApp && cp -v dist ../../drop/Budgetation.App/ClientApp && cd ../../)
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
