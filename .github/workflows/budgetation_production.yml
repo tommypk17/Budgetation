@@ -34,7 +34,7 @@ jobs:
       - name: Build Angular App
         run:  cd ./Budgetation.App/ClientApp && npm run build:prod
       - name: Copy Angular Build
-        run:  cd ./Budgetation.App/ClientApp && Xcopy dist ..\..\drop\Budgetation.App\ClientApp\dist
+        run:  cd ./Budgetation.App/ClientApp && Xcopy dist ..\..\drop\Budgetation.App\ClientApp\dist\
 
       - name: Publish API
         run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
