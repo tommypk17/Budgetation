@@ -34,15 +34,13 @@ jobs:
         
       - name: Publish App
         run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
-      
-      - name: Change to Angular DIR
-        run: cd ./Budgetation.App/ClientApp
-      - name: Install dependencies
-        run:  npm install
+
+      - name: Install Angular dependencies
+        run:  cd ./Budgetation.App/ClientApp && npm install
       - name: Build Angular App
-        run:  npm run build:prod
+        run:  cd ./Budgetation.App/ClientApp && npm run build:prod
       - name: Copy Angular Build
-        run:  Xcopy dist ..\..\drop\Budgetation.App\ClientApp
+        run:  cd ./Budgetation.App/ClientApp && Xcopy dist ..\..\drop\Budgetation.App\ClientApp
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
