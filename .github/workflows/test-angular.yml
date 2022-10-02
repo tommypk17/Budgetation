@@ -1,0 +1,28 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Test Build Angular
+
+on:
+  workflow_dispatch
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: 'Budgetation'
+  
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v2
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: Install dependencies
+        run:  (cd ./Budgetation.App/ClientApp && npm install && cd ../../)
+      - name: Build Angular App
+        run:  (cd ./Budgetation.App/ClientApp && npm run build:prod && cd ../../)
+      - name: Copy Angular Build
+        run: (cd ./Budgetation.App/ClientApp && cp -v dist ../../drop/Budgetation.App/ClientApp && cd ../../)
