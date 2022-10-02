@@ -28,19 +28,19 @@ jobs:
 
       - name: Build Solution
         run: dotnet build --configuration Release
+        
+      - name: Install Angular dependencies
+        run:  cd ./Budgetation.App/ClientApp && npm install
+      - name: Build Angular App
+        run:  cd ./Budgetation.App/ClientApp && npm run build:prod
+      - name: Copy Angular Build
+        run:  cd ./Budgetation.App/ClientApp && Xcopy dist ..\bin\Release\net6.0\ClientApp
 
       - name: Publish API
         run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
         
       - name: Publish App
         run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
-
-      - name: Install Angular dependencies
-        run:  cd ./Budgetation.App/ClientApp && npm install
-      - name: Build Angular App
-        run:  cd ./Budgetation.App/ClientApp && npm run build:prod
-      - name: Copy Angular Build
-        run:  cd ./Budgetation.App/ClientApp && Xcopy dist ..\..\drop\Budgetation.App\ClientApp
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
