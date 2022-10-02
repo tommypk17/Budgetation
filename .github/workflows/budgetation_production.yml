@@ -26,20 +26,21 @@ jobs:
         with:
           node-version: '16'
 
-      - name: Install dependencies
-        run:  (cd ./Budgetation.App/ClientApp && npm install && cd ../../)
-
       - name: Build Solution
         run: dotnet build --configuration Release
 
       - name: Publish API
         run: dotnet publish Budgetation.API -c Release -o drop/Budgetation.API
         
-      - name: Build Angular App
-        run:  (cd ./Budgetation.App/ClientApp && npm run build -- --configuration=production && cd ../../)
-        
       - name: Publish App
         run: dotnet publish Budgetation.App -c Release -o drop/Budgetation.App
+      
+      - name: Install dependencies
+        run:  (cd ./Budgetation.App/ClientApp && npm install && cd ../../)
+      - name: Build Angular App
+        run:  (cd ./Budgetation.App/ClientApp && npm run build:prod && cd ../../)
+      - name: Copy Angular Build
+        run: (cd ./Budgetation.App/ClientApp && cp dist ../../drop/Budgetation.App/ClientApp && cd ../../)
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v2
