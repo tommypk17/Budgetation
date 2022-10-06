@@ -1,6 +1,6 @@
 <mat-card *ngIf="expense">
   <mat-card-content>
-    <div class="d-flex flex-column">
+    <form #form="ngForm" (ngSubmit)="saveExpense()" class="d-flex flex-column">
       <ng-container>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the expense name</mat-label>
@@ -9,13 +9,13 @@
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the amount</mat-label>
-          <input [(ngModel)]="expense.amount" matInput type="number" min=".01" step="0.01" required>
+          <input [(ngModel)]="expense.amount" name="amount" matInput type="number" min="0" step="0.01" required>
           <span matPrefix>$&nbsp;</span>
           <mat-hint align="end">amount due to satisfy the expense</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>select the expense type</mat-label>
-          <mat-select [(ngModel)]="expense.type">
+          <mat-select [(ngModel)]="expense.type" name="type" required>
             <mat-option *ngFor="let expenseType of expenseTypes" [value]="expenseType.key">
               {{expenseType.value}}
             </mat-option>
@@ -23,8 +23,8 @@
           <mat-hint align="end">select the type of expense to categorize under</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
-          <mat-label>due date</mat-label>
-          <input matInput [(ngModel)]="expense.due" [matDatepicker]="duePicker" required>
+          <mat-label>due on</mat-label>
+          <input matInput [(ngModel)]="expense.due" name="due" [matDatepicker]="duePicker" required>
           <mat-datepicker-toggle matSuffix [for]="duePicker"></mat-datepicker-toggle>
           <mat-datepicker #duePicker></mat-datepicker>
           <mat-hint align="end">select the date this expense will be due</mat-hint>
@@ -32,39 +32,27 @@
       </ng-container>
       <div class="mb-2 d-flex flex-column">
         <mat-label>expense reoccurs?</mat-label>
-        <mat-slide-toggle [disabled]="true" [(ngModel)]="reoccurs" color="primary" ></mat-slide-toggle>
-        <small>(cannot change a recurring expense to single expense or vice-versa)</small>
+        <mat-slide-toggle [(ngModel)]="expense.reoccurs" name="reoccurs" color="primary"></mat-slide-toggle>
       </div>
-      <ng-container *ngIf="reoccurs">
+      <ng-container *ngIf="expense.reoccurs">
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>select the reoccurrence frequency</mat-label>
-          <mat-select #reoccurrence [(ngModel)]="expense.interval" >
-            <mat-option  *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence.key">
+          <mat-select [(ngModel)]="expense.interval" name="interval" [required]="expense.reoccurs">
+            <mat-option *ngFor="let reoccurrence of reoccurrences" [value]="reoccurrence.key">
               {{reoccurrence.value}}
             </mat-option>
           </mat-select>
           <mat-hint align="end">select how often this expense is expected to reoccur</mat-hint>
         </mat-form-field>
       </ng-container>
-      <div class="mb-2 d-flex flex-column">
-        <mat-label>paid</mat-label>
-        <mat-slide-toggle [(ngModel)]="paid" color="primary"></mat-slide-toggle>
-      </div>
-      <mat-form-field *ngIf="paid" appearance="fill" class="mb-2">
-        <mat-label>paid on date</mat-label>
-        <input matInput [(ngModel)]="expense.paidOn" [matDatepicker]="paidOnPicker" [required]="expense.paid">
-        <mat-datepicker-toggle matSuffix [for]="paidOnPicker"></mat-datepicker-toggle>
-        <mat-datepicker #paidOnPicker></mat-datepicker>
-        <mat-hint align="end">select the date this expense was paid on</mat-hint>
-      </mat-form-field>
       <div class="d-flex flex-end">
         <div class="mr-2">
           <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelEditExpense()" type="button">cancel</button>
         </div>
         <div>
-          <button [disabled]="!expense.isObjectValid()" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveExpense()" type="submit">update expense</button>
+          <button [disabled]="!form.valid" mat-raised-button color="primary" class="ml-2" id="saveButton" type="submit">save new expense</button>
         </div>
       </div>
-    </div>
+    </form>
   </mat-card-content>
 </mat-card>

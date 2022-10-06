@@ -24,8 +24,6 @@ export class EditExpenseBlockComponent implements OnInit {
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
-  reoccurs: boolean = false;
-
   paid: boolean = false;
 
   constructor(private sharedService: SharedService) { }
@@ -35,10 +33,10 @@ export class EditExpenseBlockComponent implements OnInit {
       this.paid = !!this.expense.paidOn;
     }
     if(this.expense.interval != undefined){
-      this.reoccurs = true;
+      this.expense.reoccurs = true;
       this.expense = Object.assign(new RecurringExpense(), this.expense);
     }else{
-      this.reoccurs = false;
+      this.expense.reoccurs = false;
       this.expense = Object.assign(new SingleExpense(), this.expense);
     }
     this.expenseTypes = this.sharedService.expenseTypes;
@@ -46,7 +44,14 @@ export class EditExpenseBlockComponent implements OnInit {
   }
 
   public saveExpense(): void {
-    if(!this.paid) this.expense.paidOn = undefined;
+    if(this.expense.reoccurs){
+      this.expense = Object.assign(new RecurringExpense(), this.expense);
+    }
+    else {
+      delete this.expense.interval;
+      delete this.expense.reoccurrenceId;
+      this.expense = Object.assign(new SingleExpense(), this.expense);
+    }
     this.save.next(this.expense);
   }
 

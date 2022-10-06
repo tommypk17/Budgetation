@@ -24,8 +24,6 @@ export class NewExpenseBlockComponent implements OnInit {
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
 
-  reoccurs: boolean = false;
-
   constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
@@ -33,32 +31,19 @@ export class NewExpenseBlockComponent implements OnInit {
     this.reoccurrences = this.sharedService.reoccurrences;
   }
 
-  public changeReoccurs(reoccurs: boolean) {
-    if(reoccurs){
+  public saveExpense(): void {
+    if(this.expense.reoccurs){
       this.expense = Object.assign(new RecurringExpense(), this.expense);
-      this.expense.interval = undefined;
-      this.expense.reoccurrenceId = undefined;
-    }else{
+    }
+    else {
       delete this.expense.interval;
-      delete this.expense.due;
-      delete this.expense.reoccurrenceId;
       this.expense = Object.assign(new SingleExpense(), this.expense);
     }
-  }
-
-  public saveExpense(): void {
-    this.reoccurs = false;
     this.save.next(this.expense);
   }
 
   public cancelNewExpense(): void {
     this.cancel.next();
-  }
-
-  clearReoccur(){
-    if(this.reoccurs) {
-      this.expense.begin = null;
-    }
   }
 
 }

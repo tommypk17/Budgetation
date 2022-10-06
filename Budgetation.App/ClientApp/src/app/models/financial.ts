@@ -15,13 +15,14 @@ export class Income extends Validator{
   ];
 }
 
-export abstract class AbstractExpense extends Validator{
+export abstract class AbstractExpense{
   id?: string;
   name: string = '';
   amount: number = 0;
   type: eExpenseType;
   paidOn?: Date = undefined;
   due: Date = new Date(Date.now());
+  reoccurs: boolean = false;
 
   public static getInstance(expense: any): string{
     if(expense.interval != undefined){
@@ -35,24 +36,12 @@ export abstract class AbstractExpense extends Validator{
 }
 
 export class SingleExpense extends AbstractExpense {
-  validationFields: iValidationField[] = [
-    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
-    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
-    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]},
-    {fieldName: 'due', validationTypes: [eValidationType.isNotNull]}
-  ];
+
 }
 
 export class RecurringExpense extends AbstractExpense {
   reoccurrenceId?: string;
   interval: eReoccurrence;
-  validationFields: iValidationField[] = [
-    {fieldName: 'name', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]},
-    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
-    {fieldName: 'type', validationTypes: [eValidationType.isNotNull]},
-    {fieldName: 'interval', validationTypes: [eValidationType.isNotNull]},
-    {fieldName: 'due', validationTypes: [eValidationType.isNotNull]}
-  ];
 }
 
 export enum eReoccurrence {
