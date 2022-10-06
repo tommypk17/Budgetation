@@ -9,6 +9,7 @@
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.7" />
     </ItemGroup>
     <ItemGroup>
+      <Folder Include="ClientApp\src\app\interceptors" />
       <Folder Include="Controllers" />
     </ItemGroup>
     <ItemGroup>

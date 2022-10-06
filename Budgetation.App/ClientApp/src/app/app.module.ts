@@ -27,7 +27,6 @@ import {
 } from "@azure/msal-browser";
 
 import { environment } from '../environments/environment';
-import {ValidationInterceptor} from "./interceptors/validation.interceptor";
 
 
 export function MSALInstanceFactory(): IPublicClientApplication {
@@ -96,11 +95,6 @@ export function MSALGuardConfigFactory(): MsalGuardConfiguration {
       useFactory: MSALInterceptorConfigFactory
     },
     AuthService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ValidationInterceptor,
-      multi: true
-    },
     MsalService,
     MsalGuard,
     MsalBroadcastService],
