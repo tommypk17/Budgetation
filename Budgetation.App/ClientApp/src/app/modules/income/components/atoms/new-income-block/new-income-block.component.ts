@@ -14,8 +14,6 @@ export class NewIncomeBlockComponent implements OnInit {
   @Output('cancel') cancel: EventEmitter<void> = new EventEmitter<void>();
   @Input('income') income: Income | undefined;
 
-  invalid: boolean = true;
-
   incomeTypes: KeyValue<number, string>[] = [];
 
   constructor(private sharedService: SharedService) { }
@@ -31,15 +29,4 @@ export class NewIncomeBlockComponent implements OnInit {
   public cancelNewIncome(): void {
     this.cancel.next();
   }
-
-  public checkValid(): void {
-    let keys = Object.keys(this.income);
-    this.invalid = false;
-    keys.forEach((v, i, a) => {
-      if(this.income[v] == null || this.income[v] == undefined){
-        this.invalid = true;
-      }
-    });
-  }
-
 }

@@ -1,24 +1,24 @@
 <mat-card *ngIf="income">
   <mat-card-content>
-    <div class="d-flex flex-column">
+    <form #form="ngForm" (ngSubmit)="saveIncome()" class="d-flex flex-column">
       <ng-container>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the incoming balance</mat-label>
-          <input [(ngModel)]="income.incomingBalance" (change)="checkValid()" matInput type="number" min=".01" step="0.01">
+          <input [(ngModel)]="income.incomingBalance" matInput type="number" name="incomingBalance" min=".01" step="0.01" required>
           <span matPrefix>$&nbsp;</span>
           <mat-hint align="end">amount carried over, or previously existing in account(s)</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>enter the amount</mat-label>
-          <input [(ngModel)]="income.amount" (change)="checkValid()" matInput type="number" min=".01" step="0.01" required>
+          <input [(ngModel)]="income.amount" matInput type="number" name="amount" min=".01" step="0.01" required>
           <span matPrefix>$&nbsp;</span>
           <mat-hint align="end">amount coming into account(s)</mat-hint>
         </mat-form-field>
         <mat-form-field appearance="fill" class="mb-2">
-          <mat-label>select the expense type</mat-label>
-          <mat-select [(ngModel)]="income.type" (selectionChange)="checkValid()" required>
-            <mat-option *ngFor="let incomeType of incomeTypes.types" [value]="incomeType.value">
-              {{incomeType.display}}
+          <mat-label>select the income type</mat-label>
+          <mat-select [(ngModel)]="income.type" name="type" required>
+            <mat-option *ngFor="let incomeType of incomeTypes" [value]="incomeType.key">
+              {{incomeType.value}}
             </mat-option>
           </mat-select>
           <mat-hint align="end">select the type of income to categorize under</mat-hint>
@@ -26,7 +26,7 @@
       </ng-container>
       <mat-form-field appearance="fill" class="mb-2">
         <mat-label>select the date</mat-label>
-        <input matInput [(ngModel)]="income.date" (dateChange)="checkValid()" [matDatepicker]="datePicker" required>
+        <input matInput [(ngModel)]="income.date" [matDatepicker]="datePicker" name="date" required>
         <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
         <mat-datepicker #datePicker></mat-datepicker>
         <mat-hint align="end">select the date this income should be recorded for</mat-hint>
@@ -36,9 +36,9 @@
           <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelNewIncome()" type="button">cancel</button>
         </div>
         <div>
-          <button [disabled]="invalid" mat-raised-button color="primary" class="ml-2" id="saveButton" (click)="saveIncome()" type="submit">update income</button>
+          <button [disabled]="!form.valid" mat-raised-button color="primary" class="ml-2" id="saveButton" type="submit">save new income</button>
         </div>
       </div>
-    </div>
+    </form>
   </mat-card-content>
 </mat-card>

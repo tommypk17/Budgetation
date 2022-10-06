@@ -1,18 +1,9 @@
-﻿import {eValidationType, iValidationField, Validator} from "./validation";
-
-export class Income extends Validator{
+﻿export class Income{
   id?: string;
   incomingBalance: number = 0;
   amount: number = 0;
   date: Date = new Date(Date.now());
   type: eIncomeType;
-
-  validationFields: iValidationField[] = [
-    {fieldName: 'incomingBalance', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
-    {fieldName: 'amount', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isNumber]},
-    {fieldName: 'date', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull, eValidationType.isDate]},
-    {fieldName: 'type', validationTypes: [eValidationType.isNotEmpty, eValidationType.isNotNull]}
-  ];
 }
 
 export abstract class AbstractExpense{
