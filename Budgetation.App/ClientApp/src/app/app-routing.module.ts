@@ -7,6 +7,7 @@ const routes: Routes = [
   { path: 'profile', loadChildren: () => import('./modules/profile/profile.module').then(m => m.ProfileModule), canActivate: [MsalGuard] },
   { path: 'expenses', loadChildren: () => import('./modules/expenses/expenses.module').then(m => m.ExpensesModule), canActivate: [MsalGuard] },
   { path: 'income', loadChildren: () => import('./modules/income/income.module').then(m => m.IncomeModule), canActivate: [MsalGuard] },
+  { path: 'budgets', loadChildren: () => import('./modules/budgets/budgets.module').then(m => m.BudgetsModule), canActivate: [MsalGuard] },
   { path: 'unauthenticated', loadChildren: () => import('./modules/unauthenticated/unauthenticated.module').then(m => m.UnauthenticatedModule) }
 ];
 
