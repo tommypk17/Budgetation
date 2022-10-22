@@ -39,6 +39,9 @@ namespace Budgetation.Data.Models
     {
         [BsonId] public Guid Id { get; set; } = Guid.NewGuid();
         public bool IsWhatIf { get; set; } = true;
+        public double Salary { get; set; } = 0;
+        public double NetMonthlyPay { get; set; } = 0;
+        public double? NetMonthlyDeductions { get; set; } = 0;
         public List<BudgetExpense> Expenses { get; set; } = new List<BudgetExpense>();
     }
 
