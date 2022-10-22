@@ -45,12 +45,12 @@ namespace Budgetation.Logic.Services
 
         public async Task<List<SingleExpense>?> DuplicateExpenses(Guid userId, List<Guid> ids)
         {
-            return null;
+            return await Task.Run(() => new List<SingleExpense>());
         }
 
         public async Task<List<SingleExpense>?> GetDuplicateExpenses(Guid userId)
         {
-            return null;
+            return await Task.Run(() => new List<SingleExpense>());
         }
     }
 }
