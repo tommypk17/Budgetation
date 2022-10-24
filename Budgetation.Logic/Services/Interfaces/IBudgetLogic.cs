@@ -5,7 +5,7 @@ using Budgetation.Data.Models;
 
 namespace Budgetation.Logic.Services.Interfaces;
 
-public interface IBudgetService
+public interface IBudgetLogic
 {
     public Task<List<UserBudget>> GetUserBudgets(Guid userId);
     public Task<UserBudget?> GetUserBudget(Guid userId, Guid budgetId);

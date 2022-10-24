@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Budgetation.Data.DAL;
-using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
+using Budgetation.Logic.Services.Interfaces;
 using MongoDB.Driver;
 
-namespace Budgetation.Data.Services;
+namespace Budgetation.Logic.Services;
 
-public class DbBudgetService : IDbBudgetService
+public class BudgetLogic : IBudgetLogic
 {
     private readonly IMongoCollection<User> _users;
-    public DbBudgetService(IDatabaseSettings settings)
+    public BudgetLogic(IDbContext dbContext)
     {
-        var client = new MongoClient(settings.ConnectionString);
-        var database = client.GetDatabase(settings.DatabaseName);
-        _users = database.GetCollection<User>("user");
+        var ctx = dbContext;
+        _users = ctx.Database.GetCollection<User>("user");
     }
     
     private async Task<User> FindOrCreateUser(Guid userId)
@@ -35,7 +34,19 @@ public class DbBudgetService : IDbBudgetService
         }
     }
     
-    public async Task<BudgetExpense?> Find(Guid userId, Guid id)
+    public async Task<List<UserBudget>> GetUserBudgets(Guid userId)
+    {
+        User user = await FindOrCreateUser(userId);
+        return user.Budgets;
+    }
+    
+    public async Task<UserBudget?> GetUserBudget(Guid userId, Guid budgetId)
+    {
+        User user = await FindOrCreateUser(userId);
+        return user.Budgets.FirstOrDefault(x => x.Id == budgetId);
+    }
+    
+    public async Task<BudgetExpense?> GetUserBudgetExpense(Guid userId, Guid budgetId, Guid id)
     {
         User user = await FindOrCreateUser(userId);
         List<BudgetExpense> budgetExpenses = new List<BudgetExpense>();
@@ -47,8 +58,8 @@ public class DbBudgetService : IDbBudgetService
         
         return budgetExpenses.FirstOrDefault(x => x.Id == id);
     }
-    
-    public async Task<BudgetExpense?> Create(Guid userId, Guid budgetId, BudgetExpense budgetExpense)
+
+    public async Task<BudgetExpense?> AddUserBudgetExpense(Guid userId, Guid budgetId, BudgetExpense budgetExpense)
     {
         User user = await FindOrCreateUser(userId);
         UserBudget? userBudget = user.Budgets.FirstOrDefault(x => x.Id == budgetId);
@@ -58,18 +69,7 @@ public class DbBudgetService : IDbBudgetService
         return budgetExpense;
     }
 
-    public async Task<List<UserBudget>> All(Guid userId)
-    {
-        User user = await FindOrCreateUser(userId);
-        return user.Budgets;
-    }
-    public async Task<UserBudget?> Read(Guid userId, Guid budgetId)
-    {
-        User user = await FindOrCreateUser(userId);
-        return user.Budgets.FirstOrDefault(x => x.Id == budgetId);
-    }
-    
-    public async Task<BudgetExpense?> Update(Guid userId, Guid budgetId, BudgetExpense budgetExpense)
+    public async Task<BudgetExpense?> UpdateUserBudgetExpense(Guid userId, Guid budgetId, BudgetExpense budgetExpense)
     {
         User user = await FindOrCreateUser(userId);
         UserBudget? userBudget = user.Budgets.FirstOrDefault(x => x.Id == budgetId);
@@ -84,7 +84,7 @@ public class DbBudgetService : IDbBudgetService
         return budgetExpense;
     }
 
-    public async Task<BudgetExpense?> Delete(Guid userId, Guid budgetId, Guid id)
+    public async Task<BudgetExpense?> DeleteUserBudgetExpense(Guid userId, Guid budgetId, Guid id)
     {
         User user = await FindOrCreateUser(userId);
         UserBudget? userBudget = user.Budgets.FirstOrDefault(x => x.Id == budgetId);

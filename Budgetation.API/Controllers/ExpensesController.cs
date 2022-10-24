@@ -19,12 +19,12 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-        private readonly IExpenseService<SingleExpense> _singleExpenseService;
-        private readonly IExpenseService<RecurringExpense> _recurringExpenseService;
-        public ExpensesController(IExpenseService<SingleExpense> singleExpenseService, IExpenseService<RecurringExpense> recurringExpenseService)
+        private readonly IExpenseLogic<SingleExpense> _singleExpenseLogic;
+        private readonly IExpenseLogic<RecurringExpense> _recurringExpenseLogic;
+        public ExpensesController(IExpenseLogic<SingleExpense> singleExpenseLogic, IExpenseLogic<RecurringExpense> recurringExpenseLogic)
         {
-            _singleExpenseService = singleExpenseService;
-            _recurringExpenseService = recurringExpenseService;
+            _singleExpenseLogic = singleExpenseLogic;
+            _recurringExpenseLogic = recurringExpenseLogic;
         }
         
         // GET: api/expenses
@@ -32,8 +32,8 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? singleExpenses = await _singleExpenseService.GetAllUserExpenses(userId);
-            List<RecurringExpense>? recurringExpenses = await _recurringExpenseService.GetAllUserExpenses(userId);
+            List<SingleExpense>? singleExpenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
+            List<RecurringExpense>? recurringExpenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
             List<object>? expenses = new List<object>();
             if(singleExpenses is not null) expenses = expenses.Concat(singleExpenses).ToList();
             if(recurringExpenses is not null) expenses = expenses.Concat(recurringExpenses).ToList();
@@ -50,7 +50,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetSingle()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? expenses = await _singleExpenseService.GetAllUserExpenses(userId);
+            List<SingleExpense>? expenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
             if (expenses is null || !expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
@@ -65,7 +65,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetSingleList()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? expenses = await _singleExpenseService.GetAllUserExpenses(userId);
+            List<SingleExpense>? expenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
             if (expenses is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not found", Success = true});
@@ -85,7 +85,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetSingle(Guid id)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseService.GetExpenseById(userId, id);
+            SingleExpense? res = await _singleExpenseLogic.GetExpenseById(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -98,7 +98,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> PostSingle([FromBody] SingleExpense expense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseService.AddUserExpense(userId, expense);
+            SingleExpense? res = await _singleExpenseLogic.AddUserExpense(userId, expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -111,7 +111,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> PutSingle(Guid id, [FromBody] SingleExpense expense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseService.UpdateExpense(userId, expense);
+            SingleExpense? res = await _singleExpenseLogic.UpdateExpense(userId, expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not updated", Success = true});
@@ -124,7 +124,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> DeleteSingle(Guid id)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseService.DeleteExpense(userId, id);
+            SingleExpense? res = await _singleExpenseLogic.DeleteExpense(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not deleted", Success = true});
@@ -137,7 +137,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Post([FromBody] List<Guid> expenseIds)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? res = await _recurringExpenseService.DuplicateExpenses(userId, expenseIds);
+            List<RecurringExpense>? res = await _recurringExpenseLogic.DuplicateExpenses(userId, expenseIds);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not duplicated", Success = true});
@@ -150,7 +150,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetDuplicateRecurringExpenses()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? res = await _recurringExpenseService.GetDuplicateExpenses(userId);
+            List<RecurringExpense>? res = await _recurringExpenseLogic.GetDuplicateExpenses(userId);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No duplicate expenses", Success = true});
@@ -163,7 +163,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetRecurring()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? expenses = await _recurringExpenseService.GetAllUserExpenses(userId);
+            List<RecurringExpense>? expenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
             if (expenses is null || !expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
@@ -178,7 +178,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetRecurringList()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? expenses = await _recurringExpenseService.GetAllUserExpenses(userId);
+            List<RecurringExpense>? expenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
             if (expenses is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not found", Success = true});
@@ -198,7 +198,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetRecurring(Guid id)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseService.GetExpenseById(userId, id);
+            RecurringExpense? res = await _recurringExpenseLogic.GetExpenseById(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -211,7 +211,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> PostRecurring([FromBody] RecurringExpense expense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseService.AddUserExpense(userId, expense);
+            RecurringExpense? res = await _recurringExpenseLogic.AddUserExpense(userId, expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -224,7 +224,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> PutRecurring(Guid id, [FromBody] RecurringExpense expense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseService.UpdateExpense(userId, expense);
+            RecurringExpense? res = await _recurringExpenseLogic.UpdateExpense(userId, expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not updated", Success = true});
@@ -237,7 +237,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> DeleteRecurring(Guid id)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseService.DeleteExpense(userId, id);
+            RecurringExpense? res = await _recurringExpenseLogic.DeleteExpense(userId, id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not deleted", Success = true});

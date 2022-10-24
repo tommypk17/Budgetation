@@ -6,11 +6,12 @@ using Budgetation.Data.Models;
 
 namespace Budgetation.Logic.Services.Interfaces
 {
-    public interface IUserService
+    public interface IUserLogic
     {
         public Task<User> GetUserById(Guid userId);
         public Task<UserIncome?> GetUserIncome(Guid userId, Guid id);
         public Task<List<UserIncome>> GetAllUserIncomes(Guid userId);
+        public Task<User> UpdateUser(User user);
 
         public Task<UserIncome?> AddUserIncome(Guid userId, UserIncome income);
         public Task<UserIncome?> UpdateUserIncome(Guid userId, UserIncome income);

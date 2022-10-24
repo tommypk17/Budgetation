@@ -1,7 +1,4 @@
-using Budgetation.Data.DAL;
-using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
-using Budgetation.Data.Services;
 using Budgetation.Logic.Services;
 using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
+using Budgetation.Data.DAL;
 
 namespace Budgetation.API
 {
@@ -60,17 +58,13 @@ namespace Budgetation.API
                 );
             });
             //MongoDB services
-            services.AddSingleton<IDbUserService, DbUserService>();
-            services.AddSingleton<IDbExpenseService<SingleExpense>, DbSingleExpenseService>();
-            services.AddSingleton<IDbExpenseService<RecurringExpense>, DbRecurringExpenseService>();
-            services.AddSingleton<IDbUserIncomeService, DbUserIncomeService>();
-            services.AddSingleton<IDbBudgetService, DbBudgetService>();
+            services.AddScoped<IDbContext, DbContext>();
 
             //Logic services
-            services.AddScoped<IExpenseService<SingleExpense>, SingleExpenseService>();
-            services.AddScoped<IExpenseService<RecurringExpense>, RecurringExpenseService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IBudgetService, BudgetService>();
+            services.AddScoped<IExpenseLogic<SingleExpense>, SingleExpenseLogic>();
+            services.AddScoped<IExpenseLogic<RecurringExpense>, RecurringExpenseLogic>();
+            services.AddScoped<IUserLogic, UserLogic>();
+            services.AddScoped<IBudgetLogic, BudgetLogic>();
 
         }
 

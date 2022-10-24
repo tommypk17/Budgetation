@@ -6,7 +6,7 @@ using Budgetation.Data.Models;
 
 namespace Budgetation.Logic.Services.Interfaces
 {
-    public interface IExpenseService<T> where T : AbstractExpense
+    public interface IExpenseLogic<T> where T : AbstractExpense
     {
         public Task<T?> GetExpenseById(Guid userId, Guid id);
         public Task<List<T>?> GetAllUserExpenses(Guid userId);

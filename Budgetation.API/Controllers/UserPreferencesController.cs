@@ -15,17 +15,17 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class UserPreferencesController : ControllerBase
     {
-        private readonly IUserService _userService;
-        public UserPreferencesController(IUserService userService)
+        private readonly IUserLogic _userLogic;
+        public UserPreferencesController(IUserLogic userLogic)
         {
-            _userService = userService;
+            _userLogic = userLogic;
         }
         // GET: api/UsersPreferences
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserPreference> res = await _userService.GetUserPreferences(userId);
+            List<UserPreference> res = await _userLogic.GetUserPreferences(userId);
             if (res.Count <= 0)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences not found", Success = true});
@@ -37,7 +37,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Put([FromBody] UserPreference preference)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserPreference> res = await _userService.UpdateUserPreferences(userId, preference);
+            List<UserPreference> res = await _userLogic.UpdateUserPreferences(userId, preference);
             if (res.Count <= 0)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Could not update preferences", Success = true});

@@ -2,28 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using Budgetation.Data.DAL;
-using Budgetation.Data.Interfaces.IDBServices;
 using Budgetation.Data.Models;
-using MongoDB.Bson;
+using Budgetation.Logic.Services.Interfaces;
 using MongoDB.Driver;
 
-namespace Budgetation.Data.Services
+namespace Budgetation.Logic.Services
 {
-    public class DbSingleExpenseService : IDbExpenseService<SingleExpense>
+    public class SingleExpenseLogic : IExpenseLogic<SingleExpense>
     {
-        #nullable enable
         private readonly IMongoCollection<UserExpense> _userExpenses;
-        public DbSingleExpenseService(IDatabaseSettings settings)
+        public SingleExpenseLogic(IDbContext dbContext)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-            _userExpenses = database.GetCollection<UserExpense>("userExpenses");
+            var ctx = dbContext;
+            _userExpenses = ctx.Database.GetCollection<UserExpense>("userExpenses");
         }
         
-        public async Task<UserExpense> FindOrCreateUserExpense(Guid userId)
+        private async Task<UserExpense> FindOrCreateUserExpense(Guid userId)
         {
             var userExpenseCollection = await _userExpenses.FindAsync(x => x.UserId == userId);
             UserExpense? userExpense = await userExpenseCollection.FirstOrDefaultAsync();
@@ -39,20 +37,18 @@ namespace Budgetation.Data.Services
             }
         }
 
-        public async Task<SingleExpense?> Find(Guid userId, Guid id)
+        public async Task<SingleExpense?> GetExpenseById(Guid userId, Guid id)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
             return userExpense.SingleExpenses.FirstOrDefault(x => x.Id == id);
         }
-
-        
-        public async Task<List<SingleExpense>?> All(Guid userId, List<Guid> expenseIds)
+        public async Task<List<SingleExpense>?> GetAllUserExpenses(Guid userId)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
-            return userExpense.SingleExpenses.Where(x => expenseIds.Contains(x.Id)).ToList();
+            return userExpense.SingleExpenses;
         }
-        
-        public async Task<SingleExpense?> Create(Guid userId, SingleExpense expense)
+
+        public async Task<SingleExpense?> AddUserExpense(Guid userId, SingleExpense expense)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
             userExpense.SingleExpenses.Add(expense);
@@ -60,13 +56,7 @@ namespace Budgetation.Data.Services
             return expense;
         }
 
-        public async Task<List<SingleExpense>?> Read(Guid userId)
-        {
-            UserExpense userExpense = await FindOrCreateUserExpense(userId);
-            return userExpense.SingleExpenses;
-        }
-
-        public async Task<SingleExpense?> Update(Guid userId, SingleExpense expense)
+        public async Task<SingleExpense?> UpdateExpense(Guid userId, SingleExpense expense)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
             var expenseIdx = userExpense.SingleExpenses.FindIndex(x => x.Id == expense.Id);
@@ -77,7 +67,7 @@ namespace Budgetation.Data.Services
             return expense;
         }
 
-        public async Task<SingleExpense?> Delete(Guid userId, Guid id)
+        public async Task<SingleExpense?> DeleteExpense(Guid userId, Guid id)
         {
             UserExpense userExpense = await FindOrCreateUserExpense(userId);
             var expenseIdx = userExpense.SingleExpenses.FindIndex(x => x.Id == id);
@@ -88,14 +78,15 @@ namespace Budgetation.Data.Services
             await _userExpenses.ReplaceOneAsync(x => x.UserId == userId, userExpense);
             return expense;
         }
-        
-        
-        public async Task<List<SingleExpense>?> Create(Guid userId, List<SingleExpense> expenses)
+
+        public async Task<List<SingleExpense>?> DuplicateExpenses(Guid userId, List<Guid> ids)
         {
-            UserExpense userExpense = await FindOrCreateUserExpense(userId);
-            userExpense.SingleExpenses.AddRange(expenses);
-            await _userExpenses.ReplaceOneAsync(x => x.UserId == userId, userExpense);
-            return userExpense.SingleExpenses;
+            return await Task.Run(() => new List<SingleExpense>());
+        }
+
+        public async Task<List<SingleExpense>?> GetDuplicateExpenses(Guid userId)
+        {
+            return await Task.Run(() => new List<SingleExpense>());
         }
     }
 }

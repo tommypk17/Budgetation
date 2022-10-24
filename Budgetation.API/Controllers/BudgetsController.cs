@@ -15,11 +15,11 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class BudgetsController : ControllerBase
     {
-        private readonly IBudgetService _budgetService;
+        private readonly IBudgetLogic _budgetLogic;
 
-        public BudgetsController(IBudgetService budgetService)
+        public BudgetsController(IBudgetLogic budgetLogic)
         {
-            _budgetService = budgetService;
+            _budgetLogic = budgetLogic;
         }
         
         // GET: api/Budgets
@@ -27,7 +27,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserBudget> res = await _budgetService.GetUserBudgets(userId);
+            List<UserBudget> res = await _budgetLogic.GetUserBudgets(userId);
             if (!res.Any())
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -44,7 +44,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get([FromRoute]Guid budgetId)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            UserBudget? res = await _budgetService.GetUserBudget(userId, budgetId);
+            UserBudget? res = await _budgetLogic.GetUserBudget(userId, budgetId);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -61,7 +61,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get([FromRoute]Guid budgetId, [FromRoute]Guid expenseId)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            BudgetExpense? res = await _budgetService.GetUserBudgetExpense(userId, budgetId, expenseId);
+            BudgetExpense? res = await _budgetLogic.GetUserBudgetExpense(userId, budgetId, expenseId);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -77,7 +77,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Post([FromRoute] Guid budgetId, [FromBody] BudgetExpense budgetExpense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            BudgetExpense? res = await _budgetService.AddUserBudgetExpense(userId, budgetId, budgetExpense);
+            BudgetExpense? res = await _budgetLogic.AddUserBudgetExpense(userId, budgetId, budgetExpense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -93,7 +93,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Put([FromRoute]Guid budgetId, [FromBody] BudgetExpense budgetExpense)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            BudgetExpense? res = await _budgetService.UpdateUserBudgetExpense(userId, budgetId, budgetExpense);
+            BudgetExpense? res = await _budgetLogic.UpdateUserBudgetExpense(userId, budgetId, budgetExpense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK,
@@ -109,7 +109,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Delete([FromRoute] Guid budgetId, [FromRoute] Guid expenseId)
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            BudgetExpense? res = await _budgetService.DeleteUserBudgetExpense(userId, budgetId, expenseId);
+            BudgetExpense? res = await _budgetLogic.DeleteUserBudgetExpense(userId, budgetId, expenseId);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK,
