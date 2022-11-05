@@ -8,6 +8,7 @@ using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.API.Controllers
 {
@@ -16,31 +17,29 @@ namespace Budgetation.API.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserLogic _userLogic;
-        public UsersController(IUserLogic userLogic)
+        private readonly IMongoLogic<Income> _incomeLogic;
+        public UsersController(IUserLogic userLogic, IMongoLogic<Income> incomeLogic)
         {
             _userLogic = userLogic;
+            _incomeLogic = incomeLogic;
         }
         // GET: api/Users/Income
         [HttpGet("income")]
         public async Task<IActionResult> Get()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserIncome> incomes = await _userLogic.GetAllUserIncomes(userId);
-            if (!incomes.Any())
+            var res = await _incomeLogic.Read();
+            if (!res.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No income found", Success = true});
             }
-            List<UserIncome> res = incomes.ToList();
             return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = res, Message = "Income found", Success = true});
-
         }
         
         // GET: api/Users/Income/5
         [HttpGet("income/{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            UserIncome? res = await _userLogic.GetUserIncome(userId, id);
+            var res = await _incomeLogic.Find(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Income not found", Success = true});
@@ -50,10 +49,9 @@ namespace Budgetation.API.Controllers
 
         // POST: api/Users/income
         [HttpPost("income")]
-        public async Task<IActionResult> Post([FromBody] UserIncome income)
+        public async Task<IActionResult> Post([FromBody] Income income)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            UserIncome? res = await _userLogic.AddUserIncome(userId, income);
+            Income? res = await _incomeLogic.Create(income);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "User income not created", Success = false});
@@ -63,10 +61,9 @@ namespace Budgetation.API.Controllers
 
         // PUT: api/Users/Income
         [HttpPut("income")]
-        public async Task<IActionResult> Put([FromBody] UserIncome income)
+        public async Task<IActionResult> Put([FromBody] Income income)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            UserIncome? res = await _userLogic.UpdateUserIncome(userId, income);
+            Income? res = await _incomeLogic.Update(income);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "User income not updated", Success = false});
@@ -78,8 +75,7 @@ namespace Budgetation.API.Controllers
         [HttpDelete("income/{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            UserIncome? res = await _userLogic.DeleteUserIncome(userId, id);
+            Income? res = await _incomeLogic.Delete(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "User income not deleted", Success = false});

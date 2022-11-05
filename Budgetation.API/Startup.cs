@@ -10,6 +10,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Budgetation.Data.DAL;
+using Budgetation.Logic.Controllers;
+using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.API
 {
@@ -65,6 +67,7 @@ namespace Budgetation.API
             services.AddScoped<IExpenseLogic<RecurringExpense>, RecurringExpenseLogic>();
             services.AddScoped<IUserLogic, UserLogic>();
             services.AddScoped<IBudgetLogic, BudgetLogic>();
+            services.AddScoped<IMongoLogic<Income>, IncomeLogic>();
 
         }
 

@@ -11,22 +11,10 @@ namespace Budgetation.Data.Models
         public Guid UserId { get; set; }
 
         public List<Role> Roles { get; set; } = new List<Role>() {new Role()};
-        public List<UserIncome> Incomes { get; set; } = new List<UserIncome>();
         public List<UserPreference> Preferences { get; set; } = new List<UserPreference>();
         public List<UserBudget> Budgets { get; set; } = new List<UserBudget>();
     }
 
-    public class UserIncome
-    {
-        [BsonId]
-        public Guid Id { get; set; } = Guid.NewGuid();
-
-        public double IncomingBalance { get; set; } = 0;
-        public double Amount { get; set; } = 0;
-        public int Type { get; set; } = 0;
-        public DateTime Date { get; set; } = DateTime.Today;
-    }
-    
     public class UserExpense
     {
         [BsonId]

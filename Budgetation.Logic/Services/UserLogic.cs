@@ -42,55 +42,12 @@ namespace Budgetation.Logic.Services
             return await FindOrCreateUser(userId);
         }
         
-        public async Task<UserIncome?> GetUserIncome(Guid userId, Guid id)
-        {
-            User user = await FindOrCreateUser(userId);
-            return user.Incomes.FirstOrDefault(x => x.Id == id);
-        }
-
         public async Task<User> UpdateUser(User user)
         {
             User existingUser = await FindOrCreateUser(user.UserId);
             user.UserId = existingUser.UserId;
             await _users.ReplaceOneAsync(x => x.UserId == existingUser.UserId, user);
             return user;
-        }
-
-        public async Task<List<UserIncome>> GetAllUserIncomes(Guid userId)
-        {
-            User user = await FindOrCreateUser(userId);
-            return user.Incomes;
-        }
-
-        public async Task<UserIncome?> AddUserIncome(Guid userId, UserIncome income)
-        {
-            User user = await FindOrCreateUser(userId);
-            income.Date = new DateTime(income.Date.Year, income.Date.Month, income.Date.Day);
-            user.Incomes.Add(income);
-            await _users.ReplaceOneAsync(x => x.UserId == userId, user);
-            return income;
-        }
-
-        public async Task<UserIncome?> UpdateUserIncome(Guid userId, UserIncome income)
-        {
-            User? user = await FindOrCreateUser(userId);
-            var incomeIdx = user.Incomes.FindIndex(x => x.Id == income.Id);
-            if (incomeIdx <= -1) return null;
-            user.Incomes.RemoveAt(incomeIdx);
-            user.Incomes.Add(income);
-            await _users.ReplaceOneAsync(x => x.UserId == userId, user);
-            return income;
-        }
-
-        public async Task<UserIncome?> DeleteUserIncome(Guid userId, Guid id)
-        {
-            User? user = await FindOrCreateUser(userId);
-            var incomeIdx = user.Incomes.FindIndex(x => x.Id == id);
-            if (incomeIdx <= -1) return null;
-            UserIncome? income = user.Incomes.Find(x => x.Id == id);
-            user.Incomes.RemoveAt(incomeIdx);
-            await _users.ReplaceOneAsync(x => x.UserId == userId, user);
-            return income;
         }
         
         public async Task<List<UserPreference>> GetUserPreferences(Guid userId)
