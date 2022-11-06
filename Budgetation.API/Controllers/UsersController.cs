@@ -16,9 +16,9 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IUserLogic _userLogic;
+        private readonly IMongoLogic<User> _userLogic;
         private readonly IMongoLogic<Income> _incomeLogic;
-        public UsersController(IUserLogic userLogic, IMongoLogic<Income> incomeLogic)
+        public UsersController(IMongoLogic<User> userLogic, IMongoLogic<Income> incomeLogic)
         {
             _userLogic = userLogic;
             _incomeLogic = incomeLogic;

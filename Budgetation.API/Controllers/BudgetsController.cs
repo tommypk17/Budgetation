@@ -26,6 +26,7 @@ namespace Budgetation.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
+            /*
             Guid userId = UserUtility.GetCurrentUserId(User);
             List<UserBudget> res = await _budgetLogic.GetUserBudgets(userId);
             if (!res.Any())
@@ -36,14 +37,15 @@ namespace Budgetation.API.Controllers
 
             return StatusCode(StatusCodes.Status200OK,
                 new ResponseModel() { Data = res, Message = "Budgets found", Success = true });
-
+                */
+            return StatusCode(StatusCodes.Status200OK, null);
         }
 
         // GET: api/Budgets/{budgetId}
         [HttpGet("{budgetId}")]
         public async Task<IActionResult> Get([FromRoute]Guid budgetId)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
+            /*Guid userId = UserUtility.GetCurrentUserId(User);
             UserBudget? res = await _budgetLogic.GetUserBudget(userId, budgetId);
             if (res is null)
             {
@@ -53,6 +55,8 @@ namespace Budgetation.API.Controllers
 
             return StatusCode(StatusCodes.Status200OK,
                 new ResponseModel() { Data = res, Message = "Budget found", Success = true });
+                */
+            return StatusCode(StatusCodes.Status200OK, null);
 
         }
 
@@ -60,6 +64,7 @@ namespace Budgetation.API.Controllers
         [HttpGet("{budgetId}/expenses/{expenseId}")]
         public async Task<IActionResult> Get([FromRoute]Guid budgetId, [FromRoute]Guid expenseId)
         {
+            /*
             Guid userId = UserUtility.GetCurrentUserId(User);
             BudgetExpense? res = await _budgetLogic.GetUserBudgetExpense(userId, budgetId, expenseId);
             if (res is null)
@@ -70,13 +75,16 @@ namespace Budgetation.API.Controllers
 
             return StatusCode(StatusCodes.Status200OK,
                 new ResponseModel() { Data = res, Message = "Budget expense found", Success = true });
+                */
+            return StatusCode(StatusCodes.Status200OK, null);
+
         }
 
         // POST: api/Budgets/{budgetId}
         [HttpPost("{budgetId}")]
         public async Task<IActionResult> Post([FromRoute] Guid budgetId, [FromBody] BudgetExpense budgetExpense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
+            /*Guid userId = UserUtility.GetCurrentUserId(User);
             BudgetExpense? res = await _budgetLogic.AddUserBudgetExpense(userId, budgetId, budgetExpense);
             if (res is null)
             {
@@ -85,14 +93,16 @@ namespace Budgetation.API.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK,
-                new ResponseModel() { Data = res, Message = "Budget expense created", Success = true });
+                new ResponseModel() { Data = res, Message = "Budget expense created", Success = true });*/
+            return StatusCode(StatusCodes.Status200OK, null);
+
         }
 
         // PUT: api/Budgets/{budgetId}
         [HttpPut("{budgetId}")]
         public async Task<IActionResult> Put([FromRoute]Guid budgetId, [FromBody] BudgetExpense budgetExpense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
+            /*Guid userId = UserUtility.GetCurrentUserId(User);
             BudgetExpense? res = await _budgetLogic.UpdateUserBudgetExpense(userId, budgetId, budgetExpense);
             if (res is null)
             {
@@ -101,14 +111,16 @@ namespace Budgetation.API.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK,
-                new ResponseModel() { Data = res, Message = "Budget expense updated", Success = true });
+                new ResponseModel() { Data = res, Message = "Budget expense updated", Success = true });*/
+            return StatusCode(StatusCodes.Status200OK, null);
+
         }
 
         // DELETE: api/Budgets/{budgetId}/expenses/{expenseId}
         [HttpDelete("{budgetId}/expenses/{expenseId}")]
         public async Task<IActionResult> Delete([FromRoute] Guid budgetId, [FromRoute] Guid expenseId)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
+            /*Guid userId = UserUtility.GetCurrentUserId(User);
             BudgetExpense? res = await _budgetLogic.DeleteUserBudgetExpense(userId, budgetId, expenseId);
             if (res is null)
             {
@@ -117,7 +129,9 @@ namespace Budgetation.API.Controllers
             }
 
             return StatusCode(StatusCodes.Status200OK,
-                new ResponseModel() { Data = res, Message = "Budget expense deleted", Success = true });
+                new ResponseModel() { Data = res, Message = "Budget expense deleted", Success = true });*/
+            return StatusCode(StatusCodes.Status200OK, null);
+
         }
     }
 }

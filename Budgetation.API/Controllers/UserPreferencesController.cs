@@ -8,6 +8,7 @@ using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.API.Controllers
 {
@@ -15,8 +16,8 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class UserPreferencesController : ControllerBase
     {
-        private readonly IUserLogic _userLogic;
-        public UserPreferencesController(IUserLogic userLogic)
+        private readonly IMongoLogic<User> _userLogic;
+        public UserPreferencesController(IMongoLogic<User> userLogic)
         {
             _userLogic = userLogic;
         }
@@ -24,25 +25,36 @@ namespace Budgetation.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserPreference> res = await _userLogic.GetUserPreferences(userId);
-            if (res.Count <= 0)
+            User? res = await _userLogic.Single();
+            if (res is null)
             {
-                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences not found", Success = true});
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
-            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences found", Success = true});
+
+            List<UserPreference> preferences = res.Preferences;
+            
+            if(preferences.Count > 0) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences found", Success = true});
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences not found", Success = true});
+            
         }
         // PUT: api/UsersPreferences
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] UserPreference preference)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<UserPreference> res = await _userLogic.UpdateUserPreferences(userId, preference);
-            if (res.Count <= 0)
+            User? res = await _userLogic.Single();
+            if (res is null)
             {
-                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Could not update preferences", Success = true});
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
-            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences updated", Success = true});
+
+            List<UserPreference> preferences = res.Preferences;
+            UserPreference? found = preferences.FirstOrDefault(x => x.Id == preference.Id);
+            if (found is not null) preferences.Remove(found);
+            preferences.Add(preference);
+            User? updated = await _userLogic.Update(res);
+            
+            if(updated is not null) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences updated", Success = true});
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences updated", Success = false});
         }
     }
 }

@@ -65,8 +65,8 @@ namespace Budgetation.API
             //Logic services
             services.AddScoped<IExpenseLogic<SingleExpense>, SingleExpenseLogic>();
             services.AddScoped<IExpenseLogic<RecurringExpense>, RecurringExpenseLogic>();
-            services.AddScoped<IUserLogic, UserLogic>();
-            services.AddScoped<IBudgetLogic, BudgetLogic>();
+            services.AddScoped<IMongoLogic<User>, UserLogic>();
+            services.AddScoped<IMongoLogic<Budget>, BudgetLogic>();
             services.AddScoped<IMongoLogic<Income>, IncomeLogic>();
 
         }

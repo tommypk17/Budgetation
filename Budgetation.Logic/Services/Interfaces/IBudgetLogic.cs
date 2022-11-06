@@ -7,8 +7,8 @@ namespace Budgetation.Logic.Services.Interfaces;
 
 public interface IBudgetLogic
 {
-    public Task<List<UserBudget>> GetUserBudgets(Guid userId);
-    public Task<UserBudget?> GetUserBudget(Guid userId, Guid budgetId);
+    public Task<List<Budget>> GetUserBudgets(Guid userId);
+    public Task<Budget?> GetUserBudget(Guid userId, Guid budgetId);
     public Task<BudgetExpense?> GetUserBudgetExpense(Guid userId, Guid budgetId, Guid id);
     
     public Task<BudgetExpense?> AddUserBudgetExpense(Guid userId, Guid budgetId, BudgetExpense budgetExpense);

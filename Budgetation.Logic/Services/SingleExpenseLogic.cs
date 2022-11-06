@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Budgetation.Data.DAL;
 using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
+using Mongo.DataAccess.Interfaces;
 using MongoDB.Driver;
 
 namespace Budgetation.Logic.Services

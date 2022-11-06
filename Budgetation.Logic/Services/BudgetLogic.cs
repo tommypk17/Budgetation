@@ -5,13 +5,19 @@ using System.Threading.Tasks;
 using Budgetation.Data.DAL;
 using Budgetation.Data.Models;
 using Budgetation.Logic.Services.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Mongo.DataAccess.Interfaces;
 using MongoDB.Driver;
 
 namespace Budgetation.Logic.Services;
 
-public class BudgetLogic : IBudgetLogic
+public class BudgetLogic : MongoLogic<Budget>
 {
-    private readonly IMongoCollection<User> _users;
+    public BudgetLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
+    {
+    }
+    
+    /*private readonly IMongoCollection<User> _users;
     public BudgetLogic(IDbContext dbContext)
     {
         var ctx = dbContext;
@@ -96,5 +102,5 @@ public class BudgetLogic : IBudgetLogic
         
         await _users.ReplaceOneAsync(x => x.UserId == userId, user);
         return found;
-    }
+    }*/
 }

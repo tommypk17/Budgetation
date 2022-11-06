@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Security.Principal;
-using Microsoft.AspNetCore.Http;
 
-namespace Budgetation.Logic.Utlities
+namespace Mongo.DataAccess.Interfaces.Utilities
 {
     public static class UserUtility
     {
