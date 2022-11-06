@@ -1,13 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Budgetation.API.Models;
-using Budgetation.API.Utlities;
 using Budgetation.Data.Models;
-using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.API.Controllers
 {
@@ -15,9 +11,9 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class BudgetsController : ControllerBase
     {
-        private readonly IBudgetLogic _budgetLogic;
+        private readonly MongoLogic<Budget> _budgetLogic;
 
-        public BudgetsController(IBudgetLogic budgetLogic)
+        public BudgetsController(MongoLogic<Budget> budgetLogic)
         {
             _budgetLogic = budgetLogic;
         }

@@ -23,9 +23,6 @@
     <ItemGroup>
       <ProjectReference Include="..\Budgetation.Logic\Budgetation.Logic.csproj" />
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Services\" />
-    </ItemGroup>
 
 
 </Project>

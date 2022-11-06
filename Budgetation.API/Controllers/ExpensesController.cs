@@ -1,13 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Budgetation.API.Models;
-using Budgetation.API.Utlities;
 using Budgetation.Data.Models;
-using Budgetation.Logic.Services;
-using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +28,6 @@ namespace Budgetation.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
             IList<SingleExpense> singleExpenses = await _singleExpenseLogic.Read();
             IList<RecurringExpense> recurringExpenses = await _recurringExpenseLogic.Read();
             List<object>? expenses = new List<object>();
@@ -50,7 +45,6 @@ namespace Budgetation.API.Controllers
         [HttpGet("single")]
         public async Task<IActionResult> GetSingle()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
             IList<SingleExpense> expenses = await _singleExpenseLogic.Read();
             if (!expenses.Any())
             {
