@@ -1,6 +1,4 @@
 using Budgetation.Data.Models;
-using Budgetation.Logic.Services;
-using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -63,8 +61,8 @@ namespace Budgetation.API
             services.AddScoped<IDbContext, DbContext>();
 
             //Logic services
-            services.AddScoped<IExpenseLogic<SingleExpense>, SingleExpenseLogic>();
-            services.AddScoped<IExpenseLogic<RecurringExpense>, RecurringExpenseLogic>();
+            services.AddScoped<IMongoLogic<SingleExpense>, SingleExpenseLogic>();
+            services.AddScoped<IMongoLogic<RecurringExpense>, RecurringExpenseLogic>();
             services.AddScoped<IMongoLogic<User>, UserLogic>();
             services.AddScoped<IMongoLogic<Budget>, BudgetLogic>();
             services.AddScoped<IMongoLogic<Income>, IncomeLogic>();

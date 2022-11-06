@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Mongo.DataAccess.Interfaces;
 using MongoDB.Driver;
 
-namespace Budgetation.Logic.Services;
+namespace Budgetation.Logic.Controllers;
 
 public class BudgetLogic : MongoLogic<Budget>
 {

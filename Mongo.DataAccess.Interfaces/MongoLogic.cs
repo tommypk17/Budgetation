@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace Mongo.DataAccess.Interfaces;
 
-public abstract class MongoLogic<T> : IMongoLogic<T> where T : IMongoObject
+public abstract class MongoLogic<T> : IMongoLogic<T> where T : class, IMongoObject
 {
     private readonly IMongoCollection<T> _collection;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -54,7 +54,21 @@ public abstract class MongoLogic<T> : IMongoLogic<T> where T : IMongoObject
         
         return await Find(t.Id);
     }
-    
+
+    public async Task<IList<T>> BulkCreate(IList<T> t)
+    {
+        var userId = UserUtility.GetCurrentUserId(_httpContextAccessor.HttpContext.User);
+        foreach (T item in t)
+        {
+            item.UserId = userId;
+        }
+        await _collection.InsertManyAsync(t);
+
+        var filter = Builders<T>.Filter.In(x => x.Id, t.Select(y => y.Id));
+        var items = await _collection.FindAsync(filter);
+        return await items.ToListAsync();
+    }
+
     public async Task<T?> Update(T t)
     {
         var userId = UserUtility.GetCurrentUserId(_httpContextAccessor.HttpContext.User);

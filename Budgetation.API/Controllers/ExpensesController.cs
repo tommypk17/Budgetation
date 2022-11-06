@@ -11,6 +11,7 @@ using Budgetation.Logic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.API.Controllers
 {
@@ -19,9 +20,9 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class ExpensesController : ControllerBase
     {
-        private readonly IExpenseLogic<SingleExpense> _singleExpenseLogic;
-        private readonly IExpenseLogic<RecurringExpense> _recurringExpenseLogic;
-        public ExpensesController(IExpenseLogic<SingleExpense> singleExpenseLogic, IExpenseLogic<RecurringExpense> recurringExpenseLogic)
+        private readonly IMongoLogic<SingleExpense> _singleExpenseLogic;
+        private readonly IMongoLogic<RecurringExpense> _recurringExpenseLogic;
+        public ExpensesController(IMongoLogic<SingleExpense> singleExpenseLogic, IMongoLogic<RecurringExpense> recurringExpenseLogic)
         {
             _singleExpenseLogic = singleExpenseLogic;
             _recurringExpenseLogic = recurringExpenseLogic;
@@ -32,11 +33,11 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Get()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? singleExpenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
-            List<RecurringExpense>? recurringExpenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
+            IList<SingleExpense> singleExpenses = await _singleExpenseLogic.Read();
+            IList<RecurringExpense> recurringExpenses = await _recurringExpenseLogic.Read();
             List<object>? expenses = new List<object>();
-            if(singleExpenses is not null) expenses = expenses.Concat(singleExpenses).ToList();
-            if(recurringExpenses is not null) expenses = expenses.Concat(recurringExpenses).ToList();
+            if(singleExpenses.Any()) expenses = expenses.Concat(singleExpenses).ToList();
+            if(recurringExpenses.Any()) expenses = expenses.Concat(recurringExpenses).ToList();
             if (!expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
@@ -50,8 +51,8 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> GetSingle()
         {
             Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? expenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
-            if (expenses is null || !expenses.Any())
+            IList<SingleExpense> expenses = await _singleExpenseLogic.Read();
+            if (!expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
             }
@@ -64,9 +65,8 @@ namespace Budgetation.API.Controllers
         [HttpGet("single/list")]
         public async Task<IActionResult> GetSingleList()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<SingleExpense>? expenses = await _singleExpenseLogic.GetAllUserExpenses(userId);
-            if (expenses is null)
+            IList<SingleExpense> expenses = await _singleExpenseLogic.Read();
+            if (!expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not found", Success = true});
             }
@@ -78,27 +78,27 @@ namespace Budgetation.API.Controllers
             }
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expenses found", Success = true});
 
+            
         }
 
         // GET: api/expenses/single/5
         [HttpGet("single/{id}")]
         public async Task<IActionResult> GetSingle(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseLogic.GetExpenseById(userId, id);
+            SingleExpense? res = await _singleExpenseLogic.Find(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
             }
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expense found", Success = true});
+            
         }
 
         // POST: api/expenses/single
         [HttpPost("single")]
         public async Task<IActionResult> PostSingle([FromBody] SingleExpense expense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseLogic.AddUserExpense(userId, expense);
+            SingleExpense? res = await _singleExpenseLogic.Create(expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -110,8 +110,7 @@ namespace Budgetation.API.Controllers
         [HttpPut("single/{id}")]
         public async Task<IActionResult> PutSingle(Guid id, [FromBody] SingleExpense expense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseLogic.UpdateExpense(userId, expense);
+            SingleExpense? res = await _singleExpenseLogic.Update(expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not updated", Success = true});
@@ -123,8 +122,7 @@ namespace Budgetation.API.Controllers
         [HttpDelete("single/{id}")]
         public async Task<IActionResult> DeleteSingle(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            SingleExpense? res = await _singleExpenseLogic.DeleteExpense(userId, id);
+            SingleExpense? res = await _singleExpenseLogic.Delete(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not deleted", Success = true});
@@ -136,25 +134,53 @@ namespace Budgetation.API.Controllers
         [HttpPost("recurring/duplicate")]
         public async Task<IActionResult> Post([FromBody] List<Guid> expenseIds)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? res = await _recurringExpenseLogic.DuplicateExpenses(userId, expenseIds);
-            if (res is null)
+            IList<RecurringExpense> expenses = await _recurringExpenseLogic.Read();
+            if (!expenses.Any())
             {
-                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not duplicated", Success = true});
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No expenses found", Success = false});
             }
-            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expenses duplicated", Success = true});
+            
+            List<RecurringExpense> toDuplicate = expenses.Where(x => expenseIds.Contains(x.Id)).ToList();
+            if (!toDuplicate.Any())
+            {
+                return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No expenses found", Success = false});
+            }
+            List<RecurringExpense> recurringExpenses = new List<RecurringExpense>();
+            foreach (RecurringExpense recurringExpense in toDuplicate)
+            {
+                RecurringExpense expense = new RecurringExpense()
+                {
+                    Name = recurringExpense.Name,
+                    Amount = 0,
+                    Interval = recurringExpense.Interval,
+                    ReoccurrenceId = recurringExpense.ReoccurrenceId,
+                    Type = recurringExpense.Type,
+                    PaidOn = null,
+                    Due = RecurringExpense.GetNextDueDate(recurringExpense.Interval, recurringExpense.Due)
+                };
+                recurringExpenses.Add(expense);
+            }
+
+            IList<RecurringExpense> res = await _recurringExpenseLogic.BulkCreate(recurringExpenses);
+            
+            if(res.Any()) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expenses duplicated", Success = true});
+            return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not duplicated", Success = false});
         }
         
         // GET: api/Bills/recurring/duplicate
         [HttpGet("recurring/duplicate")]
         public async Task<IActionResult> GetDuplicateRecurringExpenses()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? res = await _recurringExpenseLogic.GetDuplicateExpenses(userId);
-            if (res is null)
+            IList<RecurringExpense> expenses = await _recurringExpenseLogic.Read();
+            if (!expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No duplicate expenses", Success = true});
             }
+            List<RecurringExpense> res = expenses.GroupBy(x => x.ReoccurrenceId)
+                .Select(x =>
+                    x.OrderByDescending(z => z.Due)
+                        .First()
+                ).Where(x => x.PaidOn is not null).ToList();
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Expense duplicates found", Success = true});
         }
         
@@ -162,13 +188,11 @@ namespace Budgetation.API.Controllers
         [HttpGet("recurring")]
         public async Task<IActionResult> GetRecurring()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? expenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
-            if (expenses is null || !expenses.Any())
+            IList<RecurringExpense> res = await _recurringExpenseLogic.Read();
+            if (!res.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = null, Message = "No expenses found", Success = true});
             }
-            List<RecurringExpense> res = expenses.ToList();
             return StatusCode(StatusCodes.Status200OK, new ResponseModel(){Data = res, Message = "Expenses found", Success = true});
 
         }
@@ -177,9 +201,8 @@ namespace Budgetation.API.Controllers
         [HttpGet("recurring/list")]
         public async Task<IActionResult> GetRecurringList()
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            List<RecurringExpense>? expenses = await _recurringExpenseLogic.GetAllUserExpenses(userId);
-            if (expenses is null)
+            IList<RecurringExpense> expenses = await _recurringExpenseLogic.Read();
+            if (!expenses.Any())
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expenses not found", Success = true});
             }
@@ -197,8 +220,7 @@ namespace Budgetation.API.Controllers
         [HttpGet("recurring/{id}")]
         public async Task<IActionResult> GetRecurring(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseLogic.GetExpenseById(userId, id);
+            RecurringExpense? res = await _recurringExpenseLogic.Find(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -210,8 +232,7 @@ namespace Budgetation.API.Controllers
         [HttpPost("recurring")]
         public async Task<IActionResult> PostRecurring([FromBody] RecurringExpense expense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseLogic.AddUserExpense(userId, expense);
+            RecurringExpense? res = await _recurringExpenseLogic.Create(expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not found", Success = true});
@@ -223,8 +244,7 @@ namespace Budgetation.API.Controllers
         [HttpPut("recurring/{id}")]
         public async Task<IActionResult> PutRecurring(Guid id, [FromBody] RecurringExpense expense)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseLogic.UpdateExpense(userId, expense);
+            RecurringExpense? res = await _recurringExpenseLogic.Update(expense);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not updated", Success = true});
@@ -236,8 +256,7 @@ namespace Budgetation.API.Controllers
         [HttpDelete("recurring/{id}")]
         public async Task<IActionResult> DeleteRecurring(Guid id)
         {
-            Guid userId = UserUtility.GetCurrentUserId(User);
-            RecurringExpense? res = await _recurringExpenseLogic.DeleteExpense(userId, id);
+            RecurringExpense? res = await _recurringExpenseLogic.Delete(id);
             if (res is null)
             {
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "Expense not deleted", Success = true});
