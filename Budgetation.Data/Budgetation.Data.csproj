@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Mongo.DataAccess.Interfaces\Mongo.DataAccess.Interfaces.csproj" />
+      <ProjectReference Include="..\Mongo.DataAccess\Mongo.DataAccess.csproj" />
     </ItemGroup>
 
 </Project>

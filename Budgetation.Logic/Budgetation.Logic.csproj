@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Budgetation.Data\Budgetation.Data.csproj" />
-    <ProjectReference Include="..\Mongo.DataAccess.Interfaces\Mongo.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\Mongo.DataAccess\Mongo.DataAccess.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Mongo.DataAccess.Interfaces;
 using Mongo.DataAccess.Interfaces.Utilities;
 using MongoDB.Driver;
 
-namespace Mongo.DataAccess.Interfaces;
+namespace Mongo.DataAccess;
 
 public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IMongoObject
 {

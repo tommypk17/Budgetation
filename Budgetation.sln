@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Budgetation.Data", "Budgeta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Budgetation.Logic", "Budgetation.Logic\Budgetation.Logic.csproj", "{BB352343-BE6C-43D2-AFC7-DB30B4398038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mongo.DataAccess.Interfaces", "Mongo.DataAccess.Interfaces\Mongo.DataAccess.Interfaces.csproj", "{F27714D5-F46B-47B8-B8FB-D914A88330DA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mongo.DataAccess", "Mongo.DataAccess\Mongo.DataAccess.csproj", "{F27714D5-F46B-47B8-B8FB-D914A88330DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
