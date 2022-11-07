@@ -17,7 +17,6 @@ export interface iProfile {
 }
 
 export class UserPreference {
-  id?: string;
   key: string = "";
   value: string = "";
 }

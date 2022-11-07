@@ -18,7 +18,7 @@ namespace Budgetation.API.Controllers
         {
             _userLogic = userLogic;
         }
-        // GET: api/UsersPreferences
+        // GET: api/UserPreferences
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -28,15 +28,15 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
 
-            List<UserPreference> preferences = res.Preferences;
+            Dictionary<string, object> preferences = res.Preferences;
             
             if(preferences.Count > 0) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences found", Success = true});
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences not found", Success = true});
             
         }
-        // PUT: api/UsersPreferences
-        [HttpPut]
-        public async Task<IActionResult> Put([FromBody] UserPreference preference)
+        // PUT: api/UserPreferences/{preferenceKey}
+        [HttpPut("UserPreferences/{preferenceKey}")]
+        public async Task<IActionResult> Put([FromRoute] string preferenceKey, [FromBody] object preference)
         {
             User? res = await _userLogic.Single();
             if (res is null)
@@ -44,10 +44,9 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
 
-            List<UserPreference> preferences = res.Preferences;
-            UserPreference? found = preferences.FirstOrDefault(x => x.Id == preference.Id);
-            if (found is not null) preferences.Remove(found);
-            preferences.Add(preference);
+            Dictionary<string, object> preferences = res.Preferences;
+            preferences[preferenceKey] = preference;
+            
             User? updated = await _userLogic.Update(res);
             
             if(updated is not null) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences updated", Success = true});

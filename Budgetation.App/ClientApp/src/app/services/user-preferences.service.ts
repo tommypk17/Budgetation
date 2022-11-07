@@ -7,6 +7,7 @@ import {Income, SingleExpense} from "../models/financial";
 import {environment} from "../../environments/environment";
 import {catchError, finalize, retry} from "rxjs/operators";
 import {UserPreference} from "../models/user";
+import {KeyValue} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,7 @@ export class UserPreferencesService {
     });
   }
 
-  public getUserPreferences(): Observable<iResponse<UserPreference[]>> {
+  public getUserPreferences(): Observable<iResponse<KeyValue<string, any>[]>> {
     this.sharedService.queueLoading('getUserPreferences');
     return this.http.get<iResponse<UserPreference[]>>(environment.URL + '/api/userPreferences').pipe(
       retry(3),
