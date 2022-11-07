@@ -4,7 +4,7 @@ using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.Logic.Controllers;
 
-public class IncomeLogic : MongoLogic<Income>
+public class IncomeLogic : AbstractMongoLogic<Income>
 {
     public IncomeLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
     {

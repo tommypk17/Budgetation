@@ -14,9 +14,9 @@ namespace Budgetation.API.Controllers
     [ApiController]
     public class BudgetsController : ControllerBase
     {
-        private readonly MongoLogic<Budget> _budgetLogic;
+        private readonly AbstractMongoLogic<Budget> _budgetLogic;
 
-        public BudgetsController(MongoLogic<Budget> budgetLogic)
+        public BudgetsController(AbstractMongoLogic<Budget> budgetLogic)
         {
             _budgetLogic = budgetLogic;
         }

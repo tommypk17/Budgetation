@@ -8,7 +8,7 @@ using MongoDB.Driver;
 
 namespace Budgetation.Logic.Controllers
 {
-    public class UserLogic : MongoLogic<User>
+    public class UserLogic : AbstractMongoLogic<User>
     {
         public UserLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {

@@ -4,7 +4,7 @@ using Mongo.DataAccess.Interfaces;
 
 namespace Budgetation.Logic.Controllers
 {
-    public class SingleExpenseLogic : MongoLogic<SingleExpense>
+    public class SingleExpenseLogic : AbstractMongoLogic<SingleExpense>
     {
         public SingleExpenseLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor) : base(dbContext, httpContextAccessor)
         {

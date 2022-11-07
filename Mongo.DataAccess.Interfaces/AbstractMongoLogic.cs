@@ -4,12 +4,12 @@ using MongoDB.Driver;
 
 namespace Mongo.DataAccess.Interfaces;
 
-public abstract class MongoLogic<T> : IMongoLogic<T> where T : class, IMongoObject
+public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IMongoObject
 {
     protected readonly IMongoCollection<T> Collection;
     protected readonly IHttpContextAccessor HttpContextAccessor;
     
-    public MongoLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+    public AbstractMongoLogic(IDbContext dbContext, IHttpContextAccessor httpContextAccessor)
     {
         var ctx = dbContext;
         Collection = ctx.Database.GetCollection<T>(typeof(T).Name);
