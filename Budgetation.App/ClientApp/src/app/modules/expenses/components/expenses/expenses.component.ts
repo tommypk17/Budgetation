@@ -11,6 +11,8 @@ import {iResponse} from "../../../../models/response";
 import {StatsExpenseBlockComponent} from "../atoms/stats-expense-block/stats-expense-block.component";
 import {SharedService} from "../../../../services/shared.service";
 import {UserPreferencesService} from "../../../../services/user-preferences.service";
+import {KeyValue} from "@angular/common";
+import {UserPreference} from "../../../../models/user";
 
 @Component({
   selector: 'app-expenses',
@@ -32,12 +34,16 @@ export class ExpensesComponent implements OnInit {
   currentExpensesFor: string = eExpensesFor.Current;
   currentMonth: Date;
 
+  display: string;
+
   @ViewChild('expenseStats') expenseStats: StatsExpenseBlockComponent;
 
-  constructor(private expenseService: ExpenseService, private sharedService: SharedService) { }
+  constructor(private expenseService: ExpenseService, private userPreferenceService: UserPreferencesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getAllExpenses();
+    let pref = this.userPreferenceService.getPreference("expenseDisplay");
+    if(pref) this.display = pref.value;
   }
 
   getAllExpenses(): void {
@@ -303,6 +309,10 @@ export class ExpensesComponent implements OnInit {
         });
         break;
     }
+
+  }
+  changeSettings(event: UserPreference): void {
+    this.userPreferenceService.setPreference(event);
   }
 
 }

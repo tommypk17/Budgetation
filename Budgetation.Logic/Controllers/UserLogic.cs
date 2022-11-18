@@ -18,17 +18,16 @@ namespace Budgetation.Logic.Controllers
         {
             var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
             var filter = Builders<User>.Filter.Eq(x => x.UserId, userId);
+
             var items = await Collection.FindAsync<User>(filter);
-            try
-            {
-                return await items.SingleAsync();
-            }
-            catch (Exception)
-            {
-                var user = new User();
-                var res = await Create(user);
-                return res;
-            }
+            var res = await items.FirstOrDefaultAsync();
+
+            if (res is not null) return res;
+            
+            var user = new User();
+            res = await Create(user);
+            return res;
+
         }
     }
 }

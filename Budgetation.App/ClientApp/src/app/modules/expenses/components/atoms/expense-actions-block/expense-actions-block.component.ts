@@ -6,6 +6,7 @@ import {SharedService} from "../../../../../services/shared.service";
 import {KeyValue} from "@angular/common";
 import {ExpenseService} from "../../../../../services/expense.service";
 import {iResponse} from "../../../../../models/response";
+import {UserPreference} from "../../../../../models/user";
 
 @Component({
   selector: 'app-expense-actions-block',
@@ -17,6 +18,7 @@ export class ExpenseActionsBlockComponent implements OnInit {
   @Output('newExpense') newExpense: EventEmitter<void> = new EventEmitter<void>();
   @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
+  @Output('settings') settings: EventEmitter<UserPreference> = new EventEmitter<UserPreference>();
   @Output('prepareRecurring') prepareRecurring: EventEmitter<RecurringExpense[]> = new EventEmitter<RecurringExpense[]>();
 
   @Input('expenses') expenses: AbstractExpense[] = [];
@@ -60,5 +62,9 @@ export class ExpenseActionsBlockComponent implements OnInit {
         });
       }
     })
+  }
+
+  changeSettings(key: string, setting: string): void {
+    this.settings.emit({key: key, value: setting});
   }
 }

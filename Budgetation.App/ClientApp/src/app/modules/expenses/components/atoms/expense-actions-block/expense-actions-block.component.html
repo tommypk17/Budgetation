@@ -93,6 +93,19 @@
             <span>Due Later</span>
           </button>
         </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="settingsMenu" matTooltip="settings" aria-label="expense settings">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #settingsMenu="matMenu">
+          <button mat-menu-item (click)="changeSettings('expenseDisplay', 'table')">
+            <mat-icon>table_view</mat-icon>
+            <span>Display as Table</span>
+          </button>
+          <button mat-menu-item (click)="changeSettings('expenseDisplay', 'list')">
+            <mat-icon>table_rows</mat-icon>
+            <span>Display as List</span>
+          </button>
+        </mat-menu>
       </div>
     </div>
   </mat-card-content>

@@ -28,15 +28,15 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
 
-            Dictionary<string, object> preferences = res.Preferences;
+            Dictionary<string, string> preferences = res.Preferences;
             
-            if(preferences.Count > 0) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences found", Success = true});
+            if(preferences.Count > 0) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res.Preferences.ToList(), Message = "Preferences found", Success = true});
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences not found", Success = true});
             
         }
         // PUT: api/UserPreferences/{preferenceKey}
-        [HttpPut("UserPreferences/{preferenceKey}")]
-        public async Task<IActionResult> Put([FromRoute] string preferenceKey, [FromBody] object preference)
+        [HttpPut("{preferenceKey}")]
+        public async Task<IActionResult> Put([FromRoute] string preferenceKey, [FromBody] KeyValuePair<string, string> preference)
         {
             User? res = await _userLogic.Single();
             if (res is null)
@@ -44,12 +44,12 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No user not found", Success = true});
             }
 
-            Dictionary<string, object> preferences = res.Preferences;
-            preferences[preferenceKey] = preference;
+            Dictionary<string, string> preferences = res.Preferences;
+            preferences[preferenceKey] = preference.Value;
             
             User? updated = await _userLogic.Update(res);
             
-            if(updated is not null) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res, Message = "Preferences updated", Success = true});
+            if(updated is not null) return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = res.Preferences.ToList(), Message = "Preferences updated", Success = true});
             return StatusCode(StatusCodes.Status200OK, new ResponseModel() {Data = null, Message = "No preferences updated", Success = false});
         }
     }

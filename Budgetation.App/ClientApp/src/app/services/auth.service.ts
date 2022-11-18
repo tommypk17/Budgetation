@@ -5,7 +5,7 @@ import {environment} from '../../environments/environment';
 import {iResponse} from "../models/response";
 import {MsalService} from "@azure/msal-angular";
 import {iProfile} from "../models/user";
-import {AccountInfo} from "@azure/msal-browser";
+import {AccountInfo, RedirectRequest} from "@azure/msal-browser";
 import {map} from "rxjs/operators";
 
 

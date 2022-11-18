@@ -14,6 +14,6 @@ namespace Budgetation.Data.Models
         public Guid UserId { get; set; }
 
         public Role Role { get; set; } = new Role();
-        public Dictionary<string, object> Preferences { get; set; } = new Dictionary<string, object>();
+        public Dictionary<string, string> Preferences { get; set; } = new Dictionary<string, string>();
     }
 }

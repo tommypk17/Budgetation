@@ -16,12 +16,12 @@ export class UserPreferencesService {
 
   constructor(private http: HttpClient, private sharedService: SharedService) { }
 
-  public initializeUserPreferences(): void {
-    this.getUserPreferences().subscribe((res: iResponse<UserPreference[]>) => {
+  public initializeUserPreferences(): Promise<void> {
+    return this.getUserPreferences().toPromise().then((res: iResponse<UserPreference[]>) => {
       if(res && res.data){
         sessionStorage.setItem('userPreferences', JSON.stringify(res.data));
       }
-    })
+    });
   }
 
   public getPreference(key: string): UserPreference | null {
@@ -46,7 +46,7 @@ export class UserPreferencesService {
     });
   }
 
-  public getUserPreferences(): Observable<iResponse<KeyValue<string, any>[]>> {
+  public getUserPreferences(): Observable<iResponse<UserPreference[]>> {
     this.sharedService.queueLoading('getUserPreferences');
     return this.http.get<iResponse<UserPreference[]>>(environment.URL + '/api/userPreferences').pipe(
       retry(3),
@@ -64,7 +64,7 @@ export class UserPreferencesService {
 
   public updateUserPreference(preference: UserPreference): Observable<iResponse<UserPreference[]>> {
     this.sharedService.queueLoading('updateUserPreference');
-    return this.http.put<iResponse<UserPreference[]>>(environment.URL + `/api/userPreferences`, preference).pipe(
+    return this.http.put<iResponse<UserPreference[]>>(environment.URL + `/api/userPreferences/${preference.key}`, preference).pipe(
       retry(3),
       catchError((err, caught) => {
         this.handleError(err);
@@ -76,6 +76,12 @@ export class UserPreferencesService {
         this.sharedService.dequeueLoading('updateUserPreference');
       })
     );
+  }
+
+  public clearUserPreferences(): Promise<void> {
+    return new Promise<void>(() => {
+      sessionStorage.removeItem('userPreferences');
+    });
   }
 
   private handleError(err: any): void {

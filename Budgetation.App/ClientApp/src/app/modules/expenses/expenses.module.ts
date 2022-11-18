@@ -17,7 +17,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatButtonModule} from "@angular/material/button";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
-import {MatNativeDateModule, MatOptionModule} from "@angular/material/core";
+import {MatNativeDateModule, MatOptionModule, MatRippleModule} from "@angular/material/core";
 import {MatSelectModule} from "@angular/material/select";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatTooltipModule} from "@angular/material/tooltip";
@@ -28,9 +28,11 @@ import {MatDialogModule} from "@angular/material/dialog";
 import { RecurringExpenseSelectorDialogComponent } from './components/atoms/recurring-expense-selector-dialog/recurring-expense-selector-dialog.component';
 import {MatListModule} from "@angular/material/list";
 import { PaidExpenseDialogComponent } from './components/atoms/paid-expense-dialog/paid-expense-dialog.component';
+import {MatTableModule} from "@angular/material/table";
+import { ExpenseTableComponent } from './components/atoms/expense-table/expense-table.component';
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent, PaidExpenseDialogComponent],
+  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent, PaidExpenseDialogComponent, ExpenseTableComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -51,7 +53,8 @@ import { PaidExpenseDialogComponent } from './components/atoms/paid-expense-dial
     MatTooltipModule,
     MatDialogModule,
     MatCheckboxModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ],
   providers: [MatDatepickerModule]
 })
