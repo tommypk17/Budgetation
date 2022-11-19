@@ -20,6 +20,8 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
+    sessionStorage.removeItem('afterLogin');
+    sessionStorage.removeItem('userPreferences');
     return this.msalService.logout();
   }
 
