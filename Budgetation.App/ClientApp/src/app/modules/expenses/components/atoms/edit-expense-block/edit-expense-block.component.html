@@ -1,4 +1,4 @@
-<mat-card *ngIf="expense">
+<ng-container *ngIf="expense">
   <mat-card-content>
     <form #form="ngForm" (ngSubmit)="saveExpense()" class="d-flex flex-column">
       <ng-container>
@@ -30,11 +30,11 @@
           <mat-hint align="end">select the date this expense will be due</mat-hint>
         </mat-form-field>
       </ng-container>
-      <div class="mb-2 d-flex flex-column">
-        <mat-label>expense reoccurs?</mat-label>
-        <mat-slide-toggle [(ngModel)]="expense.reoccurs" name="reoccurs" color="primary"></mat-slide-toggle>
-      </div>
       <ng-container *ngIf="expense.reoccurs">
+        <div class="mb-2 d-flex flex-column">
+          <mat-label>expense reoccurs?</mat-label>
+          <mat-slide-toggle [(ngModel)]="expense.reoccurs" name="reoccurs" color="primary" [disabled]="true"></mat-slide-toggle>
+        </div>
         <mat-form-field appearance="fill" class="mb-2">
           <mat-label>select the reoccurrence frequency</mat-label>
           <mat-select [(ngModel)]="expense.interval" name="interval" [required]="expense.reoccurs">
@@ -55,4 +55,4 @@
       </div>
     </form>
   </mat-card-content>
-</mat-card>
+</ng-container>

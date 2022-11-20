@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {SharedService} from "./shared.service";
 import {Observable} from "rxjs";
@@ -13,6 +13,8 @@ import {KeyValue} from "@angular/common";
   providedIn: 'root'
 })
 export class UserPreferencesService {
+
+  public preferencesUpdated: EventEmitter<UserPreference> = new EventEmitter<UserPreference>();
 
   constructor(private http: HttpClient, private sharedService: SharedService) { }
 
@@ -74,6 +76,7 @@ export class UserPreferencesService {
       }),
       finalize(() => {
         this.sharedService.dequeueLoading('updateUserPreference');
+        this.preferencesUpdated.emit(preference);
       })
     );
   }

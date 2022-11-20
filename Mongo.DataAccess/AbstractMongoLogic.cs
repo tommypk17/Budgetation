@@ -17,7 +17,7 @@ public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IM
         HttpContextAccessor = httpContextAccessor;
     }
     
-    public async Task<IList<T>> Read()
+    public virtual async Task<IList<T>> Read()
     {
         var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
         var filter = Builders<T>.Filter.Eq(x => x.UserId, userId);
@@ -40,14 +40,21 @@ public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IM
         }
     }
 
-    public async Task<T?> Find(Guid id)
+    public virtual async Task<T?> Find(Guid id)
     {
         var filter = Builders<T>.Filter.Eq(x => x.Id, id);
         var item = await Collection.FindAsync(filter);
         return await item.FirstOrDefaultAsync();
     }
     
-    public async Task<T?> Create(T t)
+    public virtual async Task<bool> Exists(Guid id)
+    {
+        var filter = Builders<T>.Filter.Eq(x => x.Id, id);
+        var item = await Collection.FindAsync(filter);
+        return await item.AnyAsync();
+    }
+    
+    public virtual async Task<T?> Create(T t)
     {
         var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
         t.UserId = userId;
@@ -56,7 +63,7 @@ public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IM
         return await Find(t.Id);
     }
 
-    public async Task<IList<T>> BulkCreate(IList<T> t)
+    public virtual async Task<IList<T>> BulkCreate(IList<T> t)
     {
         var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
         foreach (T item in t)
@@ -70,7 +77,7 @@ public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IM
         return await items.ToListAsync();
     }
 
-    public async Task<T?> Update(T t)
+    public virtual async Task<T?> Update(T t)
     {
         var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
         var filter = Builders<T>.Filter.Eq(x => x.Id, t.Id) & Builders<T>.Filter.Eq(x => x.UserId, userId);
@@ -78,7 +85,7 @@ public abstract class AbstractMongoLogic<T> : IMongoLogic<T> where T : class, IM
         return await Find(t.Id);
     }
 
-    public async Task<T?> Delete(Guid id)
+    public virtual async Task<T?> Delete(Guid id)
     {
         var userId = UserUtility.GetCurrentUserId(HttpContextAccessor.HttpContext.User);
         var filter = Builders<T>.Filter.Eq(x => x.Id, id) & Builders<T>.Filter.Eq(x => x.UserId, userId);

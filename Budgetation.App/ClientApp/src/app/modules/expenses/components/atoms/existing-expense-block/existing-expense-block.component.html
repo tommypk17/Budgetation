@@ -61,4 +61,6 @@
     </div>
   </mat-card-content>
 </mat-card>
-<app-edit-expense-block *ngIf="edit" [expense]="expense" (cancel)="edit = !edit" (save)="saveExpense($event)"></app-edit-expense-block>
+<mat-card *ngIf="edit">
+  <app-edit-expense-block [expense]="expense" (cancel)="edit = !edit" (save)="saveExpense($event)"></app-edit-expense-block>
+</mat-card>

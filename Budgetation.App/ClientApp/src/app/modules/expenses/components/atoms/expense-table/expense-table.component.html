@@ -1,5 +1,9 @@
-<script src="../../../expenses.module.ts"></script>
 <mat-table [dataSource]="expenses" class="w-100">
+  <ng-container matColumnDef="edit">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let expense"> <button mat-button (click)="editExpense(expense)" ><mat-icon>edit</mat-icon></button> </mat-cell>
+  </ng-container>
+
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
     <mat-cell *matCellDef="let expense"> {{expense.name}} </mat-cell>
@@ -17,7 +21,24 @@
 
   <ng-container matColumnDef="paidOn">
     <mat-header-cell *matHeaderCellDef> Paid On </mat-header-cell>
-    <mat-cell *matCellDef="let expense"> {{expense.paidOn | date: 'MM/dd/yyyy'}} </mat-cell>
+    <mat-cell *matCellDef="let expense">
+      <ng-container *ngIf="expense.paidOn">
+        {{expense.paidOn | date: 'MM/dd/yyyy'}}
+      </ng-container>
+      <ng-container *ngIf="!expense.paidOn">
+        <button [matMenuTriggerFor]="paidOptionsMenu" mat-icon-button aria-label="not paid" >
+          <mat-icon matTooltip="mark paid">attach_money</mat-icon>
+        </button>
+        <mat-menu #paidOptionsMenu="matMenu">
+          <button mat-menu-item (click)="markPaid(expense, 'today')">
+            <span>Today</span>
+          </button>
+          <button mat-menu-item (click)="markPaid(expense, 'onDue')">
+            <span>On Due</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="due">

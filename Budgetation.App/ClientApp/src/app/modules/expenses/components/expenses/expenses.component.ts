@@ -313,6 +313,7 @@ export class ExpensesComponent implements OnInit {
   }
   changeSettings(event: UserPreference): void {
     this.userPreferenceService.setPreference(event);
+    if(event.key == 'expenseDisplay') this.display = event.value;
   }
 
 }
