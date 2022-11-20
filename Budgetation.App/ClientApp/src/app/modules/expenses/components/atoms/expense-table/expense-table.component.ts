@@ -17,11 +17,12 @@ export class ExpenseTableComponent implements OnInit {
   @Input('expenses') expenses: AbstractExpense[];
   @Output('save') save: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
   @Output('paid') paid: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
+  @Output('delete') delete: Subject<SingleExpense | RecurringExpense> = new Subject<SingleExpense | RecurringExpense>();
 
   expense: AbstractExpense;
   edit: boolean = false;
 
-  displayedColumns: string[] = ['edit', 'name', 'amount', 'type', 'paidOn', 'due', 'reoccurs']
+  displayedColumns: string[] = ['name', 'amount', 'type', 'paidOn', 'due', 'reoccurs', 'options']
 
   expenseTypes: KeyValue<number, string>[] = [];
   reoccurrences: KeyValue<number, string>[] = [];
@@ -91,6 +92,15 @@ export class ExpenseTableComponent implements OnInit {
       case 'onDue':
         return expense.due;
     }
+  }
+
+  deleteExpense(expense: AbstractExpense): void {
+    if(AbstractExpense.getInstance(expense) == 'RecurringExpense'){
+      expense = Object.assign(new RecurringExpense(), expense);
+    }else{
+      expense = Object.assign(new SingleExpense(), expense);
+    }
+    this.delete.next(expense);
   }
 
 }

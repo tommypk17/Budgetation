@@ -1,9 +1,4 @@
-<mat-table [dataSource]="expenses" class="w-100">
-  <ng-container matColumnDef="edit">
-    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-    <mat-cell *matCellDef="let expense"> <button mat-button (click)="editExpense(expense)" ><mat-icon>edit</mat-icon></button> </mat-cell>
-  </ng-container>
-
+<mat-table [dataSource]="expenses">
   <ng-container matColumnDef="name">
     <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
     <mat-cell *matCellDef="let expense"> {{expense.name}} </mat-cell>
@@ -49,6 +44,25 @@
   <ng-container matColumnDef="reoccurs">
     <mat-header-cell *matHeaderCellDef> Reoccurs </mat-header-cell>
     <mat-cell *matCellDef="let expense"> {{displayReoccurrenceType(expense.interval)}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="options">
+    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+    <mat-cell *matCellDef="let expense">
+      <button mat-icon-button [matMenuTriggerFor]="optionsMenu" matTooltip="bill options" aria-label="view bill {{expense.name}} options" >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #optionsMenu="matMenu">
+        <button mat-menu-item (click)="editExpense(expense)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit</span>
+        </button>
+        <button mat-menu-item (click)="deleteExpense(expense)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete</span>
+        </button>
+      </mat-menu>
+    </mat-cell>
   </ng-container>
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

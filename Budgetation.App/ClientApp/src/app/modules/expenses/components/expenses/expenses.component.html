@@ -12,12 +12,14 @@
   <div class="block">
     <app-expense-actions-block [expenses]="allExpenses" [filtered]="!!currentFilter" [disablePrepareRecurring]="false" (prepareRecurring)="prepareRecurring($event)" (filter)="filterExpenses($event)" (sort)="sortExpenses($event)" (newExpense)="createNewExpense()" (settings)="changeSettings($event)" [disableNewExpense]="newExpense != undefined"></app-expense-actions-block>
   </div>
-  <div class="block">
-    <app-new-expense-block [expense]="newExpense" (cancel)="cancelNewExpense()" (save)="saveNewExpense($event)"></app-new-expense-block>
-  </div>
+  <ng-container *ngIf="newExpense">
+    <div class="block">
+      <app-new-expense-block [expense]="newExpense" (cancel)="cancelNewExpense()" (save)="saveNewExpense($event)"></app-new-expense-block>
+    </div>
+  </ng-container>
   <ng-container *ngIf="display == 'table'">
     <div class="block">
-      <app-expense-table [expenses]="currentExpenses" (save)="saveExistingExpense($event)" (paid)="markExpensePaid($event)"></app-expense-table>
+      <app-expense-table [expenses]="currentExpenses" (save)="saveExistingExpense($event)" (paid)="markExpensePaid($event)" (delete)="deleteExpense($event)"></app-expense-table>
     </div>
   </ng-container>
   <ng-container  *ngIf="display == 'list'">
