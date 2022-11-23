@@ -7,17 +7,26 @@
   >
   </app-header-block>
   <div class="block">
-    <app-stats-income-block #incomeStats [income]="currentIncome"></app-stats-income-block>
+    <app-stats-income-block #incomeStats [income]="currentIncome" (monthSelected)="showMonth($event)"></app-stats-income-block>
   </div>
   <div class="block">
-    <app-income-actions-block (filter)="filterIncome($event)" (sort)="sortIncome($event)" (newIncome)="createNewIncome()" [disableNewIncome]="newIncome != undefined"></app-income-actions-block>
+    <app-income-actions-block (filter)="filterIncome($event)" (sort)="sortIncome($event)" (newIncome)="createNewIncome()" (settings)="changeSettings($event)" [disableNewIncome]="newIncome != undefined"></app-income-actions-block>
   </div>
-  <div class="block">
-    <app-new-income-block [income]="newIncome" (cancel)="cancelNewIncome()" (save)="saveNewIncome($event)"></app-new-income-block>
-  </div>
-  <ng-container *ngFor="let income of currentIncome">
+  <ng-container *ngIf="newIncome">
     <div class="block">
-      <app-existing-income-block [income]="income" (save)="saveExistingIncome($event)" (delete)="deleteIncome($event)"></app-existing-income-block>
+      <app-new-income-block [income]="newIncome" (cancel)="cancelNewIncome()" (save)="saveNewIncome($event)"></app-new-income-block>
     </div>
+  </ng-container>
+  <ng-container *ngIf="display == 'table'">
+    <div class="block">
+      <app-income-table [incomes]="currentIncome" (save)="saveExistingIncome($event)" (delete)="deleteIncome($event)"></app-income-table>
+    </div>
+  </ng-container>
+  <ng-container  *ngIf="display == 'list'">
+    <ng-container *ngFor="let income of currentIncome">
+      <div class="block">
+        <app-existing-income-block [income]="income" (save)="saveExistingIncome($event)" (delete)="deleteIncome($event)"></app-existing-income-block>
+      </div>
+    </ng-container>
   </ng-container>
 </div>

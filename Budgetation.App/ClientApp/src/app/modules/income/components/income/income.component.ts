@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Income, eExpenseType, eIncomeType} from "../../../../models/financial";
+import {Income, eIncomeType, eExpensesFor, eIncomeFor} from "../../../../models/financial";
 import {iResponse} from "../../../../models/response";
 import {IncomeService} from "../../../../services/income.service";
+import {UserPreferencesService} from "../../../../services/user-preferences.service";
+import {UserPreference} from "../../../../models/user";
+import {SharedService} from "../../../../services/shared.service";
 
 @Component({
   selector: 'app-income',
@@ -14,19 +17,33 @@ export class IncomeComponent implements OnInit {
 
   newIncome: Income | undefined;
 
+  allIncome: Income[] = [];
   currentIncome: Income[] = [];
 
-  constructor(private incomeService: IncomeService) { }
+  currentSort: string | undefined;
+  currentFilter: string | undefined;
+
+  currentIncomeFor: string = eIncomeFor.Current;
+  currentMonth: Date;
+
+  display: string = 'list';
+
+
+  constructor(private incomeService: IncomeService, private userPreferenceService: UserPreferencesService, private sharedService: SharedService) { }
 
   ngOnInit(): void {
     this.getAllIncome();
+    let pref = this.userPreferenceService.getPreference("incomeDisplay");
+    if(pref) this.display = pref.value;
   }
 
   getAllIncome(): void {
     this.incomeService.getAllIncome().subscribe((res:iResponse<Income[]>) => {
       if(res && res.data){
+        this.allIncome = res.data;
         this.currentIncome = res.data;
         this.sortIncome('byDateSoonToFar');
+        this.showIncome(this.currentIncomeFor);
       }
     });
   }
@@ -34,8 +51,9 @@ export class IncomeComponent implements OnInit {
   saveNewIncome(income: Income): void {
     this.incomeService.saveIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
-        this.currentIncome.push(res.data);
+        this.allIncome.push(res.data);
         this.newIncome = undefined;
+        this.reFilterSort();
       }
     });
   }
@@ -43,10 +61,11 @@ export class IncomeComponent implements OnInit {
   saveExistingIncome(income: Income): void {
     this.incomeService.updateIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
-        let existingIncomeIdx = this.currentIncome.findIndex(x => x.id == income.id);
+        let existingIncomeIdx = this.allIncome.findIndex(x => x.id == income.id);
         if(existingIncomeIdx > -1){
-          this.currentIncome[existingIncomeIdx] = res.data;
+          this.allIncome[existingIncomeIdx] = res.data;
         }
+        this.reFilterSort();
       }
     });
   }
@@ -54,8 +73,9 @@ export class IncomeComponent implements OnInit {
   deleteIncome(income: Income): void {
     this.incomeService.deleteIncome(income).subscribe((res: iResponse<Income>) => {
       if(res && res.data){
-        let incomeIdx = this.currentIncome.findIndex(x => x.id == income.id);
-        this.currentIncome.splice(incomeIdx);
+        let incomeIdx = this.allIncome.findIndex(x => x.id == income.id);
+        this.allIncome.splice(incomeIdx, 1);
+        this.reFilterSort();
       }
     });
   }
@@ -68,7 +88,48 @@ export class IncomeComponent implements OnInit {
     this.newIncome = undefined;
   }
 
+  showIncome(incomeFor: string){
+    this.currentIncomeFor = incomeFor;
+    switch (incomeFor){
+      case eExpensesFor.All:
+        this.currentMonth = undefined;
+        this.currentIncome = this.allIncome;
+        break;
+      case eExpensesFor.Current:
+        this.currentMonth = new Date(Date.now());
+        this.currentIncome = this.allIncome.filter(x => new Date(x.date) >= this.sharedService.firstDayOfMonthCurrent);
+        this.currentIncome = this.currentIncome.filter(x => new Date(x.date) <= this.sharedService.lastDayOfMonthCurrent);
+        break;
+      case eExpensesFor.Month:
+        this.filterByMonth(this.currentMonth)
+        break;
+    }
+    this.currentFilter = undefined;
+  }
+
+  reFilterSort(): void {
+    this.currentIncome = this.allIncome;
+    if(this.currentSort) this.sortIncome(this.currentSort);
+    if(this.currentFilter) this.filterIncome(this.currentFilter);
+    this.showIncome(this.currentIncomeFor);
+  }
+
+  showMonth(date: Date){
+    this.reFilterSort();
+    this.currentMonth = date;
+    this.filterByMonth(date);
+    this.currentIncomeFor = eExpensesFor.Month;
+  }
+
+  filterByMonth(date: Date | undefined){
+    if(date){
+      this.currentIncome = this.allIncome.filter(x => new Date(x.date) >= date);
+      this.currentIncome = this.currentIncome.filter(x => new Date(x.date) <= new Date(date.getFullYear(), date.getMonth() + 1, 0));
+    }
+  }
+
   filterIncome(filterBy: string): void {
+    this.currentFilter = filterBy;
     switch (filterBy){
       case 'clear':
         this.getAllIncome();
@@ -89,10 +150,12 @@ export class IncomeComponent implements OnInit {
   }
 
   sortIncome(sortOrder: string): void {
+    this.currentSort = sortOrder;
+    this.currentIncome = this.allIncome;
     let keyVal = [];
     let i = 0;
-    Object.keys(eExpenseType).forEach((v) => {
-      keyVal[eExpenseType[v]] = i;
+    Object.keys(eIncomeType).forEach((v) => {
+      keyVal[eIncomeType[v]] = i;
       i++;
     });
     switch (sortOrder){
@@ -140,6 +203,11 @@ export class IncomeComponent implements OnInit {
         });
         break;
     }
+  }
+
+  changeSettings(event: UserPreference): void {
+    this.userPreferenceService.setPreference(event);
+    if(event.key == 'incomeDisplay') this.display = event.value;
   }
 
 }

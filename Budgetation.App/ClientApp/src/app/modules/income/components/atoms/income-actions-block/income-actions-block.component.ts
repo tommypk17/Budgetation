@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {UserPreference} from "../../../../../models/user";
 
 @Component({
   selector: 'app-income-actions-block',
@@ -10,6 +11,8 @@ export class IncomeActionsBlockComponent implements OnInit {
   @Output('newIncome') newIncome: EventEmitter<void> = new EventEmitter<void>();
   @Output('filter') filter: EventEmitter<string> = new EventEmitter<string>();
   @Output('sort') sort: EventEmitter<string> = new EventEmitter<string>();
+  @Output('settings') settings: EventEmitter<UserPreference> = new EventEmitter<UserPreference>();
+
   @Input('disableNewIncome') disableNewIncome: boolean = true;
 
   filtered: boolean = false;
@@ -30,6 +33,10 @@ export class IncomeActionsBlockComponent implements OnInit {
 
   sortIncome(event: string): void {
     this.sort.next(event);
+  }
+
+  changeSettings(key: string, setting: string): void {
+    this.settings.emit({key: key, value: setting});
   }
 
 }

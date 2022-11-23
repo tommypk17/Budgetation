@@ -4,6 +4,19 @@
       <div class="d-flex flex-column">
         <h4>Total Income: {{incomeTotal | currency: 'USD'}}</h4>
       </div>
+      <div class="d-flex flex-column">
+        <mat-form-field appearance="fill">
+          <mat-label>Showing expenses for</mat-label>
+          <mat-select [(ngModel)]="showingExpenses" (selectionChange)="showIncomeFor(showingExpenses)">
+            <mat-option *ngFor="let expenseFor of expensesFor" [value]="expenseFor.value">
+              {{expenseFor.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <ng-container *ngIf="showMonthPicker">
+          <mat-month-picker (dateChanged)="dateChanged($event)"></mat-month-picker>
+        </ng-container>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

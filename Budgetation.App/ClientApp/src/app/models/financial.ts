@@ -51,6 +51,12 @@ export enum eIncomeType {
   Other
 }
 
+export enum eIncomeFor {
+  All= "All",
+  Current = "This Month",
+  Month = "Month"
+}
+
 export enum eExpenseType {
   Need ,
   Want ,
