@@ -7,17 +7,15 @@ namespace Budgetation.Data.Models;
 public class Budget : IMongoObject
 {
     [BsonId] public Guid Id { get; set; } = Guid.NewGuid();
-    public Guid UserId { get; set; }
+    public Guid UserId { get; set; } = Guid.Empty;
     public bool IsWhatIf { get; set; } = true;
     public double Salary { get; set; } = 0;
     public double NetMonthlyPay { get; set; } = 0;
     public double? NetMonthlyDeductions { get; set; } = 0;
-    public List<BudgetExpense> Expenses { get; set; } = new List<BudgetExpense>();
+    public Dictionary<Guid, BudgetExpense> Expenses { get; set; } = new Dictionary<Guid, BudgetExpense>();
 }
 public class BudgetExpense
 {
-    [BsonId]
-    public Guid Id { get; set; } = Guid.NewGuid();
     [BsonRequired]
     public string Name { get; set; } = String.Empty;
     [BsonRequired]
