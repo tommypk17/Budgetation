@@ -20,12 +20,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatListModule} from "@angular/material/list";
 import { WhatIfComponent } from './components/what-if/what-if.component';
+import { BudgetBasicInformationComponent } from './atoms/budget-basic-information/budget-basic-information.component';
+import { BudgetDetailsComponent } from './components/budget-details/budget-details.component';
 
 
 @NgModule({
   declarations: [
     BudgetsComponent,
-    WhatIfComponent
+    WhatIfComponent,
+    BudgetBasicInformationComponent,
+    BudgetDetailsComponent
   ],
   imports: [
     CommonModule,

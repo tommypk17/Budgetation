@@ -10,6 +10,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="ClientApp\src\app\interceptors" />
+      <Folder Include="ClientApp\src\app\modules\budgets\atoms" />
       <Folder Include="Controllers" />
     </ItemGroup>
     <ItemGroup>

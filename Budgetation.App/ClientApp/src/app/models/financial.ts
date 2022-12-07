@@ -1,4 +1,6 @@
-﻿export class Income{
+﻿import {KeyValue} from "@angular/common";
+
+export class Income{
   id?: string;
   incomingBalance: number = 0;
   amount: number = 0;
@@ -68,4 +70,26 @@ export enum eExpensesFor {
   All= "All",
   Current = "This Month",
   Month = "Month"
+}
+
+export interface Budget {
+  id?: string;
+  userId?: string;
+  whatIf: boolean;
+  salary: number;
+  netMonthlyPay: number;
+  netMonthlyDeductions: number;
+  expenses: KeyValue<string, BudgetExpense>[];
+}
+
+export interface BudgetExpense {
+  name: string;
+  amount: number;
+  type: eBudgetExpenseType
+}
+
+export enum eBudgetExpenseType {
+  Need,
+  Want,
+  Extra
 }

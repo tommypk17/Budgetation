@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {BudgetService} from "../../../../services/budget.service";
+import {Budget} from "../../../../models/financial";
+import {iResponse} from "../../../../models/response";
 
 @Component({
   selector: 'app-budgets',
@@ -8,7 +11,9 @@ import { Component, OnInit } from '@angular/core';
 export class BudgetsComponent implements OnInit {
   headerBlock = {blockTitle: "Budgets", blockSubtitle: "", blockContent: ""};
 
-  constructor() { }
+  allBudgets: Budget[] = [];
+
+  constructor(private budgetService: BudgetService) { }
 
   ngOnInit(): void {
   }

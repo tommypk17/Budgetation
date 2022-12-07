@@ -1,0 +1,32 @@
+import { Component, OnInit } from '@angular/core';
+import {Budget} from "../../../../models/financial";
+import {BudgetService} from "../../../../services/budget.service";
+import {iResponse} from "../../../../models/response";
+import {ActivatedRoute} from "@angular/router";
+
+@Component({
+  selector: 'app-budget-details',
+  templateUrl: './budget-details.component.html',
+  styleUrls: ['./budget-details.component.scss']
+})
+export class BudgetDetailsComponent implements OnInit {
+
+  budget: Budget;
+
+  constructor(private budgetService: BudgetService, private route: ActivatedRoute) { }
+
+  get budgetId(): string {
+    let budgetId = this.route.snapshot.params['budgetId']
+    if(budgetId) return budgetId;
+    else return "";
+  }
+
+  ngOnInit(): void {
+    this.budgetService.getBudget(this.budgetId).subscribe((res: iResponse<Budget>) => {
+      if(res && res.data){
+        this.budget = res.data;
+      }
+    });
+  }
+
+}
