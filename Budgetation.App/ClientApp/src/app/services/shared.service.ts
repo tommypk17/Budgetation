@@ -4,6 +4,7 @@ import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {KeyValue} from "@angular/common";
 import {eExpensesFor, eExpenseType, eIncomeFor, eIncomeType, eReoccurrence} from "../models/financial";
+import {UrlSegment} from "@angular/router";
 
 
 @Injectable({
@@ -112,6 +113,21 @@ export class SharedService {
 
   moneyRound(amount: number): number{
     return Math.round(amount * 100) / 100;
+  }
+
+  get previousRoute(): string {
+    let prevSegment: string = "";
+    let prevSegmentString = sessionStorage.getItem('previous');
+    if(prevSegmentString) {
+      try{
+        prevSegment = JSON.parse(prevSegmentString);
+      }catch {}
+    }
+    return prevSegment;
+  }
+
+  set previousRoute(segments: string) {
+    sessionStorage.setItem('previous', JSON.stringify(segments));
   }
 
 }

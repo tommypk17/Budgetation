@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {SharedService} from "../../../services/shared.service";
 
 @Component({
   selector: 'app-header-block',
@@ -13,9 +14,10 @@ export class HeaderBlockComponent implements OnInit {
   @Input('blockBackLink') backLink: string;
   @Input('blockAddLink') addLink: string;
 
-  constructor() { }
+  constructor(private sharedService: SharedService) { }
 
   ngOnInit(): void {
+    this.backLink = this.sharedService.previousRoute;
   }
 
 }

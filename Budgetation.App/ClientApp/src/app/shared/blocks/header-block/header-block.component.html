@@ -1,19 +1,23 @@
 <mat-card>
-  <div class="headerButtons">
-    <span class="spacer" *ngIf="backLink == ''"></span>
-    <button matTooltip="back to lists" *ngIf="backLink != '' && backLink != undefined" mat-button routerLink="{{backLink}}" class="card-backButton">
-      <mat-icon>
-        arrow_back_ios
-      </mat-icon>
-    </button>
+  <div class="d-flex align-items-center">
+    <div class="headerButtons mr-2">
+      <span class="spacer" *ngIf="backLink == ''"></span>
+      <button matTooltip="previous page" *ngIf="backLink != '' && backLink != undefined" mat-button routerLink="{{backLink}}" class="card-backButton">
+        <mat-icon>
+          arrow_back_ios
+        </mat-icon>
+      </button>
+    </div>
+    <mat-card-title class="card-head card-head-w-back m-0">
+      <span class="card-title">{{title}}</span>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span class="card-subtitle">{{subtitle}}</span>
+    </mat-card-subtitle>
   </div>
-  <mat-card-title class="card-head card-head-w-back">
-    <span class="card-title">{{title}}</span>
-  </mat-card-title>
-  <mat-card-subtitle>
-    <span class="card-subtitle">{{subtitle}}</span>
-  </mat-card-subtitle>
-  <mat-card-content>
-    <span class="card-content">{{content}}</span>
-  </mat-card-content>
+  <div class="d-flex">
+    <mat-card-content>
+      <span class="card-content">{{content}}</span>
+    </mat-card-content>
+  </div>
 </mat-card>
