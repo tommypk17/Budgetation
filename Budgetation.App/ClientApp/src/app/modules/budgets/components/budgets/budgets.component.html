@@ -6,4 +6,9 @@
     class="block"
   >
   </app-header-block>
+  <ng-container *ngFor="let currentBudget of currentBudgets">
+    <div class="block">
+      <app-existing-budget-block [budget]="currentBudget"></app-existing-budget-block>
+    </div>
+  </ng-container>
 </div>

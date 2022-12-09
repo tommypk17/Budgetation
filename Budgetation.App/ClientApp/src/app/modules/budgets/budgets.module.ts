@@ -22,6 +22,7 @@ import {MatListModule} from "@angular/material/list";
 import { WhatIfComponent } from './components/what-if/what-if.component';
 import { BudgetBasicInformationComponent } from './atoms/budget-basic-information/budget-basic-information.component';
 import { BudgetDetailsComponent } from './components/budget-details/budget-details.component';
+import {ExistingBudgetBlockComponent} from "./atoms/existing-budget-block/existing-budget-block.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { BudgetDetailsComponent } from './components/budget-details/budget-detai
     BudgetsComponent,
     WhatIfComponent,
     BudgetBasicInformationComponent,
-    BudgetDetailsComponent
+    BudgetDetailsComponent,
+    ExistingBudgetBlockComponent
   ],
   imports: [
     CommonModule,
