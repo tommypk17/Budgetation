@@ -1,5 +1,10 @@
 <mat-card *ngIf="budget">
   <form #form="ngForm" (ngSubmit)="saveBudget()" class="d-flex flex-column">
+    <mat-form-field appearance="fill" class="w-100 mr-2">
+      <mat-label>Budget Name</mat-label>
+      <input [(ngModel)]="budget.name" name="name" matInput type="text" required>
+      <mat-hint align="end">friendly name of the budget</mat-hint>
+    </mat-form-field>
     <div class="d-flex w-100 justify-content-between mb-2">
       <mat-form-field appearance="fill" class="w-100 mr-2">
         <mat-label>Yearly salary</mat-label>

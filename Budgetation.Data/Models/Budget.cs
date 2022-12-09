@@ -8,6 +8,7 @@ public class Budget : IMongoObject
 {
     [BsonId] public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UserId { get; set; } = Guid.Empty;
+    public string Name { get; set; } = String.Empty;
     public bool IsWhatIf { get; set; } = true;
     public double Salary { get; set; } = 0;
     public double NetMonthlyPay { get; set; } = 0;

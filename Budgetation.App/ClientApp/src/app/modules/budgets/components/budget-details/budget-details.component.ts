@@ -10,6 +10,7 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./budget-details.component.scss']
 })
 export class BudgetDetailsComponent implements OnInit {
+  headerBlock = {blockTitle: "Budgets", blockSubtitle: "", blockContent: ""};
 
   budget: Budget;
 
@@ -25,6 +26,7 @@ export class BudgetDetailsComponent implements OnInit {
     this.budgetService.getBudget(this.budgetId).subscribe((res: iResponse<Budget>) => {
       if(res && res.data){
         this.budget = res.data;
+        this.headerBlock.blockTitle = `Budgets - ${this.budget.name}`;
       }
     });
   }
