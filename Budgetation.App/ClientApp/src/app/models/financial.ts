@@ -76,7 +76,7 @@ export interface Budget {
   id?: string;
   name: string;
   userId?: string;
-  whatIf: boolean;
+  isWhatIf: boolean;
   salary: number;
   netMonthlyPay: number;
   netMonthlyDeductions: number;

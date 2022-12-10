@@ -3,7 +3,7 @@
     <div class="d-flex justify-content-between w-100">
       <div class="d-flex align-items-center">
         <p class="mat-card-title mb-0">{{budget.name}}</p>
-        <small class="mx-2">{{budget.whatIf == false? '(Primary Budget)': '(What-If Budget)'}}</small>
+        <small class="mx-2">{{budget.isWhatIf == false? '(Primary Budget)': '(What-If Budget)'}}</small>
       </div>
       <div class="d-flex align-items-center">
         <button mat-icon-button [routerLink]="['','budgets',budget.id]" matTooltip="view budget" aria-label="view budget" >

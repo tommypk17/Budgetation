@@ -30,5 +30,11 @@
       <span matPrefix>$&nbsp;</span>
       <mat-hint align="end">amount earned in 1 pay period</mat-hint>
     </mat-form-field>
+    <div class="d-flex">
+      <div class="mb-2 d-flex flex-column">
+        <mat-label>what-if budget?</mat-label>
+        <mat-slide-toggle [(ngModel)]="budget.isWhatIf" name="whatIfBudget"></mat-slide-toggle>
+      </div>
+    </div>
   </form>
 </mat-card>
