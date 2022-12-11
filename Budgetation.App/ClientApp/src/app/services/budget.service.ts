@@ -3,7 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {SharedService} from "./shared.service";
 import {Observable} from "rxjs";
 import {iResponse} from "../models/response";
-import {AbstractExpense, Budget} from "../models/financial";
+import {Budget} from "../models/financial";
 import {environment} from "../../environments/environment";
 import {catchError, finalize, retry} from "rxjs/operators";
 
@@ -42,6 +42,54 @@ export class BudgetService {
       }),
       finalize(() => {
         this.sharedService.dequeueLoading('getAllBudgets');
+      })
+    );
+  }
+
+  public createBudget(budget: Budget): Observable<iResponse<Budget>> {
+    this.sharedService.queueLoading('createBudget');
+    return this.http.post<iResponse<Budget>>(environment.URL + '/api/budgets', budget).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<Budget>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('createBudget');
+      })
+    );
+  }
+
+  public updateBudget(budget: Budget): Observable<iResponse<Budget>> {
+    this.sharedService.queueLoading('updateBudget');
+    return this.http.put<iResponse<Budget>>(environment.URL + `/api/budgets`, budget).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<Budget>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('updateBudget');
+      })
+    );
+  }
+
+  public deleteBudget(budget: Budget): Observable<iResponse<Budget>> {
+    this.sharedService.queueLoading('deleteBudget');
+    return this.http.delete<iResponse<Budget>>(environment.URL + `/api/budgets/${budget.id}`).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<Budget>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('deleteBudget');
       })
     );
   }

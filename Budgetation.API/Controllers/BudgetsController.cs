@@ -68,12 +68,43 @@ namespace Budgetation.API.Controllers
         
         // POST: api/Budgets
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Budget? budget)
+        public async Task<IActionResult> Post([FromBody] Budget budget)
         {
-            if (budget is null) budget = new Budget();
+            if (budget.Name == "") budget.Name = budget.Id.ToString();
             Budget? created = await _budgetLogic.Create(budget);
             if(created is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not created", Success = false }); 
             return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = budget, Message = "Budget created", Success = true });
+
+        }
+        
+        // PUT: api/Budgets
+        [HttpPut]
+        public async Task<IActionResult> Put([FromBody] Budget? budget)
+        {
+            if (budget is null) return StatusCode(StatusCodes.Status200OK, new ResponseModel() { Data = null, Message = "Provide a budget to update", Success = false });
+            
+            Budget? found = await _budgetLogic.Find(budget.Id);
+            if (found is null)
+            {
+                return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not found", Success = false });
+            }
+
+            //never update the expenses on main budget update, just use the existing expenses.
+            budget.Expenses = found.Expenses;
+            
+            Budget? updated = await _budgetLogic.Update(budget);
+            if(updated is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not updated", Success = false }); 
+            return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = budget, Message = "Budget updated", Success = true });
+
+        }
+        
+        // DELETE: api/Budgets/{budgetId}
+        [HttpDelete("{budgetId}")]
+        public async Task<IActionResult> Put([FromRoute] Guid budgetId)
+        {
+            Budget? budget = await _budgetLogic.Delete(budgetId);
+            if(budget is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not deleted", Success = false }); 
+            return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = budget, Message = "Budget deleted", Success = true });
 
         }
 
