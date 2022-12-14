@@ -23,6 +23,7 @@ import { StatsIncomeBlockComponent } from './components/atoms/stats-income-block
 import { IncomeTableComponent } from './components/atoms/income-table/income-table.component';
 import {MatTableModule} from "@angular/material/table";
 import {MatDialogModule} from "@angular/material/dialog";
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import {MatDialogModule} from "@angular/material/dialog";
     MatNativeDateModule,
     MatIconModule,
     MatDialogModule,
-    MatTableModule
+    MatTableModule,
+    MatTooltipModule
   ],
   providers: [MatDatepickerModule]
 })

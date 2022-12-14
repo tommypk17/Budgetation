@@ -2,7 +2,7 @@
   <mat-card-content>
     <div class="d-flex justify-content-between">
       <div>
-        <button [disabled]="disableNewIncome" mat-raised-button color="accent" id="newBillButton" (click)="createNewIncome()"  matTooltip="add a new bill">Add New Income</button>
+        <button [disabled]="disableNewIncome" mat-icon-button color="accent" id="newBillButton" (click)="createNewIncome()"  matTooltip="add a new income"><mat-icon>add</mat-icon></button>
       </div>
       <div>
         <button mat-icon-button matTooltip="filter current list of income" aria-label="filter current income" [matMenuTriggerFor]="filterMenu">
