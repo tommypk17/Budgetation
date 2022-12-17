@@ -10,9 +10,15 @@ export class ExistingBudgetBlockComponent implements OnInit {
 
   @Input('budget') budget: Budget;
 
+  edit: boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  saveBudget(budget: Budget): void {
+
   }
 
 }

@@ -72,7 +72,9 @@ export enum eExpensesFor {
   Month = "Month"
 }
 
-export interface Budget {
+export class Budget {
+  constructor() {
+  }
   id?: string;
   name: string;
   userId?: string;

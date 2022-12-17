@@ -14,6 +14,8 @@ export class BudgetDetailsComponent implements OnInit {
 
   budget: Budget;
 
+  edit: boolean = false;
+
   constructor(private budgetService: BudgetService, private route: ActivatedRoute) { }
 
   get budgetId(): string {
@@ -29,6 +31,10 @@ export class BudgetDetailsComponent implements OnInit {
         this.headerBlock.blockTitle = `Budgets - ${this.budget.name}`;
       }
     });
+  }
+
+  saveBudget(budget: Budget): void {
+
   }
 
 }

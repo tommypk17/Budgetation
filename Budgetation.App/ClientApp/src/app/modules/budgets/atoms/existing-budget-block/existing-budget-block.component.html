@@ -1,4 +1,4 @@
-<mat-card *ngIf="budget != undefined">
+<mat-card *ngIf="budget != undefined && !edit">
   <mat-card-header>
     <div class="d-flex justify-content-between w-100">
       <div class="d-flex align-items-center">
@@ -13,6 +13,10 @@
           <mat-icon>more_horiz</mat-icon>
         </button>
         <mat-menu #optionsMenu="matMenu">
+          <button mat-menu-item (click)="edit = !edit">
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
           <button mat-menu-item>
             <mat-icon>delete</mat-icon>
             <span>Delete</span>
@@ -40,4 +44,7 @@
       </div>
     </div>
   </mat-card-content>
+</mat-card>
+<mat-card *ngIf="edit">
+  <app-edit-budget-block [budget]="budget" (cancel)="edit = !edit" (save)="saveBudget($event)"></app-edit-budget-block>
 </mat-card>

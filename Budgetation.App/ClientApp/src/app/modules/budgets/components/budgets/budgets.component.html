@@ -4,8 +4,15 @@
     [blockSubtitle]="headerBlock.blockSubtitle"
     [blockContent]="headerBlock.blockContent"
     class="block"
-  >
-  </app-header-block>
+  ></app-header-block>
+  <div class="block">
+    <app-budget-actions-block (newBudget)="createNewBudget()" [disableNewBudget]="newBudget != undefined"></app-budget-actions-block>
+  </div>
+  <ng-container *ngIf="newBudget">
+    <div class="block">
+      <app-new-budget-block [budget]="newBudget" (cancel)="cancelNewBudget()" (save)="saveNewBudget($event)"></app-new-budget-block>
+    </div>
+  </ng-container>
   <ng-container *ngFor="let currentBudget of currentBudgets">
     <div class="block">
       <app-existing-budget-block [budget]="currentBudget"></app-existing-budget-block>

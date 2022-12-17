@@ -18,16 +18,20 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MatListModule} from "@angular/material/list";
 import { BudgetDetailsComponent } from './components/budget-details/budget-details.component';
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import { BudgetBasicInformationComponent } from './atoms/budget-basic-information/budget-basic-information.component';
 import { ExistingBudgetBlockComponent } from './atoms/existing-budget-block/existing-budget-block.component';
+import { BudgetActionsBlockComponent } from './atoms/budget-actions-block/budget-actions-block.component';
+import { EditBudgetBlockComponent } from './atoms/edit-budget-block/edit-budget-block.component';
+import { NewBudgetBlockComponent } from './atoms/new-budget-block/new-budget-block.component';
 
 
 @NgModule({
   declarations: [
     BudgetsComponent,
-    BudgetBasicInformationComponent,
     BudgetDetailsComponent,
-    ExistingBudgetBlockComponent
+    ExistingBudgetBlockComponent,
+    BudgetActionsBlockComponent,
+    EditBudgetBlockComponent,
+    NewBudgetBlockComponent
   ],
   imports: [
     CommonModule,

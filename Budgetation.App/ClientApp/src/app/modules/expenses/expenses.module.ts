@@ -32,30 +32,33 @@ import {MatTableModule} from "@angular/material/table";
 import { ExpenseTableComponent } from './components/atoms/expense-table/expense-table.component';
 
 @NgModule({
-  declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent, PaidExpenseDialogComponent, ExpenseTableComponent],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    FormsModule,
+    declarations: [ExpensesComponent, NewExpenseBlockComponent, ExistingExpenseBlockComponent, ExpenseActionsBlockComponent, EditExpenseBlockComponent, StatsExpenseBlockComponent, RecurringExpenseSelectorDialogComponent, PaidExpenseDialogComponent, ExpenseTableComponent],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
 
-    ExpensesRoutingModule,
-    SharedModule,
-    MatCardModule,
-    MatButtonModule,
-    MatIconModule,
-    MatMenuModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatSlideToggleModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatTooltipModule,
-    MatDialogModule,
-    MatCheckboxModule,
-    MatListModule,
-    MatTableModule
-  ],
-  providers: [MatDatepickerModule]
+        ExpensesRoutingModule,
+        SharedModule,
+        MatCardModule,
+        MatButtonModule,
+        MatIconModule,
+        MatMenuModule,
+        MatInputModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatSlideToggleModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatTooltipModule,
+        MatDialogModule,
+        MatCheckboxModule,
+        MatListModule,
+        MatTableModule
+    ],
+    exports: [
+        EditExpenseBlockComponent
+    ],
+    providers: [MatDatepickerModule]
 })
 export class ExpensesModule { }
