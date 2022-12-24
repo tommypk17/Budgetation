@@ -34,7 +34,10 @@ export class BudgetsComponent implements OnInit {
   }
 
   saveExistingBudget(budget: Budget): void {
-
+    this.budgetService.updateBudget(budget).subscribe((res: iResponse<Budget>) => {
+      this.getAllBudgets();
+      this.newBudget = undefined;
+    });
   }
 
   saveNewBudget(budget: Budget): void {

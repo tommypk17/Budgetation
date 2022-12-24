@@ -26,7 +26,7 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
       <mat-label>Monthly pay</mat-label>
-      <input value="{{budget.netMonthlyPay | number: '1.2-2'}}" name="netMonthlyPay" matInput type="number" min="0" step="0.01" readonly [disabled]="true">
+      <input value="{{budget.netMonthlyPay | number: '1.2-2'}}" name="netMonthlyPay" matInput type="number" min="0" step="0.01" required>
       <span matPrefix>$&nbsp;</span>
       <mat-hint align="end">amount earned in 1 pay period</mat-hint>
     </mat-form-field>

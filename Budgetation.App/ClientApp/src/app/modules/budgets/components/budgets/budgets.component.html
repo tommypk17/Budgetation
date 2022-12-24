@@ -15,7 +15,7 @@
   </ng-container>
   <ng-container *ngFor="let currentBudget of currentBudgets">
     <div class="block">
-      <app-existing-budget-block [budget]="currentBudget"></app-existing-budget-block>
+      <app-existing-budget-block [budget]="currentBudget" (save)="saveExistingBudget($event)"></app-existing-budget-block>
     </div>
   </ng-container>
 </div>

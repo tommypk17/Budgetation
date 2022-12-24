@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Budget} from "../../../../models/financial";
 
 @Component({
@@ -9,6 +9,7 @@ import {Budget} from "../../../../models/financial";
 export class ExistingBudgetBlockComponent implements OnInit {
 
   @Input('budget') budget: Budget;
+  @Output('save') save: EventEmitter<Budget> = new EventEmitter<Budget>();
 
   edit: boolean = false;
 
@@ -18,7 +19,7 @@ export class ExistingBudgetBlockComponent implements OnInit {
   }
 
   saveBudget(budget: Budget): void {
-
+    this.save.next(budget);
   }
 
 }
