@@ -12,7 +12,8 @@ public class Budget : IMongoObject
     public bool IsWhatIf { get; set; } = true;
     public double Salary { get; set; } = 0;
     public double NetMonthlyPay { get; set; } = 0;
-    public double? NetMonthlyDeductions { get; set; } = 0;
+    public double GrossMonthlyPay { get; set; } = 0;
+    public double? MonthlyDeductions { get; set; }
     public Dictionary<Guid, BudgetExpense> Expenses { get; set; } = new Dictionary<Guid, BudgetExpense>();
 }
 public class BudgetExpense

@@ -71,6 +71,7 @@ namespace Budgetation.API.Controllers
         public async Task<IActionResult> Post([FromBody] Budget budget)
         {
             if (budget.Name == "") budget.Name = budget.Id.ToString();
+            budget.MonthlyDeductions = budget.GrossMonthlyPay - budget.NetMonthlyPay;
             Budget? created = await _budgetLogic.Create(budget);
             if(created is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not created", Success = false }); 
             return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = budget, Message = "Budget created", Success = true });
@@ -91,6 +92,7 @@ namespace Budgetation.API.Controllers
 
             //never update the expenses on main budget update, just use the existing expenses.
             budget.Expenses = found.Expenses;
+            budget.MonthlyDeductions = budget.GrossMonthlyPay - budget.NetMonthlyPay;
             
             Budget? updated = await _budgetLogic.Update(budget);
             if(updated is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not updated", Success = false }); 

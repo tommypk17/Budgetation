@@ -13,23 +13,32 @@
         <mat-hint align="end">amount earned on a yearly basis in dollars</mat-hint>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>Hourly pay (calculated)</mat-label>
+        <mat-label>Hourly pay</mat-label>
         <input value="{{(budget.salary/52/40) | number: '1.2-2'}}" matInput step="0.01" type="number" readonly [disabled]="true">
         <span matPrefix>$&nbsp;</span>
+        <mat-hint align="end">amount earned per hour (calculated)</mat-hint>
       </mat-form-field>
     </div>
-    <mat-form-field appearance="fill">
-      <mat-label>Monthly deductions</mat-label>
-      <input [(ngModel)]="budget.netMonthlyDeductions" name="netMonthlyDeductions" matInput type="number" min="0" step="0.01" required>
-      <span matPrefix>$&nbsp;</span>
-      <mat-hint align="end">amount deducted from monthly pay (taxes, insurance, retirement)</mat-hint>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>Monthly pay</mat-label>
-      <input value="{{budget.netMonthlyPay | number: '1.2-2'}}" name="netMonthlyPay" matInput type="number" min="0" step="0.01" required>
-      <span matPrefix>$&nbsp;</span>
-      <mat-hint align="end">amount earned in 1 pay period</mat-hint>
-    </mat-form-field>
+    <div class="d-flex justify-content-between mb-2">
+      <mat-form-field appearance="fill">
+        <mat-label>Gross monthly pay</mat-label>
+        <input [(ngModel)]="budget.grossMonthlyPay" name="grossMonthlyPay" matInput type="number" min="0" step="0.01" required>
+        <span matPrefix>$&nbsp;</span>
+        <mat-hint align="end">amount earned before taxes and deductions</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Net monthly pay</mat-label>
+        <input [(ngModel)]="budget.netMonthlyPay" name="netMonthlyPay" matInput type="number" min="0" step="0.01" required>
+        <span matPrefix>$&nbsp;</span>
+        <mat-hint align="end">amount earned in 1 month</mat-hint>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Net monthly deductions</mat-label>
+        <input value="{{budget.grossMonthlyPay - budget.netMonthlyPay}}" matInput type="number" min="0" step="0.01" readonly disabled>
+        <span matPrefix>$&nbsp;</span>
+        <mat-hint align="end">amount withheld in 1 pay period (calculated)</mat-hint>
+      </mat-form-field>
+    </div>
     <div class="d-flex">
       <div class="mb-2 d-flex flex-column">
         <mat-label>what-if budget?</mat-label>

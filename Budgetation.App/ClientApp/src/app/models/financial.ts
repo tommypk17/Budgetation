@@ -81,7 +81,8 @@ export class Budget {
   isWhatIf: boolean;
   salary: number;
   netMonthlyPay: number;
-  netMonthlyDeductions: number;
+  grossMonthlyPay: number;
+  monthlyDeductions: number | null = null;
   expenses: KeyValue<string, BudgetExpense>[];
 }
 
