@@ -1,12 +1,12 @@
-<div class="panel">
+<div class="panel" *ngIf="budget">
   <app-header-block
     [blockTitle]="headerBlock.blockTitle"
-    [blockSubtitle]="headerBlock.blockSubtitle"
+    [blockSubtitle]="budget.isWhatIf? '(Primary)': '(What-If)'"
     [blockContent]="headerBlock.blockContent"
     class="block"
   ></app-header-block>
   <div class="block">
-    <mat-card *ngIf="budget && !edit">
+    <mat-card *ngIf="!edit">
       <mat-card-header>
         <div class="d-flex justify-content-between w-100">
           <div class="d-flex align-items-center">
@@ -37,19 +37,19 @@
             <p>{{budget.salary | currency: 'USD'}}</p>
           </div>
           <div class="d-flex flex-column">
-            <strong>Monthly Pay</strong>
+            <strong>Gross Monthly Pay</strong>
             <hr class="w-100" />
-            <p>{{budget.netMonthlyPay | currency: 'USD'}}</p>
+            <p>{{budget.grossMonthlyPay | currency: 'USD'}}</p>
           </div>
           <div class="d-flex flex-column">
             <strong>Monthly Deductions</strong>
             <hr class="w-100" />
-            <p>{{budget.netMonthlyDeductions | currency: 'USD'}}</p>
+            <p>{{budget.monthlyDeductions | currency: 'USD'}}</p>
           </div>
           <div class="d-flex flex-column">
-            <strong>What-If?</strong>
+            <strong>Net Monthly Pay</strong>
             <hr class="w-100" />
-            <p>{{budget.isWhatIf == false? 'No (Primary)': 'Yes'}}</p>
+            <p>{{budget.netMonthlyPay | currency: 'USD'}}</p>
           </div>
         </div>
       </mat-card-content>
