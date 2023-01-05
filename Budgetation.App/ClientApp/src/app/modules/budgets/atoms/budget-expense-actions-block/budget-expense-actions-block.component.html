@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-content>
+    <div class="d-flex justify-content-between">
+      <div class="d-flex">
+        <button mat-icon-button color="accent" id="newBudgetButton" (click)="createNewBudgetExpense()"  matTooltip="add a new budget expense"><mat-icon>add</mat-icon></button>
+      </div>
+      <div class="d-flex">
+        <button mat-icon-button matTooltip="filter list of budget expenses" aria-label="filter budget expenses" [matMenuTriggerFor]="filterMenu">
+          <mat-icon *ngIf="filtered">filter_list_off</mat-icon>
+          <mat-icon *ngIf="!filtered">filter_list</mat-icon>
+        </button>
+        <mat-menu #filterMenu="matMenu">
+          <button *ngIf="filtered" mat-menu-item (click)="filterBudgetExpenses('clear')">
+            <mat-icon>close</mat-icon>
+            <span>Clear Filter</span>
+          </button>
+          <hr *ngIf="filtered">
+          <button mat-menu-item [matMenuTriggerFor]="filterByTypeMenu">
+            <mat-icon>merge_type</mat-icon>
+            <span>By Type</span>
+          </button>
+        </mat-menu>
+        <mat-menu #filterByTypeMenu="matMenu">
+          <button *ngFor="let expenseType of budgetExpenseTypes" mat-menu-item (click)="filterBudgetExpenses(expenseType.value.toLowerCase())">
+            <span>{{expenseType.value}}</span>
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

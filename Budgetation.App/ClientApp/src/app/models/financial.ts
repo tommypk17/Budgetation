@@ -83,10 +83,10 @@ export class Budget {
   netMonthlyPay: number;
   grossMonthlyPay: number;
   monthlyDeductions: number | null = null;
-  expenses: KeyValue<string, BudgetExpense>[];
+  expenses: Record<string, BudgetExpense>;
 }
 
-export interface BudgetExpense {
+export class BudgetExpense {
   name: string;
   amount: number;
   type: eBudgetExpenseType

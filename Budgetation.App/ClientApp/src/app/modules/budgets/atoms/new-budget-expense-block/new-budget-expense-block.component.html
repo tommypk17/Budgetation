@@ -1,0 +1,36 @@
+<mat-card-content *ngIf="budgetExpense">
+  <form #form="ngForm" (ngSubmit)="saveBudgetExpense()" class="d-flex flex-column">
+    <mat-form-field appearance="fill" class="w-100 mr-2">
+      <mat-label>Budget Name</mat-label>
+      <input [(ngModel)]="budgetExpense.name" name="name" matInput type="text" required>
+      <mat-hint align="end">name of the expense</mat-hint>
+    </mat-form-field>
+    <div class="d-flex mb-2">
+      <mat-form-field appearance="fill">
+        <mat-label>Amount</mat-label>
+        <input [(ngModel)]="budgetExpense.amount" name="grossMonthlyPay" matInput type="number" min="0" step="0.01" required>
+        <span matPrefix>$&nbsp;</span>
+        <mat-hint align="end">estimated monthly cost of the expense</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="d-flex mb-2">
+      <mat-form-field appearance="fill" class="mb-2">
+        <mat-label>select the expense type</mat-label>
+        <mat-select [(ngModel)]="budgetExpense.type" name="type" required>
+          <mat-option *ngFor="let expenseType of budgetExpenseTypes" [value]="expenseType.key">
+            {{expenseType.value}}
+          </mat-option>
+        </mat-select>
+        <mat-hint align="end">select the type of expense to categorize under</mat-hint>
+      </mat-form-field>
+    </div>
+    <div class="d-flex flex-end">
+      <div class="mr-2">
+        <button mat-raised-button color="accent" id="cancelButton" class="mr-2" (click)="cancelBudgetExpense()" type="button">cancel</button>
+      </div>
+      <div>
+        <button [disabled]="!form.valid" mat-raised-button color="primary" class="ml-2" id="saveButton" type="submit">save</button>
+      </div>
+    </div>
+  </form>
+</mat-card-content>

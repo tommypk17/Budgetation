@@ -22,6 +22,10 @@ import { ExistingBudgetBlockComponent } from './atoms/existing-budget-block/exis
 import { BudgetActionsBlockComponent } from './atoms/budget-actions-block/budget-actions-block.component';
 import { EditBudgetBlockComponent } from './atoms/edit-budget-block/edit-budget-block.component';
 import { NewBudgetBlockComponent } from './atoms/new-budget-block/new-budget-block.component';
+import { BudgetExpenseActionsBlockComponent } from './atoms/budget-expense-actions-block/budget-expense-actions-block.component';
+import { NewBudgetExpenseBlockComponent } from './atoms/new-budget-expense-block/new-budget-expense-block.component';
+import { BudgetExpenseTableComponent } from './atoms/budget-expense-table/budget-expense-table.component';
+import {MatTableModule} from "@angular/material/table";
 
 
 @NgModule({
@@ -31,7 +35,10 @@ import { NewBudgetBlockComponent } from './atoms/new-budget-block/new-budget-blo
     ExistingBudgetBlockComponent,
     BudgetActionsBlockComponent,
     EditBudgetBlockComponent,
-    NewBudgetBlockComponent
+    NewBudgetBlockComponent,
+    BudgetExpenseActionsBlockComponent,
+    NewBudgetExpenseBlockComponent,
+    BudgetExpenseTableComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +57,9 @@ import { NewBudgetBlockComponent } from './atoms/new-budget-block/new-budget-blo
     MatDialogModule,
     MatCheckboxModule,
     MatListModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatTableModule
+
   ]
 })
 export class BudgetsModule { }

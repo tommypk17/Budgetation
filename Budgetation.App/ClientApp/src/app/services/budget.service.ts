@@ -3,9 +3,10 @@ import {HttpClient} from "@angular/common/http";
 import {SharedService} from "./shared.service";
 import {Observable} from "rxjs";
 import {iResponse} from "../models/response";
-import {Budget} from "../models/financial";
+import {Budget, BudgetExpense} from "../models/financial";
 import {environment} from "../../environments/environment";
 import {catchError, finalize, retry} from "rxjs/operators";
+import {KeyValue} from "@angular/common";
 
 @Injectable({
   providedIn: 'root'
@@ -90,6 +91,38 @@ export class BudgetService {
       }),
       finalize(() => {
         this.sharedService.dequeueLoading('deleteBudget');
+      })
+    );
+  }
+
+  public getBudgetExpenses(id: string): Observable<iResponse<KeyValue<string, BudgetExpense>[]>> {
+    this.sharedService.queueLoading('getBudgetExpenses');
+    return this.http.get<iResponse<KeyValue<string, BudgetExpense>[]>>(environment.URL + `/api/budgets/${id}/expenses`).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<KeyValue<string, BudgetExpense>[]>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('getBudgetExpenses');
+      })
+    );
+  }
+
+  public createBudgetExpense(budgetId: string, budgetExpense: BudgetExpense): Observable<iResponse<BudgetExpense>> {
+    this.sharedService.queueLoading('createBudgetExpense');
+    return this.http.post<iResponse<BudgetExpense>>(environment.URL + `/api/budgets/${budgetId}/expenses`, budgetExpense).pipe(
+      retry(3),
+      catchError((err, caught) => {
+        this.handleError(err);
+        return new Observable<iResponse<BudgetExpense>>((subscriber) => {
+          subscriber.next(undefined);
+        })
+      }),
+      finalize(() => {
+        this.sharedService.dequeueLoading('createBudgetExpense');
       })
     );
   }

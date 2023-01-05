@@ -3,7 +3,14 @@ import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {KeyValue} from "@angular/common";
-import {eExpensesFor, eExpenseType, eIncomeFor, eIncomeType, eReoccurrence} from "../models/financial";
+import {
+  eBudgetExpenseType,
+  eExpensesFor,
+  eExpenseType,
+  eIncomeFor,
+  eIncomeType,
+  eReoccurrence
+} from "../models/financial";
 import {UrlSegment} from "@angular/router";
 
 
@@ -71,6 +78,14 @@ export class SharedService {
     let expenseTypes: KeyValue<number, string>[] = [];
     Object.values(eExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
       expenseTypes.push({key: eExpenseType[v], value: v as string});
+    });
+    return expenseTypes;
+  }
+
+  get budgetExpenseTypes(): KeyValue<number, string>[] {
+    let expenseTypes: KeyValue<number, string>[] = [];
+    Object.values(eBudgetExpenseType).filter((o) => typeof o == 'string').forEach((v) => {
+      expenseTypes.push({key: eBudgetExpenseType[v], value: v as string});
     });
     return expenseTypes;
   }

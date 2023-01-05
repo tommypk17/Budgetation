@@ -59,10 +59,24 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not found", Success = true });
             }
 
-            BudgetExpense? res = budget.Expenses.ContainsKey(expenseId)? budget.Expenses[expenseId]: null;
+            BudgetExpense? res = budget.Expenses.ContainsKey(expenseId.ToString())? budget.Expenses[expenseId.ToString()]: null;
             if(res is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not found", Success = true });
             
             return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = res, Message = "Budget expense found", Success = true });
+
+        }
+        
+        // GET: api/Budgets/{budgetId}/expenses/{expenseId}
+        [HttpGet("{budgetId}/expenses")]
+        public async Task<IActionResult> GetBudgetExpenses([FromRoute]Guid budgetId)
+        {
+            Budget? budget = await _budgetLogic.Find(budgetId);
+            if (budget is null)
+            {
+                return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not found", Success = true });
+            }
+            
+            return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = budget.Expenses, Message = "Budget expenses found", Success = true });
 
         }
         
@@ -121,11 +135,11 @@ namespace Budgetation.API.Controllers
             }
 
             var expenseId = Guid.NewGuid();
-            budget.Expenses.Add(expenseId, budgetExpense);
+            budget.Expenses.Add(expenseId.ToString(), budgetExpense);
             Budget? res = await _budgetLogic.Update(budget);
             if(res is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not created", Success = false });
 
-            BudgetExpense? expense = budget.Expenses.ContainsKey(expenseId)? budget.Expenses[expenseId]: null;
+            BudgetExpense? expense = budget.Expenses.ContainsKey(expenseId.ToString())? budget.Expenses[expenseId.ToString()]: null;
             if(expense is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not created", Success = false });
             
             return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = expense, Message = "Budget expense created", Success = true });
@@ -142,16 +156,16 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not found", Success = false });
             }
 
-            var found = budget.Expenses.ContainsKey(expenseId)? budget.Expenses[expenseId]: null;
+            var found = budget.Expenses.ContainsKey(expenseId.ToString())? budget.Expenses[expenseId.ToString()]: null;
             if(found is not null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not found", Success = false });
 
-            budget.Expenses.Remove(expenseId);
-            budget.Expenses.Add(expenseId, budgetExpense);
+            budget.Expenses.Remove(expenseId.ToString());
+            budget.Expenses.Add(expenseId.ToString(), budgetExpense);
             
             Budget? res = await _budgetLogic.Update(budget);
             if(res is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not created", Success = false });
 
-            BudgetExpense? expense = res.Expenses.ContainsKey(expenseId)? budget.Expenses[expenseId]: null;
+            BudgetExpense? expense = res.Expenses.ContainsKey(expenseId.ToString())? budget.Expenses[expenseId.ToString()]: null;
             if(expense is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not created", Success = false });
             
             return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = expense, Message = "Budget expense created", Success = true });
@@ -168,10 +182,10 @@ namespace Budgetation.API.Controllers
                 return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget not found", Success = false });
             }
 
-            var toRemove = budget.Expenses.ContainsKey(expenseId)? budget.Expenses[expenseId]: null;
+            var toRemove = budget.Expenses.ContainsKey(expenseId.ToString())? budget.Expenses[expenseId.ToString()]: null;
             if(toRemove is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not found", Success = false });
             
-            budget.Expenses.Remove(expenseId);
+            budget.Expenses.Remove(expenseId.ToString());
             
             Budget? res = await _budgetLogic.Update(budget);
             if(res is null) return StatusCode(StatusCodes.Status200OK,new ResponseModel() { Data = null, Message = "Budget expense not created", Success = false });

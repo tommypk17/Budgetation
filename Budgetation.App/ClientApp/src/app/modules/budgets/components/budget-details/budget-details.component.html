@@ -58,4 +58,10 @@
       <app-edit-budget-block [budget]="budget" (cancel)="edit = !edit" (save)="saveBudget($event)"></app-edit-budget-block>
     </mat-card>
   </div>
+  <div class="block">
+    <app-budget-expense-actions-block [filtered]="!!currentFilter" (filter)="filterBudgetExpenses($event)" (newBudgetExpense)="newBudgetExpense()"></app-budget-expense-actions-block>
+  </div>
+  <div class="block">
+    <app-budget-expense-table [budgetExpenses]="currentBudgetExpenses"></app-budget-expense-table>
+  </div>
 </div>
