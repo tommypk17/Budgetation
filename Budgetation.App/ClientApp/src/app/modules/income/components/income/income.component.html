@@ -7,7 +7,7 @@
   >
   </app-header-block>
   <div class="block">
-    <app-stats-income-block #incomeStats [income]="currentIncome" (monthSelected)="showMonth($event)"></app-stats-income-block>
+    <app-stats-income-block #incomeStats [income]="currentIncome"  (show)="showIncome($event)" (monthSelected)="showMonth($event)"></app-stats-income-block>
   </div>
   <div class="block">
     <app-income-actions-block (filter)="filterIncome($event)" (sort)="sortIncome($event)" (newIncome)="createNewIncome()" (settings)="changeSettings($event)" [disableNewIncome]="newIncome != undefined"></app-income-actions-block>

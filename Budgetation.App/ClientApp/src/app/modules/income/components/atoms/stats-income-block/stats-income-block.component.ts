@@ -15,8 +15,8 @@ export class StatsIncomeBlockComponent implements OnInit, OnChanges {
 
   incomeTotal: number = this.getTotalIncoming();
 
-  expensesFor: KeyValue<string, string>[] = this.sharedService.incomeFor;
-  showingExpenses: string = eExpensesFor.Current;
+  incomeFor: KeyValue<string, string>[] = this.sharedService.incomeFor;
+  showingIncome: string = eIncomeFor.Current;
 
   showingMonth: Date;
 

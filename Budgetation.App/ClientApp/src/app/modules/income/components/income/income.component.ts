@@ -91,16 +91,16 @@ export class IncomeComponent implements OnInit {
   showIncome(incomeFor: string){
     this.currentIncomeFor = incomeFor;
     switch (incomeFor){
-      case eExpensesFor.All:
+      case eIncomeFor.All:
         this.currentMonth = undefined;
         this.currentIncome = this.allIncome;
         break;
-      case eExpensesFor.Current:
+      case eIncomeFor.Current:
         this.currentMonth = new Date(Date.now());
         this.currentIncome = this.allIncome.filter(x => new Date(x.date) >= this.sharedService.firstDayOfMonthCurrent);
         this.currentIncome = this.currentIncome.filter(x => new Date(x.date) <= this.sharedService.lastDayOfMonthCurrent);
         break;
-      case eExpensesFor.Month:
+      case eIncomeFor.Month:
         this.filterByMonth(this.currentMonth)
         break;
     }
@@ -118,7 +118,7 @@ export class IncomeComponent implements OnInit {
     this.reFilterSort();
     this.currentMonth = date;
     this.filterByMonth(date);
-    this.currentIncomeFor = eExpensesFor.Month;
+    this.currentIncomeFor = eIncomeFor.Month;
   }
 
   filterByMonth(date: Date | undefined){

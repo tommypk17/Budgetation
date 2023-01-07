@@ -7,9 +7,9 @@
       <div class="d-flex flex-column">
         <mat-form-field appearance="fill">
           <mat-label>Showing expenses for</mat-label>
-          <mat-select [(ngModel)]="showingExpenses" (selectionChange)="showIncomeFor(showingExpenses)">
-            <mat-option *ngFor="let expenseFor of expensesFor" [value]="expenseFor.value">
-              {{expenseFor.value}}
+          <mat-select [(ngModel)]="showingIncome" (selectionChange)="showIncomeFor(showingIncome)">
+            <mat-option *ngFor="let incomeFor of incomeFor" [value]="incomeFor.value">
+              {{incomeFor.value}}
             </mat-option>
           </mat-select>
         </mat-form-field>
