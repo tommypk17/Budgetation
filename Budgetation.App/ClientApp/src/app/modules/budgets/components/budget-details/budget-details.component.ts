@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Budget, BudgetExpense, eBudgetExpenseType, eExpenseType} from "../../../../models/financial";
 import {BudgetService} from "../../../../services/budget.service";
 import {iResponse} from "../../../../models/response";
@@ -10,6 +10,7 @@ import {SharedService} from "../../../../services/shared.service";
 import {MatDialog} from "@angular/material/dialog";
 import {NewBudgetExpenseBlockComponent} from "../../atoms/new-budget-expense-block/new-budget-expense-block.component";
 import {KeyValue} from "@angular/common";
+import {BudgetExpenseTableComponent} from "../../atoms/budget-expense-table/budget-expense-table.component";
 
 @Component({
   selector: 'app-budget-details',
@@ -23,22 +24,23 @@ export class BudgetDetailsComponent implements OnInit {
 
   edit: boolean = false;
 
-  currentFilter: string | undefined;
-
   allBudgetExpenses: BudgetExpense[] = [];
   currentBudgetExpenses: BudgetExpense[] = [];
 
-  constructor(private budgetService: BudgetService, private route: ActivatedRoute, private sharedService: SharedService, public dialog: MatDialog) { }
+  @ViewChild('table') table: BudgetExpenseTableComponent;
+
+  constructor(private budgetService: BudgetService, private route: ActivatedRoute, private sharedService: SharedService, public dialog: MatDialog) {
+  }
 
   get budgetId(): string {
     let budgetId = this.route.snapshot.params['budgetId']
-    if(budgetId) return budgetId;
+    if (budgetId) return budgetId;
     else return "";
   }
 
   ngOnInit(): void {
     this.budgetService.getBudget(this.budgetId).subscribe((res: iResponse<Budget>) => {
-      if(res && res.data){
+      if (res && res.data) {
         this.budget = res.data;
         this.headerBlock.blockTitle = `Budgets - ${this.budget.name}`;
         Object.keys(res.data.expenses).forEach((v) => {
@@ -58,15 +60,14 @@ export class BudgetDetailsComponent implements OnInit {
     dialog.componentInstance.budgetExpense = new BudgetExpense();
     dialog.componentInstance.save.subscribe((expense) => {
       this.budgetService.createBudgetExpense(this.budgetId, expense).subscribe((res: iResponse<BudgetExpense>) => {
-        this.budgetService.getBudgetExpenses(this.budgetId).subscribe((res:iResponse<KeyValue<string, BudgetExpense>[]>) => {
-          if(res && res.data) {
+        this.budgetService.getBudgetExpenses(this.budgetId).subscribe((res: iResponse<KeyValue<string, BudgetExpense>[]>) => {
+          if (res && res.data) {
             this.currentBudgetExpenses = [];
             this.allBudgetExpenses = [];
             Object.keys(res.data).forEach((v) => {
               this.currentBudgetExpenses.push(res.data[v]);
               this.allBudgetExpenses.push(res.data[v]);
             });
-            this.reFilterSort();
           }
         });
       });
@@ -78,27 +79,19 @@ export class BudgetDetailsComponent implements OnInit {
   }
 
   filterBudgetExpenses(filterBy: string): void {
-    this.currentFilter = filterBy;
-    switch (filterBy){
+    switch (filterBy) {
       case 'clear':
-        this.currentFilter = undefined;
-        this.currentBudgetExpenses = this.allBudgetExpenses;
+        this.table.dataSource.data = this.allBudgetExpenses;
         break;
       case 'need':
-        this.currentBudgetExpenses = this.allBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Need);
+        this.table.dataSource.data = this.currentBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Need);
         break;
       case 'want':
-        this.currentBudgetExpenses = this.allBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Want);
+        this.table.dataSource.data = this.currentBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Want);
         break;
       case 'extra':
-        this.currentBudgetExpenses = this.allBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Extra);
+        this.table.dataSource.data = this.currentBudgetExpenses.filter(x => x.type == eBudgetExpenseType.Extra);
         break;
     }
   }
-
-  reFilterSort(): void {
-    this.currentBudgetExpenses = this.allBudgetExpenses;
-    if(this.currentFilter) this.filterBudgetExpenses(this.currentFilter);
-  }
-
 }

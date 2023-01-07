@@ -28,6 +28,11 @@ export class BudgetExpenseActionsBlockComponent implements OnInit {
   }
 
   filterBudgetExpenses(event: string): void {
+    if(event == 'clear'){
+      this.filtered = false;
+    }else{
+      this.filtered = true;
+    }
     this.filter.next(event);
   }
 

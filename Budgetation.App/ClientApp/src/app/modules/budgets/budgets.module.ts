@@ -26,6 +26,7 @@ import { BudgetExpenseActionsBlockComponent } from './atoms/budget-expense-actio
 import { NewBudgetExpenseBlockComponent } from './atoms/new-budget-expense-block/new-budget-expense-block.component';
 import { BudgetExpenseTableComponent } from './atoms/budget-expense-table/budget-expense-table.component';
 import {MatTableModule} from "@angular/material/table";
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
@@ -58,8 +59,8 @@ import {MatTableModule} from "@angular/material/table";
     MatCheckboxModule,
     MatListModule,
     MatSlideToggleModule,
-    MatTableModule
-
+    MatTableModule,
+    MatSortModule
   ]
 })
 export class BudgetsModule { }
